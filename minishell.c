@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:47 by nelallao          #+#    #+#             */
-/*   Updated: 2023/06/17 20:15:23 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/06/19 12:40:37 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,12 +169,46 @@ t_node	*ft_token(char *str, t_node *head)
 	return (head);
 }
 
+int	ft_check_quotes(char *str)
+{
+	int	i;
+	int	double_quote = 0;
+	int	single_quote = 0;
+	int	s_q;
+	int	d_q;
+
+	s_q = 0;
+	d_q = 0;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\'' && double_quote == 0)
+			single_quote = !single_quote;
+		if (str[i] == '\"' && single_quote == 0)
+			double_quote = !double_quote;
+		if (str[i] == '\'' && double_quote == 0)
+			s_q++;
+		if (str[i] == '"' && single_quote == 0)
+			d_q++;
+		i++;
+	}
+	if (s_q == 1 ||d_q == 1)
+		return (1);
+	return (EXIT_SUCCESS);
+}
+
 void	ft_syntax_error(char *str, t_node *head)
 {
-
+	if (head->type == PIPE && head->next != NULL)
+		ft_putstr_fd("syntax error near unexpected token\n", 2);
 	while (head != NULL)
 	{
-
+		if (head->next == NULL)
+			if (head->type <= HERDOC)
+				ft_putstr_fd("syntax error near unexpected token\n", 2);
+		if (head->type == ARRGUMENT)
+			if (ft_check_quotes(head->data) == 1)
+				ft_putstr_fd("syntax error: unexpected end of file\n", 2);
 		head = head->next;
 	}
 }
@@ -211,8 +245,8 @@ int	main(void)
 	{
 		input = readline("-> minishell> ");
 		head = ft_token(input, head);
-		ft_syntax_error(input, head);
 		ft_type(&head);
+		ft_syntax_error(input, head);
 		ft_display(head);
 		add_history(input);
 		if (ft_strcmp(input, "exit") == 0)
