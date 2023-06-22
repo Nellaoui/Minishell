@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   libft_func.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 13:09:18 by nelallao          #+#    #+#             */
-/*   Updated: 2023/06/14 11:35:44 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/06/18 14:37:56 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "./minishell.h"
 
 int	ft_strcmp(char *s1, char *s2)
 {

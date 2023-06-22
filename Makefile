@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+         #
+#    By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/06 12:31:19 by nelallao          #+#    #+#              #
-#    Updated: 2023/06/12 12:13:27 by nelallao         ###   ########.fr        #
+#    Updated: 2023/06/22 11:14:00 by aziyani          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ CC = cc
 RM = rm -f
 # FLAGS = -Wall -Wextra -Werror
 LFLAGS = -lreadline
-SRC = minishell.c libft_func.c
+SRC = ./source/main/minishell.c ./includes/libft_func.c \
+		./source/main/lst_utiles.c ./source/builtins/env.c
 
 all : $(NAME)
 

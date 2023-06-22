@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/06/17 19:29:35 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/06/22 11:12:47 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,20 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+
+typedef struct s_env  // we use this struct to store env as linkedlist
+{
+	char *key;
+	char *value;
+	struct s_env *next;
+}	t_env;
+
+typedef struct s_global // we use this struct to creat a global varibal that contain env so we can use it anywhere
+{
+	t_env	*g_env;
+}	t_global;
+
+t_global	global;
 
 typedef enum type
 {
@@ -46,6 +60,7 @@ typedef struct s_token
 	int		start;
 	char	*res;
 } t_token;
+
 /*---------libft-----------------*/
 int		ft_strcmp(char *s1, char *s2);
 int		ft_strlen(const char *str);
@@ -54,4 +69,13 @@ char	*ft_strdup(const char *s1);
 char	*ft_substr(char const *s, unsigned int start, int len);
 void	ft_putstr_fd(char *s, int fd);
 /*-------------------------------*/
+
+
+/********** UTILS  *******************/
+t_env   *create_node(char *key, char *value);
+void	add_node(t_env **list, t_env *new_node);
+char	*get_key_env(char *env, int *i);
+char	*get_value_env(char *env, int *i);
+int		ft_env();
+
 #endif
