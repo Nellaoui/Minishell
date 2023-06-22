@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:47 by nelallao          #+#    #+#             */
-/*   Updated: 2023/06/19 12:40:37 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/06/22 11:19:59 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,18 @@ void	ft_display(t_node *head)
 	while (tmp != NULL)
 	{
 		printf("[%s:%d]\n", tmp->data, tmp->type);
+		tmp = tmp->next;
+	}
+	printf("\n");
+}
+void	ft_display_cmd(t_cmd *head)
+{
+	t_cmd	*tmp;
+
+	tmp = head;
+	while (tmp != NULL)
+	{
+		ft_display(tmp->args);
 		tmp = tmp->next;
 	}
 	printf("\n");
@@ -234,10 +246,37 @@ void	ft_type(t_node **head)
 		node = node->next;
 	}
 }
+t_cmd	*ft_give(t_node *head)
+{
+	t_cmd	*cmd;
+	t_node	*last_pipe;
+
+	cmd = NULL;
+	last_pipe = NULL;
+	cmd = (t_cmd *)malloc(sizeof(t_cmd));
+		if (!cmd)
+			return 0;
+	while (head)
+	{
+		while (head && head->type != PIPE)
+		{
+			cmd->args = head;
+			cmd->args = cmd->args->next;
+		}
+		// else if (head->next != NULL)
+			// last_pipe = head->next;
+		// head = last_pipe;
+		head = head->next;
+	}
+	return (cmd);
+}
+
+// }// echo hey (> out) (< in) world (>> app) | pwd (<< here)
 
 int	main(void)
 {
 	t_node	*head;
+	t_cmd	*arg;
 	char	*input;
 
 	head = NULL;
@@ -247,7 +286,8 @@ int	main(void)
 		head = ft_token(input, head);
 		ft_type(&head);
 		ft_syntax_error(input, head);
-		ft_display(head);
+		arg = ft_give(head);
+		ft_display_cmd(arg);
 		add_history(input);
 		if (ft_strcmp(input, "exit") == 0)
 			exit(1);

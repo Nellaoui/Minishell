@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/06/17 19:29:35 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/06/20 11:58:37 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,23 @@
 typedef enum type
 {
 	PIPE = 1,
-	IN,
-	OUT,
-	APPEND,
-	HERDOC,
+	IN, // <
+	OUT, // >
+	APPEND, // >>
+	HERDOC, // <<
 	ARRGUMENT,
 }	e_type;
+
+typedef struct s_node t_node;
+
+typedef struct s_cmd
+{
+	t_node			*args;
+	t_node			*out_reds; // > ' >>
+	t_node			*in_reds; // < ' <<
+	int				type_in;
+	struct s_cmd	*next;
+}	t_cmd;
 
 typedef struct s_node
 {

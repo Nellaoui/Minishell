@@ -6,24 +6,33 @@
 #    By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/06 12:31:19 by nelallao          #+#    #+#              #
-#    Updated: 2023/06/12 12:13:27 by nelallao         ###   ########.fr        #
+#    Updated: 2023/06/22 10:24:46 by nelallao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
 RM = rm -f
-# FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror
 LFLAGS = -lreadline
+# FFLAGS = fsanitize=address -g
 SRC = minishell.c libft_func.c
+OBJ := $(SRC:.c=.o)
+OBJ := $(addprefix obj/, $(OBJ))
 
-all : $(NAME)
+all: $(NAME)
 
-$(NAME) :$(SRC)
-	@$(CC) $(FLAGS) $(LFLAGS) $(SRC) -o $(NAME)
+$(NAME): $(OBJ)
+	@$(CC) $(FLAGS) $(LFLAGS) $(FFLAGS) $(OBJ) -o $(NAME)
 
-clean :
-	@$(RM)
-fclean : clean
+obj/%.o: %.c minishell.h
+	@mkdir -p $$(dirname $@)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	@$(RM) $(OBJ)
+
+fclean: clean
 	@$(RM) $(NAME)
-re : fclean all
+
+re: fclean all
