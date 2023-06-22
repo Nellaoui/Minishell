@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:47 by nelallao          #+#    #+#             */
-/*   Updated: 2023/06/22 11:12:53 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/06/22 13:18:00 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,27 +251,26 @@
 // // 	return (0);
 // // }
 
+// =========================================================================
+
 t_env	*ft_setup_env(char **env_main)
 {
 	t_env	*list;// list of nodes (the head of linked list)
 	t_env	*node;
-	char	*key;
-	char	*value;
-	int		i;
+	char	**key_value;
 	int		j;
 
 	list = NULL;
 	j = -1;
 	while (env_main[++j])
 	{
-		i = -1;
-		key = get_key_env(env_main[j], &i);
-		i++;
-		value = get_value_env(env_main[j], &i);
-		add_node(&list, create_node(key, value));
+		key_value = ft_split(env_main[j], '=');
+		add_node(&list, create_node(key_value[0], key_value[1]));
 	}
 	return (list);
 }
+
+// =========================================================================
 
 int main(int argc, char const *argv[], char **env_main)
 {
@@ -281,11 +280,9 @@ int main(int argc, char const *argv[], char **env_main)
 	
 	global.g_env = ft_setup_env(env_main);
 	tmp = global.g_env;
-	ft_env();
-	// while (tmp)
-	// {
-	// 	printf("%s ===> %s\n", tmp->key, tmp->value);
-	// 	tmp = tmp->next;
-	// }
+	ft_export(&global.g_env, "#aziyani=nasima");
+	// ft_env();
 	return 0;
 }
+
+// =========================================================================

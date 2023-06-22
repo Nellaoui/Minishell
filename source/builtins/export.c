@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 14:50:14 by aziyani           #+#    #+#             */
-/*   Updated: 2023/06/19 21:51:04 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/06/22 13:21:14 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,52 @@
 // ila 3ndk export a
 // ila 3ndk export a=
 // ila 3ndk export a=""
-// 
+// ila deja kan key ytoverwrita ldakchi lidakhal jdid machi yt3awd whdakhr
 
-typedef struct struct_export_s
-{
-	char *key;
-	char *value;
-	struct struct_export_s *next;
-}struct_export;
+// =========================================================================
 
-int	ft_export(struct_export *export, char *str)
+int	ft_check_key(char	**key_value)
 {
-    // ila ktbti export bo7dha
-	while (export)
+	int	i;
+
+	if (key_value[0][0] != '_' && !ft_isalpha(key_value[0][0]))
 	{
-		printf("declare -x %s=\"%s\"\n", export->key, export->value);
-		export = export->next;
+		ft_putstr_fd("not a valid identifier\n", 2);
+		return (1);
 	}
-    // ila 3tak tzid chi node
-    add_back_node(str);
+	i = 1;
+	while (key_value[0][i])
+	{
+		if (!(ft_isalnum(key_value[0][i])))
+		{
+			if (key_value[0][i] != '_')
+			{
+				ft_putstr_fd("not a valid identifier\n", 2);
+				return (1);
+			}
+		}
+		i++;
+	}
+	return (0);
 }
+
+// =========================================================================
+
+int	ft_export(t_env **export, char *str)
+{
+	t_env	*tmp;
+	char	**key_value;
+
+	tmp = *export;
+	while (tmp)
+	{
+		printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);  // ila ktbti export bo7dha
+		tmp = tmp->next;
+	}
+	key_value = ft_split(str, '=');
+	if (!ft_check_key(key_value))
+		add_node(export, create_node(key_value[0], key_value[1]));  // ila 3tak tzid chi node
+	return (0);
+}
+
+// =========================================================================

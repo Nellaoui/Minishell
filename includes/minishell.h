@@ -6,13 +6,14 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/06/22 11:12:47 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/06/22 13:01:55 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "./libft/libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
 # include <stdlib.h>
@@ -29,6 +30,7 @@ typedef struct s_env  // we use this struct to store env as linkedlist
 typedef struct s_global // we use this struct to creat a global varibal that contain env so we can use it anywhere
 {
 	t_env	*g_env;
+	int		exit_status;
 }	t_global;
 
 t_global	global;
@@ -62,12 +64,13 @@ typedef struct s_token
 } t_token;
 
 /*---------libft-----------------*/
-int		ft_strcmp(char *s1, char *s2);
-int		ft_strlen(const char *str);
-char	*ft_strchr(const char *scanned, int searched);
-char	*ft_strdup(const char *s1);
-char	*ft_substr(char const *s, unsigned int start, int len);
-void	ft_putstr_fd(char *s, int fd);
+// int		ft_strcmp(char *s1, char *s2);
+// int		ft_strlen(const char *str);
+// char	*ft_strchr(const char *scanned, int searched);
+// char	*ft_strdup(const char *s1);
+// char	*ft_substr(char const *s, unsigned int start, int len);
+// void	ft_putstr_fd(char *s, int fd);
+// char	**ft_split(char const *s, char c);
 /*-------------------------------*/
 
 
@@ -77,5 +80,6 @@ void	add_node(t_env **list, t_env *new_node);
 char	*get_key_env(char *env, int *i);
 char	*get_value_env(char *env, int *i);
 int		ft_env();
+int	ft_export(t_env **export, char *str);
 
 #endif
