@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:47 by nelallao          #+#    #+#             */
-/*   Updated: 2023/06/22 13:18:00 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/06/23 13:04:35 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,29 +214,30 @@
 //     execve("/bin/echo", argv, env);
 // }
 
-// // int	main(void)
-// // {
-// // 	t_node	*head;
-// // 	char	*input;
+// int	main(void)
+// {
+// 	t_node	*head;
+// 	char	*input;
 
-// // 	head = NULL;
-// // 	char *path = getenv("PATH");
-// // 	// if (access(path, X_OK))
-// // 		// ok();
-// // 	// ok();
-// // 	while (1)
-// // 	{
-// // 		input = readline("-> minishell> ");
-// // 		// system(input);
-// // 		head = ft_token(input, head);
-// // 		ft_syntax_error(input, head);
-// // 		ft_type(&head);
-// // 		ft_display(head);
-// // 		add_history(input);
-// // 		if (ft_strcmp(input, "exit") == 0)
-// // 			exit(1);
-// // 		free(input);
-// // 	}
+// 	head = NULL;
+// 	char *path = getenv("PATH");
+// 	// if (access(path, X_OK))
+// 		// ok();
+// 	// ok();
+// 	while (1)
+// 	{
+// 		input = readline("-> minishell> ");
+// 		// system(input);
+// 		// head = ft_token(input, head);
+// 		// ft_syntax_error(input, head);
+// 		// ft_type(&head);
+// 		// ft_display(head);
+// 		add_history(input);
+// 		// if (ft_strcmp(input, "exit") == 0)
+// 		// 	exit(1);
+// 		free(input);
+// 	}
+// }
 // // 	// t_node	*list;
 
 // // 	// list = NULL;
@@ -252,22 +253,23 @@
 // // }
 
 // =========================================================================
+// env_main variable hold the envairment
 
 t_env	*ft_setup_env(char **env_main)
 {
-	t_env	*list;// list of nodes (the head of linked list)
-	t_env	*node;
-	char	**key_value;
+	t_env	*list; // list of nodes (the head of linked list)
+	t_env	*node; // list of nodes
+	char	**key_value; // this double pointer hold the key and the value 
 	int		j;
 
 	list = NULL;
 	j = -1;
 	while (env_main[++j])
 	{
-		key_value = ft_split(env_main[j], '=');
-		add_node(&list, create_node(key_value[0], key_value[1]));
+		key_value = ft_split(env_main[j], '='); // here we split the env_main so that the key_value[0]->hold the key and key_value[1]->hold the value
+		add_node(&list, create_node(key_value[0], key_value[1])); // in this line i create and add node in the same time
 	}
-	return (list);
+	return (list); // i return the list cuz it's the head of linkedlist.
 }
 
 // =========================================================================
@@ -276,12 +278,16 @@ int main(int argc, char const *argv[], char **env_main)
 {
 	int i = 0;
 	t_env	*tmp;
-
+	char	*input; //
+	
 	
 	global.g_env = ft_setup_env(env_main);
 	tmp = global.g_env;
-	ft_export(&global.g_env, "#aziyani=nasima");
-	// ft_env();
+	input = readline("#-->minishell>");
+	ft_export(&global.g_env, input);
+	// ft_export(&global.g_env, "aziyan");
+	// ft_export(&global.g_env, "aziyani");
+	ft_env();
 	return 0;
 }
 

@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 14:50:14 by aziyani           #+#    #+#             */
-/*   Updated: 2023/06/22 13:21:14 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/06/23 13:23:18 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,15 @@
 // ila 3ndk export a=
 // ila 3ndk export a=""
 // ila deja kan key ytoverwrita ldakchi lidakhal jdid machi yt3awd whdakhr
+
+// =========================================================================
+
+int	ft_modify_node(t_env **export, char	*key)
+{
+		if (ft_strncmp(export, key, ft_strlen(key + 1)) == 1)
+			return (1);
+	return (0);
+}
 
 // =========================================================================
 
@@ -52,14 +61,21 @@ int	ft_export(t_env **export, char *str)
 	char	**key_value;
 
 	tmp = *export;
-	while (tmp)
-	{
-		printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);  // ila ktbti export bo7dha
-		tmp = tmp->next;
-	}
+	// while (tmp)
+	// {
+	// 	printf("declare -x %s=\"%s\"\n", tmp->key, tmp->value);  // ila ktbti export bo7dha
+	// 	tmp = tmp->next;
+	// }
 	key_value = ft_split(str, '=');
 	if (!ft_check_key(key_value))
-		add_node(export, create_node(key_value[0], key_value[1]));  // ila 3tak tzid chi node
+	{
+		if (ft_modify_node(export, key_value[0])) // func() return 1 or 0
+		{
+			// modify
+		}
+		else
+			add_node(export, create_node(key_value[0], key_value[1]));  // ila 3tak tzid chi node
+	}
 	return (0);
 }
 
