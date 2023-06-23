@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:47 by nelallao          #+#    #+#             */
-/*   Updated: 2023/06/23 13:04:35 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/06/23 15:51:29 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,11 +283,16 @@ int main(int argc, char const *argv[], char **env_main)
 	
 	global.g_env = ft_setup_env(env_main);
 	tmp = global.g_env;
-	input = readline("#-->minishell>");
-	ft_export(&global.g_env, input);
-	// ft_export(&global.g_env, "aziyan");
-	// ft_export(&global.g_env, "aziyani");
+	// input = readline("#-->minishell>");
+	// ft_export(&global.g_env, input);
+	ft_export(&global.g_env, "aziyan=loool");
 	ft_env();
+	printf("========\n");
+
+	ft_export(&global.g_env, "aziyan=toooz");
+	ft_env();
+	// ft_export(&global.g_env, "aziyani");
+	// ft_env();
 	return 0;
 }
 

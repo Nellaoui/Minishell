@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 14:50:14 by aziyani           #+#    #+#             */
-/*   Updated: 2023/06/23 13:23:18 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/06/23 15:54:04 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@
 
 // =========================================================================
 
-int	ft_modify_node(t_env **export, char	*key)
+int	ft_modify_node(char	*export, char	*key)
 {
-		if (ft_strncmp(export, key, ft_strlen(key + 1)) == 1)
-			return (1);
+	if (ft_strncmp(export, key, ft_strlen(key + 1)) == 0)
+		return (1);
 	return (0);
 }
 
@@ -54,11 +54,14 @@ int	ft_check_key(char	**key_value)
 }
 
 // =========================================================================
+//if we not put the value it will segfault so that we should create a func() check the value if exist or not
 
 int	ft_export(t_env **export, char *str)
 {
 	t_env	*tmp;
 	char	**key_value;
+	int		i;
+	int added=0;
 
 	tmp = *export;
 	// while (tmp)
@@ -67,14 +70,23 @@ int	ft_export(t_env **export, char *str)
 	// 	tmp = tmp->next;
 	// }
 	key_value = ft_split(str, '=');
-	if (!ft_check_key(key_value))
+	if (!ft_check_key(key_value)) // if we not put the value it will segfault so that we should create a func() check the value if exist or not
 	{
-		if (ft_modify_node(export, key_value[0])) // func() return 1 or 0
+		i = 0;
+		while (tmp)
 		{
-			// modify
+			// printf("%s vs %s\n", tmp->key,key_value[0]);
+			if (!ft_strncmp(key_value[0], tmp->key, ft_strlen(tmp->key) + 1)) // func() return 1 or 0
+			{
+				tmp->value = ft_strdup(key_value[1]);
+				added=1;
+				break;
+			}
+			tmp = tmp->next;
 		}
-		else
+		if(!added)
 			add_node(export, create_node(key_value[0], key_value[1]));  // ila 3tak tzid chi node
+
 	}
 	return (0);
 }

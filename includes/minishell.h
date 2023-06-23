@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/06/22 13:01:55 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/06/23 15:29:24 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,6 @@ void	add_node(t_env **list, t_env *new_node);
 char	*get_key_env(char *env, int *i);
 char	*get_value_env(char *env, int *i);
 int		ft_env();
-int	ft_export(t_env **export, char *str);
+int		ft_export(t_env **export, char *str);
 
 #endif

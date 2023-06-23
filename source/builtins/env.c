@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 14:50:05 by aziyani           #+#    #+#             */
-/*   Updated: 2023/06/21 17:21:13 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/06/23 15:52:05 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,11 @@
 
 int	ft_env()
 {
-	while (global.g_env)
+	t_env	*tmp=global.g_env;
+	while (tmp)
 	{
-		printf("%s=%s\n", global.g_env->key, global.g_env->value);
-		global.g_env = global.g_env->next;
+		printf("%s=%s\n", tmp->key, tmp->value);
+		tmp = tmp->next;
 	}
 	return (0);
 }
