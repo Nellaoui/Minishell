@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:47 by nelallao          #+#    #+#             */
-/*   Updated: 2023/06/23 15:51:29 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/07/06 14:30:02 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,7 +288,6 @@ int main(int argc, char const *argv[], char **env_main)
 	ft_export(&global.g_env, "aziyan=loool");
 	ft_env();
 	printf("========\n");
-
 	ft_export(&global.g_env, "aziyan=toooz");
 	ft_env();
 	// ft_export(&global.g_env, "aziyani");
