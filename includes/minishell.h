@@ -6,19 +6,20 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/06/23 15:29:24 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/07/07 12:55:18 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "./libft/libft.h"
+# include "libft/libft.h"
 # include <stdio.h>
 # include <readline/readline.h>
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include <fcntl.h>
 
 typedef struct s_env  // we use this struct to store env as linkedlist
 {
@@ -35,15 +36,44 @@ typedef struct s_global // we use this struct to creat a global varibal that con
 
 t_global	global;
 
-typedef enum type
+typedef enum e_type
 {
-	PIPE = 1,
+	PIPE,
 	IN,
 	OUT,
 	APPEND,
 	HERDOC,
-	ARRGUMENT,
-}	e_type;
+	CMD
+}	t_type;
+/*
+typedef struct s_cmd
+{
+	char *word;
+	t_type type;
+	struct s_cmd *next;
+}t_cmd;
+*/
+
+typedef struct s_args ////// this struct hold commands and arguments
+{
+	char *args;
+//	struct s_args *next;
+}	t_args;
+
+typedef struct s_redir ///// this strucht hold redirections
+{
+	char	*file;
+	int		type;
+	struct s_redir *next;
+}	t_redir;
+
+typedef struct s_cmd /////// this struct hold CMD command(ls) and arguments(option (-la)) and redirections(> file)
+{
+	t_args	*args;
+	t_redir	*redir;
+	struct s_cmd *next;
+}	t_cmd;
+
 
 typedef struct s_node
 {
@@ -81,5 +111,8 @@ char	*get_key_env(char *env, int *i);
 char	*get_value_env(char *env, int *i);
 int		ft_env();
 int		ft_export(t_env **export, char *str);
+
+
+t_cmd   *fill_linked_list_cmd(char *line);
 
 #endif

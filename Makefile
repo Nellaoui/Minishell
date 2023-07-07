@@ -6,7 +6,7 @@
 #    By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/06 12:31:19 by nelallao          #+#    #+#              #
-#    Updated: 2023/06/22 13:01:24 by aziyani          ###   ########.fr        #
+#    Updated: 2023/07/07 12:15:15 by aziyani          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ RM = rm -f
 LFLAGS = -lreadline
 SRC = ./source/main/minishell.c ./includes/libft_func.c \
 		./source/main/lst_utiles.c ./source/builtins/env.c \
-		./source/builtins/export.c
+		./source/builtins/export.c ./source/main/fill_commands.c
 
 all : $(NAME)
 
