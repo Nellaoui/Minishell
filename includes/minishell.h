@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/07 12:55:18 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/07/11 17:46:48 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,34 +45,20 @@ typedef enum e_type
 	HERDOC,
 	CMD
 }	t_type;
-/*
-typedef struct s_cmd
-{
-	char *word;
-	t_type type;
-	struct s_cmd *next;
-}t_cmd;
-*/
 
-typedef struct s_args ////// this struct hold commands and arguments
-{
-	char *args;
-//	struct s_args *next;
-}	t_args;
+// typedef struct s_args ////// this struct hold commands and arguments
+// {
+// 	char *args;
+// //	struct s_args *next;
+// }	t_args;
 
-typedef struct s_redir ///// this strucht hold redirections
-{
-	char	*file;
-	int		type;
-	struct s_redir *next;
-}	t_redir;
+// typedef struct s_redir ///// this strucht hold redirections
+// {
+// 	char	*file;
+// 	int		type;
+// 	struct s_redir *next;
+// }	t_redir;
 
-typedef struct s_cmd /////// this struct hold CMD command(ls) and arguments(option (-la)) and redirections(> file)
-{
-	t_args	*args;
-	t_redir	*redir;
-	struct s_cmd *next;
-}	t_cmd;
 
 
 typedef struct s_node
@@ -81,8 +67,16 @@ typedef struct s_node
 	int				type;
 	struct s_node	*next;
 	struct s_node	*previous;
-	int				index;
 } t_node;
+
+typedef struct s_cmd /////// this struct hold CMD command(ls) and arguments(option (-la)) and redirections(> file)
+{
+	t_node	*args;
+	t_node	*out_reds;
+	t_node	*in_reds;
+	int		type_in;
+	struct s_cmd *next;
+}	t_cmd;
 
 typedef struct s_token
 {

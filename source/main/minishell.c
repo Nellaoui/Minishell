@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:47 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/07 13:03:50 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/07/11 18:15:10 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -274,23 +274,23 @@ t_env	*ft_setup_env(char **env_main)
 
 // =========================================================================
 
-char	**dup_argument(t_args *args)
-{
-	char **ptr;
-	int	i;
+// char	**dup_argument(t_args *args)
+// {
+// 	char **ptr;
+// 	int	i;
 
-	i = -1;
-	while (args[++i].args)
-		;
-	ptr = malloc(sizeof(char *) * (i + 1));
-	if (!ptr)
-		return (0);
-	i = -1;
-	while (args[++i].args)
-		ptr[i] = ft_strdup(args[i].args);
-	ptr[i] = 0;
-	return (ptr);
-}
+// 	i = -1;
+// 	while (args[++i].args)
+// 		;
+// 	ptr = malloc(sizeof(char *) * (i + 1));
+// 	if (!ptr)
+// 		return (0);
+// 	i = -1;
+// 	while (args[++i].args)
+// 		ptr[i] = ft_strdup(args[i].args);
+// 	ptr[i] = 0;
+// 	return (ptr);
+// }
 // =========================================================================
 
 char	*get_path(char *cmd)
@@ -326,114 +326,89 @@ char	*get_path(char *cmd)
 // access = is a system call take (path and mode=[F_OK]) and check if that path is exist (katchoflk wach dak lfile kayn fdak lpath wla la), if it exist its return (0) if not return (-1)
 // fork = is a system call that creates a new process. the new process, called the child process.
 
-void	execution(t_cmd *cmd,char **env_main)
-{
-	int pid;
-	char	**arr;
-	char	*path;
-	char	*command;
-	int i;
-	int fd[2]; // fd[0] == read_end pipe;  | fd[1] == write_end pipe; 
-	 i = -1;
-	while (cmd)
-	{
-		// if (cmd->type == PIPE)
-		// {
-    		if (pipe(fd) < 0)
-				perror("minishell :");
-			
-			pid = fork();
-			if (pid == 0)
-			{
-			    //dup2(fd[1], 1);
-				// close(fd[1]);
-				// close(fd[0]);
-				// if (cmd->type == APPEND)
-				// {
-				// 	int fd = open(cmd->word, O_WRONLY | O_APPEND);
-				// 	dup2(fd, STDOUT_FILENO);
-				// }
-				// if (cmd->type == OUT)
-				// {
-				// 	int fd = open(cmd->word, O_WRONLY | O_TRUNC | 0644);
-				// 	dup2(fd, STDOUT_FILENO);
-				// }
-				// if (cmd->type == IN)
-				// {
-				// 	if (access(cmd->word, F_OK) == 0)
-				// 	{
-				// 		int fd = open(cmd->word, O_RDONLY);
-				// 		dup2(fd, STDIN_FILENO);
-				// 	}
-				// 	else
-				// 		printf("minishell: %s: No such file or directory\n", cmd->word);
-				// }
-				command = cmd->args->args;
-				path = get_path(command);
-				arr = dup_argument(cmd->args);
-				if (execve(path, arr, env_main) < 0)
-					dprintf(2, "error\n");
-			}
-			else
-			{
-				//dup2(fd[0], 0);
-				//close(fd[1]);
-				//close(fd[0]);
-				wait(NULL);
-			}
-			//dup2(fd[0], STDIN_FILENO);
-		// }
-		// if (cmd->type == APPEND)
-		// {
-		// 	int fd = open(cmd->word, O_WRONLY | O_APPEND);
-		// 	dup2(fd, STDOUT_FILENO);
-		// }
-		// if (cmd->type == OUT)
-		// {
-		// 	int fd = open(cmd->word, O_WRONLY | O_TRUNC | 0644);
-		// 	dup2(fd, STDOUT_FILENO);
-		// }
-		// if (cmd->type == IN)
-		// {
-		// 	if (access(cmd->word, F_OK) == 0)
-		// 	{
-		// 		int fd = open(cmd->word, O_RDONLY);
-		// 		dup2(fd, STDIN_FILENO);
-		// 	}
-		// 	else
-		// 		printf("minishell: %s: No such file or directory\n", cmd->word);
-		// }
-		// if (cmd->type == CMD) // here we execute the commands (ls, cat...)
-		// {
-		// 	char **arr = ft_split(cmd->word, ' ');
-		// 	execve(cmd->word, arr, env_main);
-		// }
-		cmd = cmd->next; // here we move to next node which hold the redirection(if it exist).
-	}
-}
+// void	execution(t_cmd *cmd,char **env_main)
+// {
+// 	int pid;
+// 	char	**arr;
+// 	char	*path;
+// 	char	*command;
+// 	int i;
+// 	int fd[2]; // fd[0] == read_end pipe;  | fd[1] == write_end pipe; 
+// 	 i = -1;
+// 	while (cmd)
+// 	{
+// 		if (cmd->type == PIPE)
+// 		{
+// 			if (pipe(fd) < 0)
+// 				perror("minishell :");
+// 		}
+// 		pid = fork();
+// 		if (pid == 0)
+// 		{
+// 			if (cmd->type == APPEND)
+// 			{
+// 				int fd = open(cmd->word, O_WRONLY | O_APPEND);
+// 				dup2(fd, STDOUT_FILENO);
+// 			}
+// 			if (cmd->type == OUT)
+// 			{
+// 				int fd = open(cmd->word, O_WRONLY | O_TRUNC | 0644);
+// 				dup2(fd, STDOUT_FILENO);
+// 			}
+// 			if (cmd->type == IN)
+// 			{
+// 				if (access(cmd->word, F_OK) == 0)
+// 				{
+// 					int fd = open(cmd->word, O_RDONLY);
+// 					dup2(fd, STDIN_FILENO);
+// 				}
+// 				else
+// 					printf("minishell: %s: No such file or directory\n", cmd->word);
+// 			}
+// 			if (cmd->type == CMD) // here we execute the commands (ls, cat...)
+// 			{
+// 				char **arr = ft_split(cmd->word, ' ');
+// 				execve(cmd->word, arr, env_main);
+// 			}
+// 		}
+// 		cmd = cmd->next; // here we move to next node which hold the redirection(if it exist).
+// 	}
+// }
 
 // =========================================================================
+
+void	exec(t_cmd *cmd, char **env)
+{
+	if (cmd->in_reds)
+	{
+		int in = open(cmd->in_reds->data, O_RDONLY);
+		dup2(in, STDIN_FILENO);
+	}
+	if (cmd->out_reds)
+	{
+		int out = open(cmd->out_reds->data, O_RDWR | O_CREAT, 0644);
+		dup2(out, STDOUT_FILENO);
+	}
+	char *c;
+	while (cmd->args->data)
+	{
+		c = ft_strjoin(c, cmd->args->data);
+		cmd->args = cmd->args->next;	
+	}
+	char **spt = ft_split(c, ' ');
+	execve(spt[0], spt, env);	
+}
 
 int main(int argc, char const *argv[], char **env_main)
 {
 	int i = 0;
-	t_env	*tmp;
-	char	*line; //
-	t_cmd 	*cmd;
+	t_cmd	*head;
 
-	// cmd  = malloc(sizeof(t_cmd));
-	// cmd->word = strdup("file");
-	// cmd->type = OUT;
-	// cmd->next = malloc(sizeof(t_cmd));
-	// cmd->next->word = strdup("/bin/ls");
-	// cmd->next->type = CMD;
-	// cmd->next->next = NULL;
-	
 	global.g_env = ft_setup_env(env_main);
-	tmp = global.g_env;
+	// tmp = global.g_env;
 	while (1)
 	{
-		line = readline("#-->minishell>");
+		char *line = readline("#-->minishell>");
 		// ft_export(&global.g_env, input);
 		// ft_export(&global.g_env, "aziyan=loool");
 		// ft_env();
@@ -442,8 +417,8 @@ int main(int argc, char const *argv[], char **env_main)
 		// ft_env();
 		// ft_export(&global.g_env, "aziyani");
 		// ft_env();
-		cmd = fill_linked_list_cmd(line);
-		execution(cmd, env_main);
+		// cmd = fill_linked_list_cmd(line);
+		exec(head, env_main);
 	}
 	return 0;
 }
