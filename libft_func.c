@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 13:09:18 by nelallao          #+#    #+#             */
-/*   Updated: 2023/06/14 11:35:44 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/12 10:57:55 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,34 @@ char	*ft_strdup(const char *s1)
 	*duplicate = '\0';
 	return (dup);
 }
+
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	int		total;
+	size_t	i;
+	size_t	j;
+	char	*point;
+
+	if ((s1 == 0) || (s2 == 0))
+		return (NULL);
+	total = (ft_strlen(s1) + ft_strlen(s2));
+	point = (char *)malloc(sizeof(char) * (total + 1));
+	if (!point)
+		return (NULL);
+	i = 0;
+	while (s1[i])
+	{
+		point[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (s2[j])
+		point[i++] = s2[j++];
+	point[i] = '\0';
+	return (point);
+}
+
 
 int	ft_strlen(const char *str)
 {

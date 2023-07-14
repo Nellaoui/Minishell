@@ -6,16 +6,16 @@
 #    By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/06 12:31:19 by nelallao          #+#    #+#              #
-#    Updated: 2023/06/22 10:24:46 by nelallao         ###   ########.fr        #
+#    Updated: 2023/07/14 12:46:28 by nelallao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
 RM = rm -f
-FLAGS = -Wall -Wextra -Werror
+# FLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 LFLAGS = -lreadline
-# FFLAGS = fsanitize=address -g
+# FFLAGS = -fsanitize=address -g
 SRC = minishell.c libft_func.c
 OBJ := $(SRC:.c=.o)
 OBJ := $(addprefix obj/, $(OBJ))

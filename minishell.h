@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/06/20 11:58:37 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/11 17:13:55 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,32 @@
 # include <string.h>
 # include <unistd.h>
 
-typedef enum type
+typedef enum e_type
 {
 	PIPE = 1,
 	IN, // <
 	OUT, // >
 	APPEND, // >>
 	HERDOC, // <<
-	ARRGUMENT,
-}	e_type;
+	ARRGUMENT
+}	t_type;
 
 typedef struct s_node t_node;
 
-typedef struct s_cmd
-{
-	t_node			*args;
-	t_node			*out_reds; // > ' >>
-	t_node			*in_reds; // < ' <<
-	int				type_in;
-	struct s_cmd	*next;
-}	t_cmd;
+// typedef struct s_cmd
+// {
+// 	char			*word;
+// 	t_type			type;
+// 	struct s_cmd	*next;
+// }	t_cmd;
+
+
+// typedef struct s_cmd
+// {
+// 	t_node			*arguments;
+// 	// t_node			*in_files;
+// 	struct s_cmd	*next;
+// }	t_cmd;
 
 typedef struct s_node
 {
@@ -46,8 +52,16 @@ typedef struct s_node
 	int				type;
 	struct s_node	*next;
 	struct s_node	*previous;
-	int				index;
 } t_node;
+
+typedef struct s_cmd
+{
+	t_node			*args;
+	t_node			*out_reds;
+	t_node			*in_reds;
+	int				type_in;
+	struct s_cmd	*next;
+}	t_cmd;
 
 typedef struct s_token
 {
@@ -64,5 +78,6 @@ char	*ft_strchr(const char *scanned, int searched);
 char	*ft_strdup(const char *s1);
 char	*ft_substr(char const *s, unsigned int start, int len);
 void	ft_putstr_fd(char *s, int fd);
+char	*ft_strjoin(char const *s1, char const *s2);
 /*-------------------------------*/
 #endif
