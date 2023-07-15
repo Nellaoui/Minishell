@@ -13,7 +13,7 @@
 NAME = minishell
 CC = cc
 RM = rm -f
-FLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
+FLAGS = -Wall -Wextra -Werror  #-fsanitize=address -g
 LFLAGS = -lreadline
 # FFLAGS = -fsanitize=address -g
 SRC = minishell.c libft_func.c

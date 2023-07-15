@@ -67,11 +67,17 @@ void	ft_display(t_node *head)
 {
 	t_node	*tmp;
 
+	if (head)
+	{
 	tmp = head;
 	while (tmp != NULL)
 	{
-		printf("[%s:%d]\n", tmp->data, tmp->type);
+		if (tmp->data)
+			printf("[%s:", tmp->data);
+		if (tmp->type)
+			printf("%d]\n", tmp->type);
 		tmp = tmp->next;
+	}
 	}
 	printf("\n");
 }
@@ -334,15 +340,166 @@ void	all_display(t_cmd *cmd)
 	tmp = tmp->next;
 	}
 }
+/***************************************************************************/
 
-int	main(void)
+void	setup_in_redirects(t_node *in_red){
+	while (in_red != NULL) {
+		if (access(in_red->data, F_OK) == 0) {
+			int	fd = open(in_red->data, O_RDONLY);
+			dup2(fd, STDIN_FILENO);
+		}
+		else {
+			dprintf(2, "minishell: %s: No such file or directory\n", in_red->data);
+		}
+		in_red = in_red->next;
+	}
+}
+
+void	setup_out_redirects(t_node *out_red) {
+	while (out_red != NULL) {
+		int	fd = open(out_red->data, O_RDWR | O_CREAT | O_TRUNC, 0644);
+		dup2(fd, STDOUT_FILENO);
+		out_red = out_red->next;
+	}
+}
+
+int	check_cmd(char *cmd)
+{
+	if (access(cmd, F_OK) < 0)
+	{
+		dprintf(2, "No Such file: %s\n", cmd);
+		exit(126);
+	}
+	if (access(cmd, X_OK) < 0)
+	{
+		dprintf(2, "Permissions: %s\n", cmd);
+		exit(126);
+	}
+	return (1);
+}
+
+char	*get_cmd(char **paths, char *cmd)
+{
+	char	*tmp;
+	char	*command;
+
+	if (cmd[0] == '.')
+		if (check_cmd(cmd) == 1)
+			return (cmd);
+	if (cmd[0] == '/')
+	{
+		cmd = ft_strchr(cmd, '/');
+		if (strrchr(cmd, '/') == NULL)
+			return (0);
+	}
+	while (*paths)
+	{
+		tmp = ft_strjoin(*paths, "/");
+		command = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (access(command, F_OK) == 0)
+			return (command);
+		free(command);
+		paths++;
+	}
+	return (NULL);
+}
+
+/*****************************/
+
+char **linked_list_to_array(t_node *head)
+{
+    int len = 0;
+    t_node *current = head;
+    while (current != NULL)
+    {
+        len++;
+        current = current->next;
+    }
+
+    char **doubleArray = (char **)malloc(len * sizeof(char *));
+
+    current = head;
+    for (int i = 0; i < len; i++)
+    {
+        doubleArray[i] = current->data;
+        current = current->next;
+    }
+
+    return (doubleArray);
+}
+
+/**********************/
+void	exec_cmd(t_node *cmd, char **env) {
+	pid_t	pid;
+	char	**paths;
+	t_node *tmp;
+
+	pid = fork();
+	if (pid == 0) {
+
+		char *tmp = "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin";
+		char **paths = ft_split(tmp, ':');
+		char **e_cmd = linked_list_to_array(cmd);
+		e_cmd[0] = get_cmd(paths, e_cmd[0]);
+		// printf("command: %s\n", e_cmd[0]);
+		for (int i = 0; e_cmd[i]; i++)
+			printf("%s\n", e_cmd[i]);
+		execve(e_cmd[0], e_cmd, env);
+	}
+	else
+		wait(NULL);
+}
+
+void	exec_simple_cmd(t_cmd *node, char **env) {
+	printf("simple command\n");
+
+
+	if (node->in_reds != NULL) {
+		setup_in_redirects(node->in_reds);
+	}
+	if (node->out_reds != NULL) {
+		setup_out_redirects(node->out_reds);
+	}
+	// if (node-> her_reds) {
+	// 	setup_heredoc(node->her_reds);
+	// }
+
+	exec_cmd(node->args, env);
+}
+
+void	exec_compound_cmd(t_cmd *node) {
+	printf("compound command\n");
+}
+
+void	execution(t_cmd *head, char **env) {
+	t_cmd	*curr;
+	size_t	size = 0;
+
+	curr = head;
+	while (curr) {
+		++size;
+		curr = curr->next;
+	}
+
+	printf("size--> : [%ld]\n", size);
+	curr = head;
+	if (size == 1) {
+		exec_simple_cmd(curr, env);
+	}
+	else {
+		exec_compound_cmd(curr);
+	}
+}
+
+int	main(int ac, char **av, char **env)
 {
 	t_node	*head;
 	t_cmd	*cmd;
 	char	*input;
 
 	head = NULL;
-	while (1)
+	while (ac && av[0])
 	{
 		input = readline("-> Donpha❕ ");
 		if (input == NULL || input[0] == '\0')
@@ -352,7 +509,8 @@ int	main(void)
 		if (ft_syntax_error(input, head))
 			continue;
 		cmd = ft_insert_link(head);
-		all_display(cmd);
+		// all_display(cmd);
+		execution(cmd, env);
 		add_history(input);
 		if (ft_strcmp(input, "exit") == 0)
 			exit(1);

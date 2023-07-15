@@ -14,10 +14,14 @@
 # define MINISHELL_H
 
 # include <stdio.h>
-# include <readline/readline.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 
 typedef enum e_type
 {
@@ -80,5 +84,6 @@ char	*ft_strdup(const char *s1);
 char	*ft_substr(char const *s, unsigned int start, int len);
 void	ft_putstr_fd(char *s, int fd);
 char	*ft_strjoin(char const *s1, char const *s2);
+char	**	ft_split(char *s, char c);
 /*-------------------------------*/
 #endif
