@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:47 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/15 15:03:36 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/15 23:54:39 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -342,21 +342,27 @@ void	all_display(t_cmd *cmd)
 }
 /***************************************************************************/
 
-void	setup_in_redirects(t_node *in_red){
-	while (in_red != NULL) {
-		if (access(in_red->data, F_OK) == 0) {
+void	setup_in_redirects(t_node *in_red)
+{
+	while (in_red != NULL)
+	{
+		if (access(in_red->data, F_OK) == 0)
+		{
 			int	fd = open(in_red->data, O_RDONLY);
 			dup2(fd, STDIN_FILENO);
 		}
-		else {
+		else
+		{
 			dprintf(2, "minishell: %s: No such file or directory\n", in_red->data);
 		}
 		in_red = in_red->next;
 	}
 }
 
-void	setup_out_redirects(t_node *out_red) {
-	while (out_red != NULL) {
+void	setup_out_redirects(t_node *out_red)
+{
+	while (out_red != NULL)
+	{
 		int	fd = open(out_red->data, O_RDWR | O_CREAT | O_TRUNC, 0644);
 		dup2(fd, STDOUT_FILENO);
 		out_red = out_red->next;
@@ -409,35 +415,40 @@ char	*get_cmd(char **paths, char *cmd)
 
 char **linked_list_to_array(t_node *head)
 {
-    int len = 0;
-    t_node *current = head;
-    while (current != NULL)
-    {
-        len++;
-        current = current->next;
-    }
+	int		len;
+	t_node	*current;
+	char	**doubleArray;
+	int		i;
 
-    char **doubleArray = (char **)malloc(len * sizeof(char *));
-
-    current = head;
-    for (int i = 0; i < len; i++)
-    {
-        doubleArray[i] = current->data;
-        current = current->next;
-    }
-
-    return (doubleArray);
+	i = 0;
+	current	= head;
+	len = 0;
+	while (current != NULL)
+	{
+		len++;
+		current = current->next;
+	}
+	doubleArray = (char **)malloc(len * sizeof(char *));
+	current = head;
+	while (i < len)
+	{
+		doubleArray[i] = current->data;
+		current = current->next;
+		i++;
+	}
+	return (doubleArray);
 }
 
 /**********************/
-void	exec_cmd(t_node *cmd, char **env) {
+void	exec_cmd(t_node *cmd, char **env)
+{
 	pid_t	pid;
 	char	**paths;
-	t_node *tmp;
+	t_node	*tmp;
 
 	pid = fork();
-	if (pid == 0) {
-
+	if (pid == 0)
+	{
 		char *tmp = "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin";
 		char **paths = ft_split(tmp, ':');
 		char **e_cmd = linked_list_to_array(cmd);
@@ -451,10 +462,9 @@ void	exec_cmd(t_node *cmd, char **env) {
 		wait(NULL);
 }
 
-void	exec_simple_cmd(t_cmd *node, char **env) {
+void	exec_simple_cmd(t_cmd *node, char **env)
+{
 	printf("simple command\n");
-
-
 	if (node->in_reds != NULL) {
 		setup_in_redirects(node->in_reds);
 	}
@@ -464,7 +474,6 @@ void	exec_simple_cmd(t_cmd *node, char **env) {
 	// if (node-> her_reds) {
 	// 	setup_heredoc(node->her_reds);
 	// }
-
 	exec_cmd(node->args, env);
 }
 
@@ -492,6 +501,165 @@ void	execution(t_cmd *head, char **env) {
 	}
 }
 
+char *get_index(char *string)
+{
+	int i;
+
+	i = 0;
+	while (string[i] && (ft_isalnum(string[i]) || (string[i] == '_')))
+		i++;
+	return(ft_substr(string, 0, i));
+}
+
+int	ft_is_valid(char c)
+{
+	return ((ft_isalnum(c)) || (c == '_') || (c = '?'));
+}
+
+char	*get_value(char *id, char **env)
+{
+	return ft_strdup("/Users/nelallao");
+}
+
+int	get_str_len(char *data, char **env)
+{
+	int	len;
+	int	i;
+	char *identifire;
+	char *value;
+
+	i = 0;
+	len = 0;
+
+	while (data[i])
+	{
+		if (data[i] == '\'' && ++i)
+		{
+			while (data[i] && data[i] != '\'')
+			{
+				len++;
+				i++;
+			}
+		}
+		else if (data[i] == '$' && ++i)
+		{
+			if (ft_is_valid(data[i]) == 0)
+				len++;
+			else
+			{
+				identifire = get_index(&data[i]);
+				value = get_value(identifire, env);
+				if (identifire[0] == '?' && identifire[1] == '\0')
+					value = ft_strdup("42");
+				i = i + ft_strlen(identifire);
+				len = len + ft_strlen(value);
+				// free(value);
+				// free(identifire);
+			}
+		}
+		else
+		{
+			len++;
+			i++;
+		}
+	}
+	return (len);
+}
+
+char	*get_new_string(int str_len, char *data, char **env)
+{
+	char	*string;
+	char	*returned;
+	int	len;
+	int	i;
+	char *identifire;
+	char *value;
+
+	string = malloc(str_len + 1);
+	i = 0;
+	len = 0;
+	while (data[i])
+	{
+		if (data[i] == '\'' && ++i)
+		{
+			while (data[i] && data[i] != '\'')
+			{
+				returned[len] = data[i];
+				len++;
+				i++;
+			}
+		}
+		else if (data[i] == '$' && ++i)
+		{
+			if (ft_is_valid(data[i]) == 0)
+			{
+				returned[len] = data[i];
+				len++;
+			}
+			else
+			{
+				identifire = get_index(&data[i]);
+				value = get_value(identifire, env);
+				if (identifire[0] == '?' && identifire[1] == '\0')
+					value = ft_strdup("42");
+				i = i + ft_strlen(identifire);
+				printf("606:%s\n", returned + len);
+				printf("607:%s\n", value);
+				// memcpy(&returned[len], value, ft_strlen(value));
+				len = len + ft_strlen(value);
+				// free(value);
+				// free(identifire);
+			}
+		}
+		else
+		{
+			returned[len] = data[i];
+			len++;
+			i++;
+		}
+	}
+	return (string);
+}
+
+char	*get_expanded(char *data, char **env)
+{
+	char	*string;
+	int		str_len;
+
+	str_len = get_str_len(data, env);
+	printf("len = %d\n", str_len);
+	string = get_new_string(str_len, data, env);
+	printf("str = %s\n", string);
+	free(data);
+	return (string);
+}
+
+void	ft_mini_expen(t_node *node, char **env)
+{
+	t_node	*tmp;
+
+	tmp = node;
+	while (tmp)
+	{
+		tmp->data = get_expanded(tmp->data, env);
+		tmp = tmp->next;
+	}
+}
+
+void	ft_expension(t_cmd *cmd, char **env)
+{
+	t_cmd	*tmp;
+
+	tmp = cmd;
+	while (tmp)
+	{
+		ft_mini_expen(tmp->args, env);
+		tmp = tmp->next;
+	}
+}
+
+// /Users/nelallao
+
 int	main(int ac, char **av, char **env)
 {
 	t_node	*head;
@@ -511,6 +679,7 @@ int	main(int ac, char **av, char **env)
 		cmd = ft_insert_link(head);
 		// all_display(cmd);
 		execution(cmd, env);
+		ft_expension(cmd, env);
 		add_history(input);
 		if (ft_strcmp(input, "exit") == 0)
 			exit(1);

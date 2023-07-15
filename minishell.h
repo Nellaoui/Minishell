@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/15 12:56:19 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/15 22:49:57 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,6 @@ char	*ft_substr(char const *s, unsigned int start, int len);
 void	ft_putstr_fd(char *s, int fd);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	**	ft_split(char *s, char c);
+int		ft_isalnum(int n);
 /*-------------------------------*/
 #endif

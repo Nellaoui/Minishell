@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 13:09:18 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/12 10:57:55 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/15 22:49:47 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,4 +228,13 @@ char	**	ft_split(char *s, char c)
 	}
 	dest[j] = 0;
 	return (dest);
+}
+
+int	ft_isalnum(int n)
+{
+	if ((n >= '0' && n <= '9') || (n >= 'a' && n <= 'z') || (n >= 'A'
+			&& n <= 'Z'))
+		return (1);
+	else
+		return (0);
 }
