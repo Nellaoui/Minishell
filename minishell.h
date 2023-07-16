@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/15 22:49:57 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/16 13:42:31 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,13 @@ typedef enum e_type
 }	t_type;
 
 typedef struct s_node t_node;
+
+typedef struct s_env  // we use this struct to store env as linkedlist
+{
+	char	*key;
+	char	*value;
+	struct	s_env *next;
+}	t_env;
 
 // typedef struct s_cmd
 // {

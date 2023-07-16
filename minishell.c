@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:47 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/15 23:54:39 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/16 13:51:35 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -518,7 +518,7 @@ int	ft_is_valid(char c)
 
 char	*get_value(char *id, char **env)
 {
-	return ft_strdup("/Users/nelallao");
+	return ft_strdup("VALUE");
 }
 
 int	get_str_len(char *data, char **env)
@@ -568,12 +568,11 @@ int	get_str_len(char *data, char **env)
 
 char	*get_new_string(int str_len, char *data, char **env)
 {
+	int		len;
+	int		i;
 	char	*string;
-	char	*returned;
-	int	len;
-	int	i;
-	char *identifire;
-	char *value;
+	char	*identifire;
+	char	*value;
 
 	string = malloc(str_len + 1);
 	i = 0;
@@ -584,7 +583,7 @@ char	*get_new_string(int str_len, char *data, char **env)
 		{
 			while (data[i] && data[i] != '\'')
 			{
-				returned[len] = data[i];
+				string[len] = data[i];
 				len++;
 				i++;
 			}
@@ -593,7 +592,7 @@ char	*get_new_string(int str_len, char *data, char **env)
 		{
 			if (ft_is_valid(data[i]) == 0)
 			{
-				returned[len] = data[i];
+				string[len] = data[i];
 				len++;
 			}
 			else
@@ -603,9 +602,7 @@ char	*get_new_string(int str_len, char *data, char **env)
 				if (identifire[0] == '?' && identifire[1] == '\0')
 					value = ft_strdup("42");
 				i = i + ft_strlen(identifire);
-				printf("606:%s\n", returned + len);
-				printf("607:%s\n", value);
-				// memcpy(&returned[len], value, ft_strlen(value));
+				memcpy(&string[len], value, ft_strlen(value));
 				len = len + ft_strlen(value);
 				// free(value);
 				// free(identifire);
@@ -613,7 +610,7 @@ char	*get_new_string(int str_len, char *data, char **env)
 		}
 		else
 		{
-			returned[len] = data[i];
+			string[len] = data[i];
 			len++;
 			i++;
 		}
@@ -657,18 +654,92 @@ void	ft_expension(t_cmd *cmd, char **env)
 		tmp = tmp->next;
 	}
 }
+// =========================================================================
+// this fun() create the nodes
+// every node has (key) and (value) and (next)
+t_env   *create_node(char *key, char *value)
+{
+	t_env   *node;
 
+	node = (t_env *)malloc(sizeof(t_env));
+	if (!node)
+		return (0);
+	node->key = key;
+	node->value = value;
+	node->next = NULL; // every new node is pointing to the NULL at fisrt
+	return (node);
+}
+
+// =========================================================================
+// this fun() add the new node to the list
+// **list this variable pionting to the first node (the had of nodes)
+// *new_node this is the new variable wich we create
+void	add_node(t_env **list, t_env *new_node)
+{
+	t_env	*tmp;
+
+	tmp = *list;
+	if (*list == NULL) // cuz in first time the list was pointing to the null so taht we give it node
+		*list = new_node;
+	else
+	{
+		while (tmp->next) // while the next of tmp not pointing to the null (mzl mafatch akhir node)
+			tmp = tmp->next; // so that we give it the next node
+		tmp->next = new_node; // ?
+	}
+}
+
+// =========================================================================
+
+t_env	*ft_setup_env(char **env_main)
+{
+	t_env	*list; // list of nodes (the head of linked list)
+	t_env	*node; // list of nodes
+	char	**key_value; // this double pointer hold the key and the value
+	int		j;
+
+	list = NULL;
+	j = -1;
+	while (env_main[++j])
+	{
+		key_value = ft_split(env_main[j], '='); // here we split the env_main so that the key_value[0]->hold the key and key_value[1]->hold the value
+		add_node(&list, create_node(key_value[0], key_value[1])); // in this line i create and add node in the same time
+	}
+	return (list); // i return the list cuz it's the head of linkedlist.
+}
+
+void	ft_display_env(t_env *env)
+{
+	t_env	*tmp;
+
+	if (env)
+	{
+	tmp = env;
+	while (tmp != NULL)
+	{
+		if (tmp->key)
+			printf("[key : %s:", tmp->key);
+		if (tmp->value)
+			printf(" value %s]\n", tmp->value);
+		tmp = tmp->next;
+	}
+	}
+	printf("\n");
+}
 // /Users/nelallao
 
 int	main(int ac, char **av, char **env)
 {
 	t_node	*head;
 	t_cmd	*cmd;
+	t_env	*envi;
 	char	*input;
 
 	head = NULL;
 	while (ac && av[0])
 	{
+		envi = ft_setup_env(env);
+		ft_display_env(envi);
 		input = readline("-> Donpha❕ ");
 		if (input == NULL || input[0] == '\0')
 			continue;
