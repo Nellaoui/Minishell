@@ -6,14 +6,14 @@
 #    By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/06 12:31:19 by nelallao          #+#    #+#              #
-#    Updated: 2023/07/15 14:57:32 by nelallao         ###   ########.fr        #
+#    Updated: 2023/07/17 15:22:54 by nelallao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
 RM = rm -f
-FLAGS = -Wall -Wextra -Werror  #-fsanitize=address -g
+FLAGS = -Wall -Wextra -Werror # -fsanitize=address -g
 LFLAGS = -lreadline
 # FFLAGS = -fsanitize=address -g
 SRC = minishell.c libft_func.c

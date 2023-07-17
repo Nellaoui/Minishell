@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:47 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/16 13:51:35 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/17 15:55:27 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -516,12 +516,23 @@ int	ft_is_valid(char c)
 	return ((ft_isalnum(c)) || (c == '_') || (c = '?'));
 }
 
-char	*get_value(char *id, char **env)
+char	*get_value(char *id, t_env *envi)
 {
-	return ft_strdup("VALUE");
+	t_env *tmp;
+
+	tmp = envi;
+	// write(1, "X", 1);
+	// 	exit(1);
+	while (tmp)
+	{
+		if (ft_strcmp(id, tmp->key) == 0)
+			return (tmp->value);
+		tmp = tmp->next;
+	}
+	return (0);
 }
 
-int	get_str_len(char *data, char **env)
+int	get_str_len(char *data, t_env *envi)
 {
 	int	len;
 	int	i;
@@ -548,7 +559,7 @@ int	get_str_len(char *data, char **env)
 			else
 			{
 				identifire = get_index(&data[i]);
-				value = get_value(identifire, env);
+				value = get_value(identifire, envi);
 				if (identifire[0] == '?' && identifire[1] == '\0')
 					value = ft_strdup("42");
 				i = i + ft_strlen(identifire);
@@ -566,7 +577,7 @@ int	get_str_len(char *data, char **env)
 	return (len);
 }
 
-char	*get_new_string(int str_len, char *data, char **env)
+char	*get_new_string(int str_len, char *data, t_env *envi)
 {
 	int		len;
 	int		i;
@@ -598,7 +609,7 @@ char	*get_new_string(int str_len, char *data, char **env)
 			else
 			{
 				identifire = get_index(&data[i]);
-				value = get_value(identifire, env);
+				value = get_value(identifire, envi);
 				if (identifire[0] == '?' && identifire[1] == '\0')
 					value = ft_strdup("42");
 				i = i + ft_strlen(identifire);
@@ -618,39 +629,39 @@ char	*get_new_string(int str_len, char *data, char **env)
 	return (string);
 }
 
-char	*get_expanded(char *data, char **env)
+char	*get_expanded(char *data, t_env *envi)
 {
 	char	*string;
 	int		str_len;
 
-	str_len = get_str_len(data, env);
-	printf("len = %d\n", str_len);
-	string = get_new_string(str_len, data, env);
-	printf("str = %s\n", string);
+	str_len = get_str_len(data, envi);
+	// printf("len = %d\n", str_len);
+	string = get_new_string(str_len, data, envi);
+	// printf("str = %s\n", string);
 	free(data);
 	return (string);
 }
 
-void	ft_mini_expen(t_node *node, char **env)
+void	ft_mini_expen(t_node *node, t_env *envi)
 {
 	t_node	*tmp;
 
 	tmp = node;
 	while (tmp)
 	{
-		tmp->data = get_expanded(tmp->data, env);
+		tmp->data = get_expanded(tmp->data, envi);
 		tmp = tmp->next;
 	}
 }
 
-void	ft_expension(t_cmd *cmd, char **env)
+void	ft_expension(t_cmd *cmd, t_env *envi)
 {
 	t_cmd	*tmp;
 
 	tmp = cmd;
 	while (tmp)
 	{
-		ft_mini_expen(tmp->args, env);
+		ft_mini_expen(tmp->args, envi);
 		tmp = tmp->next;
 	}
 }
@@ -718,7 +729,7 @@ void	ft_display_env(t_env *env)
 	while (tmp != NULL)
 	{
 		if (tmp->key)
-			printf("[key : %s:", tmp->key);
+			printf("[key : %s:\n", tmp->key);
 		if (tmp->value)
 			printf(" value %s]\n", tmp->value);
 		tmp = tmp->next;
@@ -727,6 +738,33 @@ void	ft_display_env(t_env *env)
 	printf("\n");
 }
 // /Users/nelallao
+
+void	ft_free_ls(t_node *head)
+{
+	t_node *current;
+	t_node *next;
+
+	current = head;
+	while(current)
+	{
+		next = current->next;
+		free(current);
+		current = next;
+	}
+}
+void	ft_frees_ls(t_env *head)
+{
+	t_env *current;
+	t_env *next;
+
+	current = head;
+	while(current)
+	{
+		next = current->next;
+		free(current);
+		current = next;
+	}
+}
 
 int	main(int ac, char **av, char **env)
 {
@@ -738,8 +776,9 @@ int	main(int ac, char **av, char **env)
 	head = NULL;
 	while (ac && av[0])
 	{
+		envi = (t_env *)malloc(sizeof(t_env));
 		envi = ft_setup_env(env);
-		ft_display_env(envi);
+		// ft_display_env(envi);
 		input = readline("-> Donpha❕ ");
 		if (input == NULL || input[0] == '\0')
 			continue;
@@ -749,12 +788,18 @@ int	main(int ac, char **av, char **env)
 			continue;
 		cmd = ft_insert_link(head);
 		// all_display(cmd);
+		ft_expension(cmd, envi);
 		execution(cmd, env);
-		ft_expension(cmd, env);
 		add_history(input);
 		if (ft_strcmp(input, "exit") == 0)
 			exit(1);
+		ft_free_ls(head);
+		ft_frees_ls(envi);
 		free(input);
+		// free(envi);
+		// free(envi);
+		// free(head);
+		// free(cmd);
 	}
 	return (0);
 }
