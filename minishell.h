@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/16 13:42:31 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/18 11:05:44 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,11 @@ typedef struct s_token
 	int		start;
 	char	*res;
 } t_token;
+
+
+
+void	ft_free_env(t_env *head);
+
 /*---------libft-----------------*/
 int		ft_strcmp(char *s1, char *s2);
 int		ft_strlen(const char *str);

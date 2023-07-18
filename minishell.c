@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:47 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/17 15:55:27 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/18 11:11:52 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -705,17 +705,25 @@ void	add_node(t_env **list, t_env *new_node)
 t_env	*ft_setup_env(char **env_main)
 {
 	t_env	*list; // list of nodes (the head of linked list)
-	t_env	*node; // list of nodes
+	// t_env	*node; // list of nodes
 	char	**key_value; // this double pointer hold the key and the value
 	int		j;
 
-	list = NULL;
+	// list = NULL;
 	j = -1;
 	while (env_main[++j])
 	{
 		key_value = ft_split(env_main[j], '='); // here we split the env_main so that the key_value[0]->hold the key and key_value[1]->hold the value
 		add_node(&list, create_node(key_value[0], key_value[1])); // in this line i create and add node in the same time
 	}
+	j = 0;
+	// while (key_value[j])
+	// {
+	// 	free(key_value[j]);
+	// 	j++;
+	// }
+		// free(key_value);
+		// ft_free_env(list);
 	return (list); // i return the list cuz it's the head of linkedlist.
 }
 
@@ -748,11 +756,12 @@ void	ft_free_ls(t_node *head)
 	while(current)
 	{
 		next = current->next;
+		free(current->data);
 		free(current);
 		current = next;
 	}
 }
-void	ft_frees_ls(t_env *head)
+void	ft_free_env(t_env *head)
 {
 	t_env *current;
 	t_env *next;
@@ -761,6 +770,23 @@ void	ft_frees_ls(t_env *head)
 	while(current)
 	{
 		next = current->next;
+		free(current->key);
+		free(current->value);
+		free(current);
+		current = next;
+	}
+}
+
+void	ft_frees_cmd(t_cmd *head)
+{
+	t_cmd *current;
+	t_cmd *next;
+
+	current = head;
+	while(current)
+	{
+		next = current->next;
+		free(current->args);
 		free(current);
 		current = next;
 	}
@@ -774,9 +800,10 @@ int	main(int ac, char **av, char **env)
 	char	*input;
 
 	head = NULL;
+
 	while (ac && av[0])
 	{
-		envi = (t_env *)malloc(sizeof(t_env));
+		// envi = (t_env *)malloc(sizeof(t_env));
 		envi = ft_setup_env(env);
 		// ft_display_env(envi);
 		input = readline("-> Donpha❕ ");
@@ -791,11 +818,12 @@ int	main(int ac, char **av, char **env)
 		ft_expension(cmd, envi);
 		execution(cmd, env);
 		add_history(input);
+		ft_free_ls(head);
+		ft_free_env(envi);
+		ft_frees_cmd(cmd);
+		free(input);
 		if (ft_strcmp(input, "exit") == 0)
 			exit(1);
-		ft_free_ls(head);
-		ft_frees_ls(envi);
-		free(input);
 		// free(envi);
 		// free(envi);
 		// free(head);

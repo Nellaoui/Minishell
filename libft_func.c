@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 13:09:18 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/15 22:49:47 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/18 10:34:49 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,7 +201,7 @@ static int	w_len(const char *s, char c)
 	return (i);
 }
 
-char	**	ft_split(char *s, char c)
+char	**ft_split(char *s, char c)
 {
 	char	**dest;
 	int		j;
