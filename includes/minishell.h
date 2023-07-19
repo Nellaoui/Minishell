@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/18 11:05:44 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/19 21:50:33 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,49 @@ typedef struct s_token
 	char	*res;
 } t_token;
 
+/*---------noaman-----------------*/
+
+void	ft_initialize(t_token *s);
+void	ft_insert_token(t_node **head, char *data);
+void	ft_insert_token_2(t_node **head, char *data, int type);
+void	ft_display(t_node *head);
+void	ft_splited(char *str, t_token *s, t_node **head);
+void	ft_redrection(char *str, t_token *s, t_node **head);
+void	ft_pipe(char *str, t_token *s, t_node **head);
+t_node	*ft_token(char *str, t_node *head);
+int	ft_check_quotes(char *str);
+int	ft_syntax_error(char *str, t_node *head);
+void	ft_type(t_node **head);
+t_cmd	*ft_new_node();
+t_cmd	*ft_insert_link(t_node *head);
+void	all_display(t_cmd *cmd);
+char *get_index(char *string);
+int	ft_is_valid(char c);
+char	*get_value(char *id, t_env *envi);
+int	get_str_len(char *data, t_env *envi);
+char	*get_new_string(int str_len, char *data, t_env *envi);
+char	*get_expanded(char *data, t_env *envi);
+void	ft_mini_expen(t_node *node, t_env *envi);
+void	ft_expension(t_cmd *cmd, t_env *envi);
+void free_arr(char **s);
+void	ft_display_env(t_env *env);
+
+/*-------------------------------*/
+/*---------ayoub-----------------*/
+t_env	*create_node(char *key, char *value);
+void	add_node(t_env **list, t_env *new_node);
+void	exec_compound_cmd(t_cmd *node);
+char	**linked_list_to_array(t_node *head);
+char	*get_cmd(char **paths, char *cmd);
+int		check_cmd(char *cmd);
+void	setup_in_redirects(t_node *in_red);
+void	setup_out_redirects(t_node *out_red);
+void	exec_cmd(t_node *cmd, char **env);
+void	execution(t_cmd *head, char **env);
+t_env	*ft_setup_env(char **env_main);
+void	exec_simple_cmd(t_cmd *node, char **env);
+
+/*-------------------------------*/
 
 
 void	ft_free_env(t_env *head);

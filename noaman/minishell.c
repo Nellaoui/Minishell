@@ -6,11 +6,11 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:47 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/18 11:11:52 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/19 21:46:33 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 void	ft_initialize(t_token *s)
 {
@@ -101,6 +101,7 @@ void	ft_splited(char *str, t_token *s, t_node **head)
 	if (ft_strlen(s->res) != 0)
 		ft_insert_token(head, s->res);
 	s->start = s->i;
+
 }
 
 void	ft_redrection(char *str, t_token *s, t_node **head)
@@ -110,6 +111,7 @@ void	ft_redrection(char *str, t_token *s, t_node **head)
 	if (((str[s->i] == '<' && str[s->i + 1] == '<')
 		|| (str[s->i] == '>' && str[s->i + 1] == '>')))
 	{
+
 		s->res = ft_substr(str, s->start, s->i - s->start);
 		if (ft_strlen(s->res) != 0 && str[s->i - 1] != ' ')
 			ft_insert_token(head, s->res);
@@ -161,6 +163,7 @@ t_node	*ft_token(char *str, t_node *head)
 			ft_redrection(str, &s, &head);
 		s.i++;
 	}
+
 	if (str[s.start] == ' ')
 		s.start++;
 	if (ft_strlen(&str[s.start]) != 0)
@@ -249,17 +252,6 @@ void	ft_type(t_node **head)
 
 // }// {echo} {hey} ({>} {out}) (< in) world (>> app) | pwd (<< here)
 
-t_cmd	*ft_lstlast(t_cmd *node)
-{
-	if (node == NULL)
-		return (NULL);
-	t_cmd *curr = node;
-
-	while (curr->next != NULL)
-		curr = curr->next;
-	return (curr);
-}
-
 
 t_cmd	*ft_new_node()
 {
@@ -342,164 +334,24 @@ void	all_display(t_cmd *cmd)
 }
 /***************************************************************************/
 
-void	setup_in_redirects(t_node *in_red)
-{
-	while (in_red != NULL)
-	{
-		if (access(in_red->data, F_OK) == 0)
-		{
-			int	fd = open(in_red->data, O_RDONLY);
-			dup2(fd, STDIN_FILENO);
-		}
-		else
-		{
-			dprintf(2, "minishell: %s: No such file or directory\n", in_red->data);
-		}
-		in_red = in_red->next;
-	}
-}
 
-void	setup_out_redirects(t_node *out_red)
-{
-	while (out_red != NULL)
-	{
-		int	fd = open(out_red->data, O_RDWR | O_CREAT | O_TRUNC, 0644);
-		dup2(fd, STDOUT_FILENO);
-		out_red = out_red->next;
-	}
-}
 
-int	check_cmd(char *cmd)
-{
-	if (access(cmd, F_OK) < 0)
-	{
-		dprintf(2, "No Such file: %s\n", cmd);
-		exit(126);
-	}
-	if (access(cmd, X_OK) < 0)
-	{
-		dprintf(2, "Permissions: %s\n", cmd);
-		exit(126);
-	}
-	return (1);
-}
 
-char	*get_cmd(char **paths, char *cmd)
-{
-	char	*tmp;
-	char	*command;
 
-	if (cmd[0] == '.')
-		if (check_cmd(cmd) == 1)
-			return (cmd);
-	if (cmd[0] == '/')
-	{
-		cmd = ft_strchr(cmd, '/');
-		if (strrchr(cmd, '/') == NULL)
-			return (0);
-	}
-	while (*paths)
-	{
-		tmp = ft_strjoin(*paths, "/");
-		command = ft_strjoin(tmp, cmd);
-		free(tmp);
-		if (access(command, F_OK) == 0)
-			return (command);
-		free(command);
-		paths++;
-	}
-	return (NULL);
-}
+
+
 
 /*****************************/
 
-char **linked_list_to_array(t_node *head)
-{
-	int		len;
-	t_node	*current;
-	char	**doubleArray;
-	int		i;
 
-	i = 0;
-	current	= head;
-	len = 0;
-	while (current != NULL)
-	{
-		len++;
-		current = current->next;
-	}
-	doubleArray = (char **)malloc(len * sizeof(char *));
-	current = head;
-	while (i < len)
-	{
-		doubleArray[i] = current->data;
-		current = current->next;
-		i++;
-	}
-	return (doubleArray);
-}
 
 /**********************/
-void	exec_cmd(t_node *cmd, char **env)
-{
-	pid_t	pid;
-	char	**paths;
-	t_node	*tmp;
 
-	pid = fork();
-	if (pid == 0)
-	{
-		char *tmp = "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin";
-		char **paths = ft_split(tmp, ':');
-		char **e_cmd = linked_list_to_array(cmd);
-		e_cmd[0] = get_cmd(paths, e_cmd[0]);
-		// printf("command: %s\n", e_cmd[0]);
-		for (int i = 0; e_cmd[i]; i++)
-			printf("%s\n", e_cmd[i]);
-		execve(e_cmd[0], e_cmd, env);
-	}
-	else
-		wait(NULL);
-}
 
-void	exec_simple_cmd(t_cmd *node, char **env)
-{
-	printf("simple command\n");
-	if (node->in_reds != NULL) {
-		setup_in_redirects(node->in_reds);
-	}
-	if (node->out_reds != NULL) {
-		setup_out_redirects(node->out_reds);
-	}
-	// if (node-> her_reds) {
-	// 	setup_heredoc(node->her_reds);
-	// }
-	exec_cmd(node->args, env);
-}
 
-void	exec_compound_cmd(t_cmd *node) {
-	printf("compound command\n");
-}
 
-void	execution(t_cmd *head, char **env) {
-	t_cmd	*curr;
-	size_t	size = 0;
 
-	curr = head;
-	while (curr) {
-		++size;
-		curr = curr->next;
-	}
 
-	printf("size--> : [%ld]\n", size);
-	curr = head;
-	if (size == 1) {
-		exec_simple_cmd(curr, env);
-	}
-	else {
-		exec_compound_cmd(curr);
-	}
-}
 
 char *get_index(char *string)
 {
@@ -525,8 +377,12 @@ char	*get_value(char *id, t_env *envi)
 	// 	exit(1);
 	while (tmp)
 	{
+		printf("%s\n", tmp->key);
 		if (ft_strcmp(id, tmp->key) == 0)
+		{
+			printf("[%s]", tmp->value);
 			return (tmp->value);
+		}
 		tmp = tmp->next;
 	}
 	return (0);
@@ -559,13 +415,14 @@ int	get_str_len(char *data, t_env *envi)
 			else
 			{
 				identifire = get_index(&data[i]);
+				printf("{%s}\n", envi->value);
+				exit(1);
 				value = get_value(identifire, envi);
 				if (identifire[0] == '?' && identifire[1] == '\0')
 					value = ft_strdup("42");
 				i = i + ft_strlen(identifire);
 				len = len + ft_strlen(value);
-				// free(value);
-				// free(identifire);
+				// write(1, "X", 1);
 			}
 		}
 		else
@@ -638,7 +495,7 @@ char	*get_expanded(char *data, t_env *envi)
 	// printf("len = %d\n", str_len);
 	string = get_new_string(str_len, data, envi);
 	// printf("str = %s\n", string);
-	free(data);
+	// free(data);
 	return (string);
 }
 
@@ -668,64 +525,17 @@ void	ft_expension(t_cmd *cmd, t_env *envi)
 // =========================================================================
 // this fun() create the nodes
 // every node has (key) and (value) and (next)
-t_env   *create_node(char *key, char *value)
-{
-	t_env   *node;
-
-	node = (t_env *)malloc(sizeof(t_env));
-	if (!node)
-		return (0);
-	node->key = key;
-	node->value = value;
-	node->next = NULL; // every new node is pointing to the NULL at fisrt
-	return (node);
-}
-
-// =========================================================================
-// this fun() add the new node to the list
-// **list this variable pionting to the first node (the had of nodes)
-// *new_node this is the new variable wich we create
-void	add_node(t_env **list, t_env *new_node)
-{
-	t_env	*tmp;
-
-	tmp = *list;
-	if (*list == NULL) // cuz in first time the list was pointing to the null so taht we give it node
-		*list = new_node;
-	else
-	{
-		while (tmp->next) // while the next of tmp not pointing to the null (mzl mafatch akhir node)
-			tmp = tmp->next; // so that we give it the next node
-		tmp->next = new_node; // ?
-	}
-}
-
 // =========================================================================
 
-t_env	*ft_setup_env(char **env_main)
+void free_arr(char **s)
 {
-	t_env	*list; // list of nodes (the head of linked list)
-	// t_env	*node; // list of nodes
-	char	**key_value; // this double pointer hold the key and the value
-	int		j;
-
-	// list = NULL;
-	j = -1;
-	while (env_main[++j])
-	{
-		key_value = ft_split(env_main[j], '='); // here we split the env_main so that the key_value[0]->hold the key and key_value[1]->hold the value
-		add_node(&list, create_node(key_value[0], key_value[1])); // in this line i create and add node in the same time
-	}
-	j = 0;
-	// while (key_value[j])
-	// {
-	// 	free(key_value[j]);
-	// 	j++;
-	// }
-		// free(key_value);
-		// ft_free_env(list);
-	return (list); // i return the list cuz it's the head of linkedlist.
+	int i = -1;
+	while (s[++i])
+		free(s[i]);
+	free(s);
 }
+
+
 
 void	ft_display_env(t_env *env)
 {
@@ -733,15 +543,15 @@ void	ft_display_env(t_env *env)
 
 	if (env)
 	{
-	tmp = env;
-	while (tmp != NULL)
-	{
-		if (tmp->key)
-			printf("[key : %s:\n", tmp->key);
-		if (tmp->value)
-			printf(" value %s]\n", tmp->value);
-		tmp = tmp->next;
-	}
+		tmp = env;
+		while (tmp != NULL)
+		{
+			if (tmp->key)
+				printf("[key : %s:\n", tmp->key);
+			if (tmp->value)
+				printf(" value %s]\n", tmp->value);
+			tmp = tmp->next;
+		}
 	}
 	printf("\n");
 }
@@ -756,7 +566,7 @@ void	ft_free_ls(t_node *head)
 	while(current)
 	{
 		next = current->next;
-		free(current->data);
+		// free(current->data);
 		free(current);
 		current = next;
 	}
@@ -805,7 +615,7 @@ int	main(int ac, char **av, char **env)
 	{
 		// envi = (t_env *)malloc(sizeof(t_env));
 		envi = ft_setup_env(env);
-		// ft_display_env(envi);
+		ft_display_env(envi);
 		input = readline("-> Donpha❕ ");
 		if (input == NULL || input[0] == '\0')
 			continue;
@@ -814,20 +624,11 @@ int	main(int ac, char **av, char **env)
 		if (ft_syntax_error(input, head))
 			continue;
 		cmd = ft_insert_link(head);
-		// all_display(cmd);
-		ft_expension(cmd, envi);
 		execution(cmd, env);
+		ft_expension(cmd, envi);
 		add_history(input);
-		ft_free_ls(head);
-		ft_free_env(envi);
-		ft_frees_cmd(cmd);
-		free(input);
 		if (ft_strcmp(input, "exit") == 0)
 			exit(1);
-		// free(envi);
-		// free(envi);
-		// free(head);
-		// free(cmd);
 	}
 	return (0);
 }
