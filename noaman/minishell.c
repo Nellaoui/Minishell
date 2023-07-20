@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:47 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/19 21:46:33 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/20 10:19:13 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,25 +280,7 @@ t_cmd	*ft_insert_link(t_node *head)
 	while (node)
 	{
 		if (node->type != PIPE)
-		{
-			if (node->type == ARRGUMENT)
-				ft_insert_token_2(&(command->args), ft_strdup(node->data), node->type);
-			else if (node->type == OUT || node->type == APPEND)
-			{
-				ft_insert_token_2(&(command->out_reds), ft_strdup(node->next->data), node->type);
-				node = node->next;
-			}
-			else if (node->type == IN)
-			{
-				ft_insert_token_2(&(command->in_reds), ft_strdup(node->next->data), node->type);
-				node = node->next;
-			}
-			else if (node->type == HERDOC)
-			{
-				ft_insert_token_2(&(command->her_reds), ft_strdup(node->next->data), node->type);
-				node = node->next;
-			}
-		}
+			ft_give_list(node, command);
 		else
 		{
 			temp_next = ft_new_node();
@@ -309,6 +291,34 @@ t_cmd	*ft_insert_link(t_node *head)
 	}
 	return (head_command);
 }
+
+void	ft_give_list(t_node *node, t_cmd *command)
+{
+	if (node->type == ARRGUMENT)
+	{
+		ft_insert_token_2(&(command->args), ft_strdup(node->data), node->type);
+		return ;
+	}
+	else if (node->type == OUT || node->type == APPEND)
+	{
+		ft_insert_token_2(&(command->out_reds), ft_strdup(node->next->data), node->type);
+		node = node->next;
+		return  ;
+	}
+	else if (node->type == IN)
+	{
+		ft_insert_token_2(&(command->in_reds), ft_strdup(node->next->data), node->type);
+		node = node->next;
+		return ;
+	}
+	else if (node->type == HERDOC)
+	{
+		ft_insert_token_2(&(command->her_reds), ft_strdup(node->next->data), node->type);
+		node = node->next;
+		return;
+	}
+}
+
 
 void	all_display(t_cmd *cmd)
 {
@@ -397,7 +407,6 @@ int	get_str_len(char *data, t_env *envi)
 
 	i = 0;
 	len = 0;
-
 	while (data[i])
 	{
 		if (data[i] == '\'' && ++i)
@@ -415,14 +424,8 @@ int	get_str_len(char *data, t_env *envi)
 			else
 			{
 				identifire = get_index(&data[i]);
-				printf("{%s}\n", envi->value);
-				exit(1);
-				value = get_value(identifire, envi);
-				if (identifire[0] == '?' && identifire[1] == '\0')
-					value = ft_strdup("42");
+				len = ft_get_str_len_m(identifire, data, len, envi);
 				i = i + ft_strlen(identifire);
-				len = len + ft_strlen(value);
-				// write(1, "X", 1);
 			}
 		}
 		else
@@ -433,6 +436,16 @@ int	get_str_len(char *data, t_env *envi)
 	}
 	return (len);
 }
+
+int	ft_get_str_len_m(char *identifire, char *value, int len, t_env *envi)
+{
+	value = get_value(identifire, envi);
+	if (identifire[0] == '?' && identifire[1] == '\0')
+		value = ft_strdup("42");
+	len = len + ft_strlen(value);
+	return (len);
+}
+
 
 char	*get_new_string(int str_len, char *data, t_env *envi)
 {
@@ -466,14 +479,13 @@ char	*get_new_string(int str_len, char *data, t_env *envi)
 			else
 			{
 				identifire = get_index(&data[i]);
-				value = get_value(identifire, envi);
-				if (identifire[0] == '?' && identifire[1] == '\0')
-					value = ft_strdup("42");
+				// value = get_value(identifire, envi);
+				// if (identifire[0] == '?' && identifire[1] == '\0')
+					// value = ft_strdup("42");
 				i = i + ft_strlen(identifire);
+				len = ft_get_str_len_m(identifire, value, len, envi);
 				memcpy(&string[len], value, ft_strlen(value));
-				len = len + ft_strlen(value);
-				// free(value);
-				// free(identifire);
+				// len = len + ft_strlen(value);
 			}
 		}
 		else
@@ -615,7 +627,7 @@ int	main(int ac, char **av, char **env)
 	{
 		// envi = (t_env *)malloc(sizeof(t_env));
 		envi = ft_setup_env(env);
-		ft_display_env(envi);
+		// ft_display_env(envi);
 		input = readline("-> Donpha❕ ");
 		if (input == NULL || input[0] == '\0')
 			continue;

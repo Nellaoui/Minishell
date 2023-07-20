@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/19 21:50:33 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/20 10:17:53 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,9 @@ char	*get_expanded(char *data, t_env *envi);
 void	ft_mini_expen(t_node *node, t_env *envi);
 void	ft_expension(t_cmd *cmd, t_env *envi);
 void free_arr(char **s);
+void	ft_give_list(t_node *node, t_cmd *command);
 void	ft_display_env(t_env *env);
+int	ft_get_str_len_m(char *identifire, char *value, int len, t_env *envi);
 
 /*-------------------------------*/
 /*---------ayoub-----------------*/
