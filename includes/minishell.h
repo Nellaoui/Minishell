@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/20 10:17:53 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/20 11:11:27 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,11 @@ typedef struct s_token
 	int		single_quote;
 	int		start;
 	char	*res;
+	int		len;
+	int		j;
+	char	*string;
+	char	*identifire;
+	char	*value;
 } t_token;
 
 /*---------noaman-----------------*/

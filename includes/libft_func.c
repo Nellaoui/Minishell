@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 13:09:18 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/19 21:39:14 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/20 18:41:56 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,9 @@ int	ft_strlen(const char *str)
 	int	i;
 
 	i = 0;
+
+	if (!str)
+		return (0);
 	while (str[i] != '\0')
 	{
 		i++;

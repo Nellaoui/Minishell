@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:47 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/20 10:19:13 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/20 18:53:58 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -280,7 +280,29 @@ t_cmd	*ft_insert_link(t_node *head)
 	while (node)
 	{
 		if (node->type != PIPE)
-			ft_give_list(node, command);
+		{
+			if (node->type == ARRGUMENT)
+			{
+				ft_insert_token_2(&(command->args), ft_strdup(node->data), node->type);
+			}
+			else if (node->type == OUT || node->type == APPEND)
+			{
+				ft_insert_token_2(&(command->out_reds), ft_strdup(node->next->data), node->type);
+				node = node->next;
+			}
+			else if (node->type == IN)
+			{
+				ft_insert_token_2(&(command->in_reds), ft_strdup(node->next->data), node->type);
+				node = node->next;
+			}
+			else if (node->type == HERDOC)
+			{
+				ft_insert_token_2(&(command->her_reds), ft_strdup(node->next->data), node->type);
+				node = node->next;
+			}
+
+		}
+			// ft_give_list(node, command);
 		else
 		{
 			temp_next = ft_new_node();
@@ -294,29 +316,6 @@ t_cmd	*ft_insert_link(t_node *head)
 
 void	ft_give_list(t_node *node, t_cmd *command)
 {
-	if (node->type == ARRGUMENT)
-	{
-		ft_insert_token_2(&(command->args), ft_strdup(node->data), node->type);
-		return ;
-	}
-	else if (node->type == OUT || node->type == APPEND)
-	{
-		ft_insert_token_2(&(command->out_reds), ft_strdup(node->next->data), node->type);
-		node = node->next;
-		return  ;
-	}
-	else if (node->type == IN)
-	{
-		ft_insert_token_2(&(command->in_reds), ft_strdup(node->next->data), node->type);
-		node = node->next;
-		return ;
-	}
-	else if (node->type == HERDOC)
-	{
-		ft_insert_token_2(&(command->her_reds), ft_strdup(node->next->data), node->type);
-		node = node->next;
-		return;
-	}
 }
 
 
@@ -383,14 +382,10 @@ char	*get_value(char *id, t_env *envi)
 	t_env *tmp;
 
 	tmp = envi;
-	// write(1, "X", 1);
-	// 	exit(1);
 	while (tmp)
 	{
-		printf("%s\n", tmp->key);
 		if (ft_strcmp(id, tmp->key) == 0)
 		{
-			printf("[%s]", tmp->value);
 			return (tmp->value);
 		}
 		tmp = tmp->next;
@@ -407,6 +402,7 @@ int	get_str_len(char *data, t_env *envi)
 
 	i = 0;
 	len = 0;
+
 	while (data[i])
 	{
 		if (data[i] == '\'' && ++i)
@@ -423,9 +419,15 @@ int	get_str_len(char *data, t_env *envi)
 				len++;
 			else
 			{
+				// write(1, "X", 1);
 				identifire = get_index(&data[i]);
-				len = ft_get_str_len_m(identifire, data, len, envi);
+				value = get_value(identifire, envi);
+				// printf("%s\n", value);
+				// exit(1);
+				if (identifire[0] == '?' && identifire[1] == '\0')
+					value = ft_strdup("42");
 				i = i + ft_strlen(identifire);
+				len = len + ft_strlen(value);
 			}
 		}
 		else
@@ -437,65 +439,55 @@ int	get_str_len(char *data, t_env *envi)
 	return (len);
 }
 
-int	ft_get_str_len_m(char *identifire, char *value, int len, t_env *envi)
+void	ft_skip(t_token *s, char *data)
 {
-	value = get_value(identifire, envi);
-	if (identifire[0] == '?' && identifire[1] == '\0')
-		value = ft_strdup("42");
-	len = len + ft_strlen(value);
-	return (len);
+	while (data[s->i] && data[s->i] != '\'')
+	{
+		s->string[s->len] = data[s->i];
+		s->len++;
+		s->i++;
+	}
 }
-
 
 char	*get_new_string(int str_len, char *data, t_env *envi)
 {
-	int		len;
-	int		i;
-	char	*string;
-	char	*identifire;
-	char	*value;
+	t_token s;
 
-	string = malloc(str_len + 1);
-	i = 0;
-	len = 0;
-	while (data[i])
+	s.string = malloc(str_len + 1);
+	s.j = 0;
+	s.len = 0;
+	while (data[s.j])
 	{
-		if (data[i] == '\'' && ++i)
+		if (data[s.j] == '\'' && ++s.j)
+			ft_skip(&s, data);
+		else if (data[s.j] == '$' && ++s.j)
 		{
-			while (data[i] && data[i] != '\'')
+			if (ft_is_valid(data[s.j]) == 0)
 			{
-				string[len] = data[i];
-				len++;
-				i++;
-			}
-		}
-		else if (data[i] == '$' && ++i)
-		{
-			if (ft_is_valid(data[i]) == 0)
-			{
-				string[len] = data[i];
-				len++;
+				s.string[s.len] = data[s.j];
+				s.len++;
 			}
 			else
 			{
-				identifire = get_index(&data[i]);
-				// value = get_value(identifire, envi);
-				// if (identifire[0] == '?' && identifire[1] == '\0')
-					// value = ft_strdup("42");
-				i = i + ft_strlen(identifire);
-				len = ft_get_str_len_m(identifire, value, len, envi);
-				memcpy(&string[len], value, ft_strlen(value));
-				// len = len + ft_strlen(value);
+				s.identifire = get_index(&data[s.j]);
+				s.value = get_value(s.identifire, envi);
+				// printf("%s\n", s.value);
+				// exit(1);
+				if (s.identifire[0] == '?' && s.identifire[1] == '\0')
+					s.value = ft_strdup("42");
+				s.j = s.j + ft_strlen(s.identifire);
+				memcpy(&s.string[s.len], s.value, ft_strlen(s.value));
+				s.len = s.len + ft_strlen(s.value);
 			}
 		}
 		else
 		{
-			string[len] = data[i];
-			len++;
-			i++;
+			s.string[s.len] = data[s.j];
+			s.len++;
+			s.j++;
 		}
 	}
-	return (string);
+	return (s.string);
 }
 
 char	*get_expanded(char *data, t_env *envi)
@@ -504,10 +496,7 @@ char	*get_expanded(char *data, t_env *envi)
 	int		str_len;
 
 	str_len = get_str_len(data, envi);
-	// printf("len = %d\n", str_len);
 	string = get_new_string(str_len, data, envi);
-	// printf("str = %s\n", string);
-	// free(data);
 	return (string);
 }
 
@@ -636,8 +625,8 @@ int	main(int ac, char **av, char **env)
 		if (ft_syntax_error(input, head))
 			continue;
 		cmd = ft_insert_link(head);
-		execution(cmd, env);
 		ft_expension(cmd, envi);
+		all_display(cmd);
 		add_history(input);
 		if (ft_strcmp(input, "exit") == 0)
 			exit(1);

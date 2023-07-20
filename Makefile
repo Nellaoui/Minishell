@@ -6,14 +6,14 @@
 #    By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/06 12:31:19 by nelallao          #+#    #+#              #
-#    Updated: 2023/07/19 22:43:25 by nelallao         ###   ########.fr        #
+#    Updated: 2023/07/20 18:54:10 by nelallao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
 RM = rm -f
-FLAGS = -Wall -Wextra -Werror  # -fsanitize=address -g
+FLAGS = -Wall -Wextra -Werror # -fsanitize=address -g
 LFLAGS = -lreadline
 # FFLAGS = -fsanitize=address -g
 # SRC = noaman/minishell.c ./includes/libft_func.c ./ayoub/execution.c
