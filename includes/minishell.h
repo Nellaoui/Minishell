@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+	/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
@@ -61,6 +61,7 @@ typedef struct s_node
 {
 	char			*data;
 	int				type;
+	int				quote;
 	struct s_node	*next;
 	struct s_node	*previous;
 } t_node;
@@ -116,6 +117,9 @@ void	ft_expension(t_cmd *cmd, t_env *envi);
 void free_arr(char **s);
 void	ft_give_list(t_node *node, t_cmd *command);
 void	ft_display_env(t_env *env);
+void	ft_rederct(char *str, t_token *s, t_node **head);
+void	ft_frees_cmd(t_cmd *head);
+void	ft_free_ls(t_node *head);
 int	ft_get_str_len_m(char *identifire, char *value, int len, t_env *envi);
 
 /*-------------------------------*/

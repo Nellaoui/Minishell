@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 18:43:16 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/19 21:39:50 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/21 18:57:55 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ t_env   *create_node(char *key, char *value)
 	node = (t_env *)malloc(sizeof(t_env));
 	if (!node)
 		return (0);
-	node->key = key;
-	node->value = value;
+	node->key = ft_strdup(key);
+	node->value = ft_strdup(value);
 	node->next = NULL; // every new node is pointing to the NULL at fisrt
 	return (node);
 }
