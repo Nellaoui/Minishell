@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/11 17:46:48 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/07/24 18:55:47 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@
 # include <string.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include "../noaman/get_next_line.h"
 
 typedef struct s_env  // we use this struct to store env as linkedlist
 {
@@ -96,6 +99,18 @@ typedef struct s_token
 // void	ft_putstr_fd(char *s, int fd);
 // char	**ft_split(char const *s, char c);
 /*-------------------------------*/
+/*---------ayoub-----------------*/
+t_env	*create_node(char *key, char *value);
+void	add_node(t_env **list, t_env *new_node);
+char	**linked_list_to_array(t_node *head);
+char	*get_cmd(char **paths, char *cmd);
+int		check_cmd(char *cmd);
+void	setup_in_redirects(t_node *in_red);
+void	setup_out_redirects(t_node *out_red);
+void	exec_cmd(t_node *cmd, char **env);
+void	execution(t_cmd *head, char **env);
+t_env	*ft_setup_env(char **env_main);
+void	exec_simple_cmd(t_cmd *node, char **env, t_env *envi);
 
 
 /********** UTILS  *******************/
