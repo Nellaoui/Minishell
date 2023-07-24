@@ -22,6 +22,7 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include "../noaman/get_next_line.h"
 
 typedef enum e_type
 {
@@ -126,7 +127,6 @@ int	ft_get_str_len_m(char *identifire, char *value, int len, t_env *envi);
 /*---------ayoub-----------------*/
 t_env	*create_node(char *key, char *value);
 void	add_node(t_env **list, t_env *new_node);
-void	exec_compound_cmd(t_cmd *node);
 char	**linked_list_to_array(t_node *head);
 char	*get_cmd(char **paths, char *cmd);
 int		check_cmd(char *cmd);
@@ -135,7 +135,7 @@ void	setup_out_redirects(t_node *out_red);
 void	exec_cmd(t_node *cmd, char **env);
 void	execution(t_cmd *head, char **env);
 t_env	*ft_setup_env(char **env_main);
-void	exec_simple_cmd(t_cmd *node, char **env);
+void	exec_simple_cmd(t_cmd *node, char **env, t_env *envi);
 
 /*-------------------------------*/
 

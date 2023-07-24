@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 18:43:16 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/21 18:57:55 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/24 16:32:52 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,6 @@ void	add_node(t_env **list, t_env *new_node)
 	}
 }
 
-void	exec_compound_cmd(t_cmd *node)
-{
-	printf("compound command\n");
-}
-
 char **linked_list_to_array(t_node *head)
 {
 	int		len;
@@ -64,7 +59,7 @@ char **linked_list_to_array(t_node *head)
 		len++;
 		current = current->next;
 	}
-	doubleArray = (char **)malloc(len * sizeof(char *));
+	doubleArray = (char **)malloc((len + 1) * sizeof(char *));
 	current = head;
 	while (i < len)
 	{
@@ -72,6 +67,7 @@ char **linked_list_to_array(t_node *head)
 		current = current->next;
 		i++;
 	}
+	doubleArray[len] = 0;
 	return (doubleArray);
 }
 char	*get_cmd(char **paths, char *cmd)
@@ -144,67 +140,17 @@ void	setup_out_redirects(t_node *out_red)
 	}
 }
 
-void	exec_cmd(t_node *cmd, char **env)
-{
-	pid_t	pid;
-	char	**paths;
-	t_node	*tmp;
-
-	pid = fork();
-	if (pid == 0)
-	{
-		char *tmp = "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin";
-		char **paths = ft_split(tmp, ':');
-		char **e_cmd = linked_list_to_array(cmd);
-		e_cmd[0] = get_cmd(paths, e_cmd[0]);
-		// printf("command: %s\n", e_cmd[0]);
-		for (int i = 0; e_cmd[i]; i++)
-			printf("%s\n", e_cmd[i]);
-		execve(e_cmd[0], e_cmd, env);
-	}
-	else
-		wait(NULL);
-}
-
-void	exec_simple_cmd(t_cmd *node, char **env)
-{
-	// printf("simple command\n");
-	if (node->in_reds != NULL)
-	{
-		setup_in_redirects(node->in_reds);
-	}
-	if (node->out_reds != NULL)
-	{
-		setup_out_redirects(node->out_reds);
-	}
-	// if (node-> her_reds) {
-	// 	setup_heredoc(node->her_reds);
-	// }
-	exec_cmd(node->args, env);
-}
-
-void	execution(t_cmd *head, char **env)
-{
-	t_cmd	*curr;
-	size_t	size;
-
-	size = 0;
-	curr = head;
-	while (curr) {
-		++size;
-		curr = curr->next;
-	}
-
-	// printf("size--> : [%ld]\n", size);
-	curr = head;
-	if (size == 1)
-	{
-		exec_simple_cmd(curr, env);
-	}
-	else {
-		exec_compound_cmd(curr);
-	}
-}
+// void	exec_cmd(t_node *cmd, char **env)
+// {
+// 	char *tmp = "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin";
+// 	char **paths = ft_split(tmp, ':');
+// 	char **e_cmd = linked_list_to_array(cmd);
+// 	e_cmd[0] = get_cmd(paths, e_cmd[0]);
+// 	// printf("command: %s\n", e_cmd[0]);
+// 	for (int i = 0; e_cmd[i]; i++)
+// 		printf("%s\n", e_cmd[i]);
+// 	execve(e_cmd[0], e_cmd, env);
+// }
 
 t_env	*ft_setup_env(char **env_main)
 {

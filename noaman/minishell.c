@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:47 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/23 19:06:05 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/24 17:57:01 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,10 +294,10 @@ t_cmd *ft_new_node()
 
 	cmd = (t_cmd *)malloc(sizeof(t_cmd));
 	cmd->args = NULL;
-	cmd->next = NULL;
 	cmd->in_reds = NULL;
-	cmd->next = NULL;
+	cmd->her_reds = NULL;
 	cmd->out_reds = NULL;
+	cmd->next = NULL;
 	return (cmd);
 }
 
@@ -472,6 +472,7 @@ char *get_new_string(int str_len, char *data, t_env *envi)
 	s->j = 0;
 	s->len = 0;
 
+	// printf("{{{%s}}}\n", data);
 	while (data[s->j])
 	{
 		if ((data[s->j] == '\'' || data[s->j] == '\'') && ++s->j)
@@ -486,7 +487,9 @@ char *get_new_string(int str_len, char *data, t_env *envi)
 			else
 			{
 				s->identifire = get_index(&data[s->j]);
+				printf("identfifer %s\n", s->identifire);
 				s->value = get_value(s->identifire, envi);
+				printf("value %s\n", s->value);
 				if (s->identifire[0] == '?' && s->identifire[1] == '\0')
 					s->value = ft_strdup("42");
 				s->j = s->j + ft_strlen(s->identifire);
@@ -501,6 +504,7 @@ char *get_new_string(int str_len, char *data, t_env *envi)
 			s->j++;
 		}
 	}
+	free(data);
 	// printf("%s\n", s->string);
 	// 			// exit(1);
 	return (s->string);
@@ -513,6 +517,7 @@ char *get_expanded(char *data, t_env *envi)
 
 	str_len = get_str_len(data, envi);
 	string = get_new_string(str_len, data, envi);
+	printf("((((%s))))\n", string);
 	return (string);
 }
 
@@ -578,25 +583,13 @@ void ft_free_ls(t_node *head)
 	t_node *next;
 
 	current = head;
-	if (current)
+	while (current)
 	{
-		// while (current)
-		// {
-			printf("581:%p\n", current);
-			// printf("581:%p\n\n", current->next);
-			// current = current->next;
-		// }
-
+		next = current->next;
+		free(current->data);
+		free(current);
+		current = next;
 	}
-	// while (current)
-	// {
-	// 	// next = current->next;
-	// 	// free(current->data);
-	// 	// free(current);
-	// 	// current = next;
-	// 	printf("lol : %p\n", current->next);
-	// 	current = current->next;
-	// }
 }
 void ft_free_env(t_env *head)
 {
@@ -692,6 +685,148 @@ void ft_quote(t_cmd *cmd)
 
 // }
 // ft_free_env()
+
+void	exec_cmd(t_node *cmd, char **env)
+{
+	char *tmp = "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin";
+	char **paths = ft_split(tmp, ':');
+	char **e_cmd = linked_list_to_array(cmd);
+	e_cmd[0] = get_cmd(paths, e_cmd[0]);
+	// printf("command: %s\n", e_cmd[0]);
+	// for (int i = 0; e_cmd[i]; i++)
+	// 	printf("%s\n", e_cmd[i]);
+	char *arr[] = {"/bin/ls", "-la", NULL};
+	execve(e_cmd[0], e_cmd, env);
+}
+
+void	setup_heredoc(char *del, int expand, t_env *envi)
+{
+	char *line;
+	int	pfds[2];
+
+	pipe(pfds);
+	while (1)
+	{
+		line = get_next_line(0);
+		if (strnstr(line, del, strlen(del)))
+			break ;
+		// if (expand)
+			dprintf(pfds[1], "%s", get_expanded(line, envi));
+		// else
+		// 	dprintf(pfds[1], "%s", line);
+		// free(line);
+	}
+	free(line);
+	dup2(pfds[0], STDIN_FILENO);
+}
+
+void	handle_heredoc(t_node *curr, t_env *envi)
+{
+	// while (curr)
+	// {
+		setup_heredoc(curr->data, curr->quote, envi);
+	// 	curr = curr->next;
+	// }
+}
+
+void	setup_redirects(t_cmd *cmd, t_env *envi)
+{
+	int fd;
+	if (cmd->in_reds)
+	{
+		while (cmd->in_reds)
+		{
+			if (cmd->in_reds->data)
+			{
+				fd = open(cmd->in_reds->data, O_RDONLY);
+				dup2(fd, STDIN_FILENO);
+			}
+			else
+				dprintf(2, "minishell: %s: No such file or directory\n", cmd->in_reds->data);
+			cmd->in_reds = cmd->in_reds->next;
+		}
+	}
+	if (cmd->out_reds)
+	{
+		while (cmd->out_reds)
+		{
+			if (cmd->out_reds->type == OUT)
+			{
+				fd = open(cmd->out_reds->data, O_RDWR | O_CREAT | O_TRUNC, 0644);
+				dup2(fd, STDOUT_FILENO);
+			}
+			else if (cmd->out_reds->type == APPEND)
+			{
+				fd = open(cmd->out_reds->data, O_RDWR | O_CREAT | O_APPEND, 0644);
+				dup2(fd, STDOUT_FILENO);
+			}
+			cmd->out_reds = cmd->out_reds->next;
+		}
+	}
+	if (cmd->her_reds)
+	{
+		handle_heredoc(cmd->her_reds, envi);
+	}
+}
+
+void	exec_compound_cmd(t_cmd *cmd, int prev_in, char **env, t_env *envi)
+{
+	pid_t	pid;
+	int		pfds[2];
+
+	pipe(pfds);
+	pid = fork();
+	if (pid == 0)
+	{
+		dup2(prev_in, STDIN_FILENO);
+		if (cmd->next)
+			dup2(pfds[1], STDOUT_FILENO);
+		close(pfds[0]);
+		setup_redirects(cmd, envi);
+		exec_cmd(cmd->args, env);
+	}
+	else
+	{
+		close(pfds[1]);
+		prev_in = dup(pfds[0]);
+		waitpid(pid, NULL, 0);
+	}
+	if (cmd->next)
+		exec_compound_cmd(cmd->next, prev_in, env, envi);
+}
+
+void	exec_simple_cmd(t_cmd *cmd, char **env, t_env *envi)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == 0)
+	{
+		setup_redirects(cmd, envi);
+		exec_cmd(cmd->args, env);
+	}
+	else
+	{
+		wait(NULL);
+	}
+}
+
+void	ft_execute(t_cmd *cmd, char **env, t_env *envi)
+{
+	t_cmd	*curr;
+	int		size = 0;
+
+	curr = cmd;
+	while (curr){
+		++size;
+		curr = curr->next;
+	}
+	if (size == 1)
+		exec_simple_cmd(cmd, env, envi);
+	else
+		exec_compound_cmd(cmd, 0, env, envi);
+}
+
 int main(int ac, char **av, char **env)
 {
 	t_node *head;
@@ -704,26 +839,27 @@ int main(int ac, char **av, char **env)
 	while (ac && av[0])
 	{
 		// envi = (t_env *)malloc(sizeof(t_env));
-		// envi = ft_setup_env(env);
+		envi = ft_setup_env(env);
 		input = readline("-> Donpha❕ ");
 		if (input == NULL || input[0] == '\0')
 			continue;
+		add_history(input);
 		head = ft_token(input, head);
 		ft_type(&head);
 		cmd = ft_insert_link(head);
-		ft_frees_cmd(cmd);
+		// ft_frees_cmd(cmd);
 		// system("leaks minishell");
 		// ft_free_ls(head);
 		// while(1);
 		// ft_display(head);
 		if (ft_syntax_error(input, head))
 			continue;
+		ft_expension(cmd, envi);
+		ft_execute(cmd, env, envi);
 		// while(1);
-		// ft_expension(cmd, envi);
 		// ft_free_env(envi);
 		// ft_quote(cmd);
-		// all_display(cmd);
-		add_history(input);
+		all_display(cmd);
 	}
 
 	return (0);
