@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 18:43:16 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/21 18:57:55 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/25 12:37:16 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,7 +219,7 @@ t_env	*ft_setup_env(char **env_main)
 	{
 		key_value = ft_split(env_main[j], '='); // here we split the env_main so that the key_value[0]->hold the key and key_value[1]->hold the value
 		add_node(&list, create_node(key_value[0], key_value[1])); // in this line i create and add node in the same time
-		// free_arr(key_value);
+		free_arr(key_value);
 	}
 	return (list); // i return the list cuz it's the head of linkedlist.
 }

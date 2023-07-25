@@ -14,8 +14,8 @@
 # define MINISHELL_H
 
 # include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
@@ -26,36 +26,29 @@
 typedef enum e_type
 {
 	PIPE = 1,
-	IN, // <
-	OUT, // >
-	APPEND, // >>
-	HERDOC, // <<
+	IN,
+	OUT,
+	APPEND,
+	HERDOC,
 	ARRGUMENT
 }	t_type;
 
-typedef struct s_node t_node;
+typedef struct s_node	t_node;
 
-typedef struct s_env  // we use this struct to store env as linkedlist
+typedef struct s_env
 {
-	char	*key;
-	char	*value;
-	struct	s_env *next;
+	char			*key;
+	char			*value;
+	struct s_env	*next;
 }	t_env;
 
-// typedef struct s_cmd
-// {
-// 	char			*word;
-// 	t_type			type;
-// 	struct s_cmd	*next;
-// }	t_cmd;
+typedef struct s_global
+{
+	t_env	*env;
+	int		exit_status;
+}	t_global;
 
-
-// typedef struct s_cmd
-// {
-// 	t_node			*arguments;
-// 	// t_node			*in_files;
-// 	struct s_cmd	*next;
-// }	t_cmd;
+t_global	g_global;
 
 typedef struct s_node
 {
@@ -64,7 +57,7 @@ typedef struct s_node
 	int				quote;
 	struct s_node	*next;
 	struct s_node	*previous;
-} t_node;
+}	t_node;
 
 typedef struct s_cmd
 {
@@ -72,7 +65,6 @@ typedef struct s_cmd
 	t_node			*out_reds;
 	t_node			*in_reds;
 	t_node			*her_reds;
-	int				type_in;
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -88,11 +80,11 @@ typedef struct s_token
 	char	*string;
 	char	*identifire;
 	char	*value;
-} t_token;
+}	t_token;
 
 /*---------noaman-----------------*/
 
-void	ft_initialize(t_token *s);
+void	ft_initialize(t_token *s, t_node *head);
 void	ft_insert_token(t_node **head, char *data);
 void	ft_insert_token_2(t_node **head, char *data, int type);
 void	ft_display(t_node *head);
@@ -100,27 +92,32 @@ void	ft_splited(char *str, t_token *s, t_node **head);
 void	ft_redrection(char *str, t_token *s, t_node **head);
 void	ft_pipe(char *str, t_token *s, t_node **head);
 t_node	*ft_token(char *str, t_node *head);
-int	ft_check_quotes(char *str);
-int	ft_syntax_error(char *str, t_node *head);
+int		ft_check_quotes(char *str);
+int		ft_syntax_error(char *str, t_node *head);
 void	ft_type(t_node **head);
-t_cmd	*ft_new_node();
+t_cmd	*ft_new_node(void);
 t_cmd	*ft_insert_link(t_node *head);
 void	all_display(t_cmd *cmd);
-char *get_index(char *string);
-int	ft_is_valid(char c);
+char	*ft_subfree(char *str, int start, int len, t_token *s);
+char	*get_index(char *string);
+int		ft_is_valid(char c);
 char	*get_value(char *id, t_env *envi);
-int	get_str_len(char *data, t_env *envi);
+int		get_str_len(char *data, t_env *envi);
 char	*get_new_string(int str_len, char *data, t_env *envi);
 char	*get_expanded(char *data, t_env *envi);
 void	ft_mini_expen(t_node *node, t_env *envi);
 void	ft_expension(t_cmd *cmd, t_env *envi);
-void free_arr(char **s);
+void	free_arr(char **s);
 void	ft_give_list(t_node *node, t_cmd *command);
 void	ft_display_env(t_env *env);
 void	ft_rederct(char *str, t_token *s, t_node **head);
+void	ft_quote(t_cmd *cmd);
+void	ft_skip(t_token *s, char *data);
 void	ft_frees_cmd(t_cmd *head);
+char	*ft_backward(char *str);
 void	ft_free_ls(t_node *head);
-int	ft_get_str_len_m(char *identifire, char *value, int len, t_env *envi);
+void	ft_help_get_len(t_token *s, char *data, t_env *envi);
+void	ft_help_get_str(char *data, t_token *s);
 
 /*-------------------------------*/
 /*---------ayoub-----------------*/
@@ -136,11 +133,7 @@ void	exec_cmd(t_node *cmd, char **env);
 void	execution(t_cmd *head, char **env);
 t_env	*ft_setup_env(char **env_main);
 void	exec_simple_cmd(t_cmd *node, char **env);
-
 /*-------------------------------*/
-
-
-void	ft_free_env(t_env *head);
 
 /*---------libft-----------------*/
 int		ft_strcmp(char *s1, char *s2);
@@ -150,7 +143,7 @@ char	*ft_strdup(const char *s1);
 char	*ft_substr(char const *s, unsigned int start, int len);
 void	ft_putstr_fd(char *s, int fd);
 char	*ft_strjoin(char const *s1, char const *s2);
-char	**	ft_split(char *s, char c);
+char	**ft_split(char *s, char c);
 int		ft_isalnum(int n);
 /*-------------------------------*/
 #endif
