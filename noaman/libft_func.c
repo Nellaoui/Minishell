@@ -6,11 +6,11 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 13:09:18 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/25 17:41:58 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/25 22:03:59 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 int	ft_strcmp(char *s1, char *s2)
 {

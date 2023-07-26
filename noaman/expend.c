@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:09:50 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/25 18:22:50 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/25 18:58:32 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ int	get_str_len(char *data, t_env *envi)
 			s.j++;
 		}
 	}
-	// free(data);
 	return (s.len);
 }
 

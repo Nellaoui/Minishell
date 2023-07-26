@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:47 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/25 18:39:30 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/26 10:07:50 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	ft_initialize(t_token *s, t_node *head)
 {
-	head = NULL;
 	s->i = 0;
 	s->start = 0;
 	s->double_quote = 0;
@@ -63,9 +62,10 @@ void	all_display(t_cmd *cmd)
 	}
 }
 
-void	ft_free(t_cmd *cmd, char *input)
+void	ft_free(t_cmd *cmd, char *input, t_node *head)
 {
 	ft_frees_cmd(cmd);
+	ft_free_ls(head);
 	free(input);
 }
 
@@ -88,12 +88,16 @@ int	main(int ac, char **av, char **env)
 		}
 		head = ft_token(input, head);
 		ft_type(&head);
+		// ft_display(head);
 		if (ft_syntax_error(input, head))
 			continue ;
 		cmd = ft_insert_link(head);
 		ft_expension(cmd, g_global.env);
+		ft_execute(cmd, env, envi);
+		// all_display(cmd);
+		ft_free(cmd, input, head);
+		// system("leaks minishell");
 		add_history(input);
-		ft_free(cmd, input);
 	}
 	return (0);
 }

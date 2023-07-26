@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:59:38 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/25 17:58:18 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/25 22:39:23 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	ft_insert_token(t_node **head, char *data)
 	new_node->data = ft_strdup(data);
 	new_node->type = 0;
 	new_node->quote = 0;
+	// printf("1\n");
 	if (*head == NULL)
 	{
 		*head = new_node;

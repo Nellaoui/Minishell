@@ -6,11 +6,11 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:41:18 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/25 17:46:48 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/25 21:41:20 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 void	*ft_memset(void *str, int c, size_t n)
 {

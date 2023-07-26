@@ -6,11 +6,11 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:39:30 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/25 17:46:26 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/25 21:41:17 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../includes/minishell.h"
 
 int	ft_strlen(const char *str)
 {

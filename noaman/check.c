@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:02:42 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/25 18:02:31 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/26 09:55:42 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	ft_check_quotes(char *str)
 
 int	ft_syntax_error(char *str, t_node *head)
 {
-	if (head->type == PIPE && head->next != NULL)
+	if (head->type == PIPE && (head->next != NULL || head->next->data == '\0'))
 	{
 		ft_putstr_fd("syntax error near unexpected token\n", 2);
 		return (1);

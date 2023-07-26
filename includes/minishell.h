@@ -22,6 +22,7 @@
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include "get_next_line.h"
 
 typedef enum e_type
 {
@@ -121,18 +122,23 @@ void	ft_help_get_str(char *data, t_token *s);
 
 /*-------------------------------*/
 /*---------ayoub-----------------*/
-t_env	*create_node(char *key, char *value);
+void	exec_cmd(t_node *cmd, char **env);
+void	setup_heredoc(char *del, int expand, t_env *envi);
+void	handle_heredoc(t_node *curr, t_env *envi);
+void	setup_redirects(t_cmd *cmd, t_env *envi);
+void	exec_compound_cmd(t_cmd *cmd, int prev_in, char **env, t_env *envi);
+void	exec_simple_cmd(t_cmd *cmd, char **env, t_env *envi);
+void	ft_execute(t_cmd *cmd, char **env, t_env *envi);
+t_env   *create_node(char *key, char *value);
 void	add_node(t_env **list, t_env *new_node);
-void	exec_compound_cmd(t_cmd *node);
-char	**linked_list_to_array(t_node *head);
+char **linked_list_to_array(t_node *head);
 char	*get_cmd(char **paths, char *cmd);
-int		check_cmd(char *cmd);
+int	check_cmd(char *cmd);
+void	exec_cmd(t_node *cmd, char **env);
 void	setup_in_redirects(t_node *in_red);
 void	setup_out_redirects(t_node *out_red);
-void	exec_cmd(t_node *cmd, char **env);
-void	execution(t_cmd *head, char **env);
 t_env	*ft_setup_env(char **env_main);
-void	exec_simple_cmd(t_cmd *node, char **env);
+
 /*-------------------------------*/
 
 /*---------libft-----------------*/
