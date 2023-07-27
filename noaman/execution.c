@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 18:43:16 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/27 10:28:13 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/27 13:35:50 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,6 +187,7 @@ void	exec_compound_cmd(t_cmd *cmd, int prev_in, char **env, t_env *envi)
 {
 	pid_t	pid;
 	int		pfds[2];
+	t_node	*node;
 
 	pipe(pfds);
 	pid = fork();
@@ -223,7 +224,7 @@ void	exec_simple_cmd(t_cmd *cmd, char **env, t_env *envi)
 	{
 		setup_redirects(cmd, envi);
 		if (check_builtin(cmd->args))
-			ft_built_in(cmd->args);
+			ft_built_in(cmd);
 		else
 			exec_cmd(cmd->args, env);
 	}
@@ -308,22 +309,60 @@ void	ft_command(t_node *node)
 	}
 }
 
-void	ft_built_in(t_node *node)
+int	ft_count_link(t_node *node)
 {
-		if (ft_strcmp("echo", node->data, 5) == 0)
-			ft_echo();
-		if (ft_strcmp("cd", node->data, 3) == 0)
-			ft_cd();
-		if (ft_strcmp("pwd", node->data, 4) == 0)
-			ft_pwd();
-		if (ft_strcmp("export", node->data, 7) == 0)
-			ft_export(g_global.env, );
-		if (ft_strcmp("unset", node->data, 6) == 0)
-			ft_unset();
-		if (ft_strcmp("env", node->data, 4) == 0)
-			ft_env();
-		if (ft_strcmp("exit", node->data, 5) == 0)
-			ft_exit(g_global.exit_status);
+	t_node *tmp;
+	
+	tmp = node;
+	int	i;
+	i = 0;
+	while (tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	return (i);
+}
+
+void	ft_built_in(t_cmd *cmd)
+{
+	int ac;
+
+	if (ft_strncmp("echo", cmd->args->data, 5) == 0)
+		ft_echo(cmd->args, ft_count_link(cmd->args));
+	if (ft_strncmp("cd", cmd->args->data, 3) == 0)
+	{
+		ac = ft_count_link(cmd->args);
+		if (ac > 1)
+		{
+			cmd->args = cmd->args->next;
+			ft_cd(cmd->args->data);
+		}
+		else
+			ft_cd(NULL);
+	}
+	if (ft_strncmp("pwd", cmd->args->data, 4) == 0)
+		ft_pwd();
+	if (ft_strncmp("export", cmd->args->data, 7) == 0)
+	{
+		if (cmd->args->next)
+			cmd->args = cmd->args->next;
+		ft_export(&g_global.env, cmd->args->data);
+	}
+	if (ft_strncmp("unset", cmd->args->data, 6) == 0)
+	{
+		if (cmd->args->next)
+			cmd->args = cmd->args->next;
+		ft_unset(cmd->args->data);
+	}
+	if (ft_strncmp("env", cmd->args->data, 4) == 0)
+		ft_env();
+	if (ft_strncmp("exit", cmd->args->data, 5) == 0)
+	{
+		if (cmd->args->next)
+			cmd->args = cmd->args->next;
+		ft_exit(cmd->args->data);
+	}
 }
 
 /*---------------------------------------------------------------------*/

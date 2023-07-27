@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft_func_4.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:11:00 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/26 12:11:21 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/27 12:04:14 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,8 @@ char	*ft_itoa(int n)
 	if (minus)
 		dest[0] = '-';
 	return (dest);
+}
+int	ft_isalpha(int c)
+{
+	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
 }

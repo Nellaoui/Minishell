@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   inserting.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:59:38 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/26 19:13:19 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/27 12:08:10 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,15 +120,15 @@ void	ft_type(t_node **head)
 	while (node != NULL)
 	{
 		node->type = ARRGUMENT;
-		if (ft_strcmp(node->data, "|") == 0)
+		if (ft_strncmp(node->data, "|", 2) == 0)
 			node->type = PIPE;
-		if (ft_strcmp(node->data, ">") == 0)
+		if (ft_strncmp(node->data, ">", 2) == 0)
 			node->type = OUT;
-		if (ft_strcmp(node->data, "<") == 0)
+		if (ft_strncmp(node->data, "<", 2) == 0)
 			node->type = IN;
-		if (ft_strcmp(node->data, "<<") == 0)
+		if (ft_strncmp(node->data, "<<", 3) == 0)
 			node->type = HERDOC;
-		if (ft_strcmp(node->data, ">>") == 0)
+		if (ft_strncmp(node->data, ">>", 3) == 0)
 			node->type = APPEND;
 		node = node->next;
 	}

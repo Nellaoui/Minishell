@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   outils.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:08:01 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/26 11:39:22 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/27 12:06:40 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ char	*get_value(char *id, t_env *envi)
 	tmp = envi;
 	while (tmp)
 	{
-		if (ft_strcmp(id, tmp->key) == 0)
+		if (ft_strncmp(id, tmp->key, ft_strlen(tmp->key)) == 0)
 		{
 			return (tmp->value);
 		}

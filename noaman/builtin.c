@@ -3,14 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 18:48:52 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/27 10:31:04 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/27 13:37:12 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+// =========================================================================
+
+char	*get_variable_env(t_env **env, char *var_name)
+{
+	t_env	*tmp;
+	int		i;
+	
+	tmp = *env;
+	i = 0;
+	while (tmp)
+	{
+		if (!ft_strncmp(var_name, tmp->key, ft_strlen(tmp->key) + 1)) // func() return 1 or 0
+			return (tmp->value);
+		tmp = tmp->next;
+	}
+	return (0);
+}
 
 // ila drna cd lchi blasa makaynach
 // cd lblasa kayna katkhdm 3adi
@@ -21,9 +39,15 @@ int	ft_cd(char *path)
 {
 	DIR *dir;
 
+	if (!path)
+		path = get_variable_env(&g_global.env, "HOME");
+	printf("%s\n",path);
 	dir = opendir(path);
 	if (!dir)
+	{
+		printf("cd : %s : No such file or directory\n", path);
 		return(1);
+	}
 	else
 	{
 		if (chdir(path) < 0)
@@ -35,16 +59,28 @@ int	ft_cd(char *path)
 // ila kayna -n makanprantiwch new line
 // ila kayna kanprantiw new line
 
-int	ft_echo(char **echo, int number_of_arg)
+int	ft_echo(t_node *args, int number_of_arg)
 {
 	int	i;
+	int	n_line;
 
 	i = 0;
-	while (i < number_of_arg)
+	n_line = 1;
+	args = args->next;
+	while (args && args->data && number_of_arg > 1 && ft_strncmp(args->data, "-n", 3) == 0)
 	{
-		printf("%s\n", echo[i]);
-		i++;
+		n_line = 0;
+		args = args->next;
 	}
+	// args = args->next;
+	while (args && args->data && i <= number_of_arg)
+	{
+		printf("%s ", args->data);
+		i++;
+		args = args->next;
+	}
+	if (n_line)
+		printf("\n");
 	return (0);
 }
 
@@ -63,18 +99,26 @@ int	ft_env()
 	return (0);
 }
 
-int ft_exit(int status)
+// =========================================================================
+// if you have more than one argument -> no exit just print error
+// if you put alphabet not numbers -> exit with print error
+// if you put exit only -> exit with 0
+
+int ft_exit(char *status)
 {
-    exit(status);
+	int	exit_number;
+
+	exit_number = ft_atoi(status);
+    exit((char) status);
 }
+
+// =========================================================================
 
 // ila 3ndk export whdaha bzf dyal l3ibat li radi tzidhom ldak linked list
 // ila 3ndk export a
 // ila 3ndk export a=
 // ila 3ndk export a=""
 // ila deja kan key ytoverwrita ldakchi lidakhal jdid machi yt3awd whdakhr
-
-// =========================================================================
 
 int	ft_modify_node(char	*export, char	*key)
 {
@@ -110,6 +154,7 @@ int	ft_check_key(char	**key_value)
 	return (0);
 }
 
+
 // =========================================================================
 //if we not put the value it will segfault so that we should create a func() check the value if exist or not
 
@@ -119,7 +164,7 @@ int	ft_export(t_env **export, char *str)
 	char	**key_value;
 	int		i;
 	int		added;
-
+	
 	added = 0;
 	tmp = *export;
 	key_value = ft_split(str, '=');
@@ -142,61 +187,61 @@ int	ft_export(t_env **export, char *str)
 	return (0);
 }
 
+// =========================================================================
+
 // PWD ila kayna flikedlist katprantiha
 // wila makaynach katla3 error
-/*
-typedef struct struct_env_s
-{
-	char *key;
-	char *value;
-	struct struct_env_s *next;
-}struct_env;
-*/
 
 int	ft_pwd(void)
 {
 	t_env *env;
 
-	env = g_global.env;
+	env = malloc(sizeof(t_env));
+	env->value = strdup("PWD");
 	while (env)
 	{
-		if (env->key == "PWD")
+		if (ft_strncmp(env->value,"PWD", 4) == 0)
 		{
 			printf("%s\n", env->value);
 			return (0);
 		}
-
+			
 		env = env->next;
 	}
 	return (1);
 }
-
+// =========================================================================
 // l9iti node liratmshha rak ratmsahha
 // mal9itihach makatla3 walo
 
-/*
-typedef struct struct_env_s
+void	ft_delet_node(t_env **env)
 {
-	char *key;
-	char *value;
-	struct struct_env_s *next;
-}struct_env;
-*/
+	if (*env == NULL) {
+        return;  // Empty list, nothing to delete
+    }
+    
+    t_env* tmp = *env;  // Store the head node
+    *env= (*env)->next;  // Change the head to the next node
+    free(tmp); 
+}
+
 int	ft_unset(char *str)
 {
-	t_env *env;
+	t_env	*env;
 
 	env = g_global.env;
 	while (env)
 	{
-		if (env->key == str)
+		if (ft_strncmp(env->key, str, ft_strlen(str)) == 0)
 		{
-			ft_delet_node(env); // dik node li l9ina lkey dyalha kaysawilina dak lstr kanmhiwha mn list
+			ft_delet_node(&env); // dik node li l9ina lkey dyalha kaysawilina dak lstr kanmhiwha mn list
 			return (0);
 		}
 		env = env->next;
 	}
 	return (1);
 }
+
+// =========================================================================
 
 

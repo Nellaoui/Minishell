@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+         #
+#    By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/06 12:31:19 by nelallao          #+#    #+#              #
-#    Updated: 2023/07/26 19:59:20 by nelallao         ###   ########.fr        #
+#    Updated: 2023/07/27 12:09:47 by aziyani          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,10 +28,10 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
 $(NAME): $(OBJ)
-	$(CC) -lreadline $(LFLAGS) $(FFLAGS) -L /Users/nelallao/.brew/opt/readline/lib/ $(OBJ)  -o $(NAME)
+	$(CC) -lreadline $(LFLAGS) $(FFLAGS) $(OBJ)  -o $(NAME)
 
 obj/%.o: noaman/%.c
-	$(CC) -c $< -o $@ -I /Users/nelallao/.brew/opt/readline/include/
+	$(CC) -c $< -o $@ 
 
 clean:
 	@$(RM) $(OBJ)
