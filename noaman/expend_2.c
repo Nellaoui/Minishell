@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:11:49 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/25 18:36:09 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/26 18:26:17 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,12 @@ void	ft_help_get_str(char *data, t_token *s)
 		s->value = get_value(s->identifire, g_global.env);
 		if (s->identifire[0] == '?' && s->identifire[1] == '\0')
 		{
-			string = ft_strdup("42");
+			string = ft_strdup(ft_itoa(g_global.exit_status));
 			s->value = string;
 			free(string);
 		}
 		s->j = s->j + ft_strlen(s->identifire);
-		memcpy(&s->string[s->len], s->value, ft_strlen(s->value));
+		ft_memcpy(&s->string[s->len], s->value, ft_strlen(s->value));
 		s->len = s->len + ft_strlen(s->value);
 		free(s->identifire);
 	}

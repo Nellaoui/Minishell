@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 18:43:16 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/26 10:03:56 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/27 10:28:13 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,25 @@ void	setup_redirects(t_cmd *cmd, t_env *envi)
 	}
 }
 
+int	check_builtin(t_node *head)
+{
+	if (ft_strncmp(head->data, "echo", 5) == 0)
+		return (1);
+	if (ft_strncmp(head->data, "cd", 3) == 0)
+		return (1);
+	if (ft_strncmp(head->data, "pwd", 4) == 0)
+		return (1);
+	if (ft_strncmp(head->data, "export", 7) == 0)
+		return (1);
+	if (ft_strncmp(head->data, "unset", 6) == 0)
+		return (1);
+	if (ft_strncmp(head->data, "env", 4) == 0)
+		return (1);
+	if (ft_strncmp(head->data, "exit", 5) == 0)
+		return (1);
+	return (0);
+}
+
 void	exec_compound_cmd(t_cmd *cmd, int prev_in, char **env, t_env *envi)
 {
 	pid_t	pid;
@@ -178,7 +197,10 @@ void	exec_compound_cmd(t_cmd *cmd, int prev_in, char **env, t_env *envi)
 			dup2(pfds[1], STDOUT_FILENO);
 		close(pfds[0]);
 		setup_redirects(cmd, envi);
-		exec_cmd(cmd->args, env);
+		if (check_builtin(cmd->args))
+			ft_built_in(cmd);
+		else
+			exec_cmd(cmd->args, env);
 	}
 	else
 	{
@@ -190,6 +212,8 @@ void	exec_compound_cmd(t_cmd *cmd, int prev_in, char **env, t_env *envi)
 		exec_compound_cmd(cmd->next, prev_in, env, envi);
 }
 
+
+
 void	exec_simple_cmd(t_cmd *cmd, char **env, t_env *envi)
 {
 	pid_t	pid;
@@ -198,7 +222,10 @@ void	exec_simple_cmd(t_cmd *cmd, char **env, t_env *envi)
 	if (pid == 0)
 	{
 		setup_redirects(cmd, envi);
-		exec_cmd(cmd->args, env);
+		if (check_builtin(cmd->args))
+			ft_built_in(cmd->args);
+		else
+			exec_cmd(cmd->args, env);
 	}
 	else
 	{
@@ -212,7 +239,8 @@ void	ft_execute(t_cmd *cmd, char **env, t_env *envi)
 	int		size = 0;
 
 	curr = cmd;
-	while (curr){
+	while (curr)
+	{
 		++size;
 		curr = curr->next;
 	}
@@ -267,6 +295,35 @@ t_env   *create_node(char *key, char *value)
 	node->value = ft_strdup(value);
 	node->next = NULL; // every new node is pointing to the NULL at fisrt
 	return (node);
+}
+
+void	ft_command(t_node *node)
+{
+	t_node	*tmp;
+
+	tmp = node;
+	while (tmp)
+	{
+		tmp = tmp->next;
+	}
+}
+
+void	ft_built_in(t_node *node)
+{
+		if (ft_strcmp("echo", node->data, 5) == 0)
+			ft_echo();
+		if (ft_strcmp("cd", node->data, 3) == 0)
+			ft_cd();
+		if (ft_strcmp("pwd", node->data, 4) == 0)
+			ft_pwd();
+		if (ft_strcmp("export", node->data, 7) == 0)
+			ft_export(g_global.env, );
+		if (ft_strcmp("unset", node->data, 6) == 0)
+			ft_unset();
+		if (ft_strcmp("env", node->data, 4) == 0)
+			ft_env();
+		if (ft_strcmp("exit", node->data, 5) == 0)
+			ft_exit(g_global.exit_status);
 }
 
 /*---------------------------------------------------------------------*/

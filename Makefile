@@ -6,7 +6,7 @@
 #    By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/06 12:31:19 by nelallao          #+#    #+#              #
-#    Updated: 2023/07/25 22:39:01 by nelallao         ###   ########.fr        #
+#    Updated: 2023/07/26 19:59:20 by nelallao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ FLAGS = -Wall -Wextra -Werror
 LFLAGS = -lreadline
 # FFLAGS = -fsanitize=address -g
 # SRC = noaman/minishell.c ./includes/libft_func.c ./ayoub/execution.c
-SRC= minishell.c execution.c libft_func.c libft_func_2.c libft_func_3.c check.c expend.c expend_2.c inserting.c outils.c token.c outils_2.c get_next_line.c get_next_line_utils.c
+SRC= minishell.c execution.c libft_func.c libft_func_2.c libft_func_3.c libft_func_4.c check.c expend.c expend_2.c inserting.c outils.c token.c outils_2.c get_next_line.c get_next_line_utils.c builtin.c
 OBJ := $(SRC:.c=.o)
 OBJ := $(addprefix obj/, $(OBJ))
 OBJ_DIR=obj/
@@ -28,10 +28,10 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
 $(NAME): $(OBJ)
-	$(CC) $(LFLAGS) $(OBJ) -o $(NAME)
+	$(CC) -lreadline $(LFLAGS) $(FFLAGS) -L /Users/nelallao/.brew/opt/readline/lib/ $(OBJ)  -o $(NAME)
 
 obj/%.o: noaman/%.c
-	$(CC) -c $< -o $@
+	$(CC) -c $< -o $@ -I /Users/nelallao/.brew/opt/readline/include/
 
 clean:
 	@$(RM) $(OBJ)

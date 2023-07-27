@@ -6,13 +6,13 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:47 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/26 10:07:50 by nelallao         ###   ########.fr       */
-/*                                                                            */
+/*   Updated: 2023/07/26 11:56:30 by nelallao         ###   ########.fr       */
+/**/
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	ft_initialize(t_token *s, t_node *head)
+void	ft_initialize(t_token *s)
 {
 	s->i = 0;
 	s->start = 0;
@@ -42,6 +42,7 @@ void	ft_display(t_node *head)
 void	all_display(t_cmd *cmd)
 {
 	t_cmd	*tmp;
+
 	int		pipe;
 
 	pipe = 1;
@@ -64,11 +65,20 @@ void	all_display(t_cmd *cmd)
 
 void	ft_free(t_cmd *cmd, char *input, t_node *head)
 {
-	ft_frees_cmd(cmd);
-	ft_free_ls(head);
-	free(input);
+	// ft_free_ls(head);
+	// ft_frees_cmd(cmd);
+	// free(input);
 }
-
+void	ft_signal(int sig)
+{
+	if (sig == SIGINT)
+	{
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		printf("\n");
+		rl_redisplay();
+	}
+}
 int	main(int ac, char **av, char **env)
 {
 	t_node	*head;
@@ -77,18 +87,23 @@ int	main(int ac, char **av, char **env)
 	char	*input;
 
 	head = NULL;
+	g_global.exit_status = 14;
 	g_global.env = ft_setup_env(env);
+	signal(SIGINT ,ft_signal);
+	signal(SIGQUIT ,SIG_IGN);
+
 	while (ac && av[0])
 	{
 		input = readline("-> Donpha❕ ");
-		if (input == NULL || input[0] == '\0')
+		if (input == NULL)
 		{
 			free(input);
-			continue ;
+			exit(g_global.exit_status);
 		}
+		if (!strlen(input))
+			continue;
 		head = ft_token(input, head);
 		ft_type(&head);
-		// ft_display(head);
 		if (ft_syntax_error(input, head))
 			continue ;
 		cmd = ft_insert_link(head);
@@ -96,7 +111,6 @@ int	main(int ac, char **av, char **env)
 		ft_execute(cmd, env, envi);
 		// all_display(cmd);
 		ft_free(cmd, input, head);
-		// system("leaks minishell");
 		add_history(input);
 	}
 	return (0);

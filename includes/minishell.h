@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 # include <stdio.h>
+#include <dirent.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdlib.h>
@@ -51,6 +52,7 @@ typedef struct s_global
 
 t_global	g_global;
 
+
 typedef struct s_node
 {
 	char			*data;
@@ -83,9 +85,23 @@ typedef struct s_token
 	char	*value;
 }	t_token;
 
+
+/*-----------------builtin--------------------------*/
+int	ft_cd(char *path);
+int	ft_echo(char **echo, int number_of_arg);
+int	ft_env();
+int ft_exit(int status);
+int	ft_modify_node(char	*export, char	*key);
+int	ft_check_key(char	**key_value);
+int	ft_export(t_env **export, char *str);
+int	ft_pwd(void);
+int	ft_unset(char *str);
+void	ft_built_in(t_cmd *cmd);
+void	ft_command(t_node *node);
+/*--------------------------------------------------*/
 /*---------noaman-----------------*/
 
-void	ft_initialize(t_token *s, t_node *head);
+void	ft_initialize(t_token *s);
 void	ft_insert_token(t_node **head, char *data);
 void	ft_insert_token_2(t_node **head, char *data, int type);
 void	ft_display(t_node *head);
@@ -142,7 +158,7 @@ t_env	*ft_setup_env(char **env_main);
 /*-------------------------------*/
 
 /*---------libft-----------------*/
-int		ft_strcmp(char *s1, char *s2);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_strlen(const char *str);
 char	*ft_strchr(const char *scanned, int searched);
 char	*ft_strdup(const char *s1);
@@ -151,5 +167,7 @@ void	ft_putstr_fd(char *s, int fd);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	**ft_split(char *s, char c);
 int		ft_isalnum(int n);
+char	*ft_itoa(int n);
+void	*ft_memcpy(void *dest, const void *src, size_t n);
 /*-------------------------------*/
 #endif

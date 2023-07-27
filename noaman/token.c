@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:56:02 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/25 23:16:36 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/26 19:14:54 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ t_node	*ft_token(char *str, t_node *head)
 
 	head = NULL;
 	s = (t_token *)malloc(sizeof(t_token));
-	ft_initialize(s, head);
+	ft_initialize(s);
 	while (str[s->i])
 	{
 		if (str[s->i] == '\'' && s->double_quote == 0)
@@ -34,8 +34,6 @@ t_node	*ft_token(char *str, t_node *head)
 			ft_pipe(str, s, &head);
 		s->i++;
 	}
-	if (str[s->start] == ' ')
-		s->start++;
 	if (ft_strlen(&str[s->start]) != 0)
 		ft_insert_token(&head, &(str[s->start]));
 	free(s);

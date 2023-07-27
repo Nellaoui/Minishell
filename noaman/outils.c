@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:08:01 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/25 18:04:22 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/26 11:39:22 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ char	*get_index(char *string)
 	int	i;
 
 	i = 0;
-	while (string[i] && (ft_isalnum(string[i]) || (string[i] == '_')))
+	while (string[i] && (ft_isalnum(string[i]) || (string[i] == '_') || (string[i] == '?')))
 		i++;
-	return (ft_substr(string, 0, i));
+	return (ft_substr(string, i - 1, i));
 }
 
 void	free_arr(char **s)
