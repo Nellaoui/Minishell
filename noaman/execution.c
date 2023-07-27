@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 18:43:16 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/27 10:28:13 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/27 12:09:08 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,9 +197,9 @@ void	exec_compound_cmd(t_cmd *cmd, int prev_in, char **env, t_env *envi)
 			dup2(pfds[1], STDOUT_FILENO);
 		close(pfds[0]);
 		setup_redirects(cmd, envi);
-		if (check_builtin(cmd->args))
-			ft_built_in(cmd);
-		else
+		// if (check_builtin(cmd->args))
+		// 	ft_built_in(cmd);
+		// else
 			exec_cmd(cmd->args, env);
 	}
 	else
@@ -219,17 +219,21 @@ void	exec_simple_cmd(t_cmd *cmd, char **env, t_env *envi)
 	pid_t	pid;
 
 	pid = fork();
+	signal(SIGINT, SIG_IGN);
 	if (pid == 0)
 	{
+		signal(SIGQUIT, SIG_DFL);
+		signal(SIGINT, SIG_DFL);
 		setup_redirects(cmd, envi);
-		if (check_builtin(cmd->args))
-			ft_built_in(cmd->args);
-		else
+		// if (check_builtin(cmd->args))
+		// 	ft_built_in(cmd->args);
+		// else
 			exec_cmd(cmd->args, env);
 	}
 	else
 	{
 		wait(NULL);
+		signal(SIGINT, ft_signal);
 	}
 }
 
@@ -308,22 +312,22 @@ void	ft_command(t_node *node)
 	}
 }
 
-void	ft_built_in(t_node *node)
-{
-		if (ft_strcmp("echo", node->data, 5) == 0)
-			ft_echo();
-		if (ft_strcmp("cd", node->data, 3) == 0)
-			ft_cd();
-		if (ft_strcmp("pwd", node->data, 4) == 0)
-			ft_pwd();
-		if (ft_strcmp("export", node->data, 7) == 0)
-			ft_export(g_global.env, );
-		if (ft_strcmp("unset", node->data, 6) == 0)
-			ft_unset();
-		if (ft_strcmp("env", node->data, 4) == 0)
-			ft_env();
-		if (ft_strcmp("exit", node->data, 5) == 0)
-			ft_exit(g_global.exit_status);
-}
+// void	ft_built_in(t_node *node)
+// {
+// 		if (ft_strcmp("echo", node->data, 5) == 0)
+// 			ft_echo();
+// 		if (ft_strcmp("cd", node->data, 3) == 0)
+// 			ft_cd();
+// 		if (ft_strcmp("pwd", node->data, 4) == 0)
+// 			ft_pwd();
+// 		if (ft_strcmp("export", node->data, 7) == 0)
+// 			ft_export(g_global.env, );
+// 		if (ft_strcmp("unset", node->data, 6) == 0)
+// 			ft_unset();
+// 		if (ft_strcmp("env", node->data, 4) == 0)
+// 			ft_env();
+// 		if (ft_strcmp("exit", node->data, 5) == 0)
+// 			ft_exit(g_global.exit_status);
+// }
 
 /*---------------------------------------------------------------------*/

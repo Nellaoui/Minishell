@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:59:38 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/26 19:13:19 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/27 10:51:50 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,15 +120,15 @@ void	ft_type(t_node **head)
 	while (node != NULL)
 	{
 		node->type = ARRGUMENT;
-		if (ft_strcmp(node->data, "|") == 0)
+		if (ft_strncmp(node->data, "|", 2) == 0)
 			node->type = PIPE;
-		if (ft_strcmp(node->data, ">") == 0)
+		if (ft_strncmp(node->data, ">", 2) == 0)
 			node->type = OUT;
-		if (ft_strcmp(node->data, "<") == 0)
+		if (ft_strncmp(node->data, "<", 2) == 0)
 			node->type = IN;
-		if (ft_strcmp(node->data, "<<") == 0)
+		if (ft_strncmp(node->data, "<<", 3) == 0)
 			node->type = HERDOC;
-		if (ft_strcmp(node->data, ">>") == 0)
+		if (ft_strncmp(node->data, ">>", 3) == 0)
 			node->type = APPEND;
 		node = node->next;
 	}

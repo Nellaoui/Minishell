@@ -78,7 +78,25 @@ void	ft_signal(int sig)
 		printf("\n");
 		rl_redisplay();
 	}
+	// if (sig == SIGQUIT)
+	// {
+	// 	i
+	// }
 }
+int ft_empty(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ' || str[i] != '\t')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_node	*head;
@@ -95,6 +113,7 @@ int	main(int ac, char **av, char **env)
 	while (ac && av[0])
 	{
 		input = readline("-> Donpha❕ ");
+		input = ft_strtrim(input, " \t");
 		if (input == NULL)
 		{
 			free(input);

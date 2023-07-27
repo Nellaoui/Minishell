@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:08:01 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/26 11:39:22 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/27 22:39:24 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,15 @@ int	ft_is_valid(char c)
 char	*get_index(char *string)
 {
 	int	i;
+	int	j;
 
 	i = 0;
+	j = 0;
+	if (string[i] && string[i] == '?')
+		return (ft_substr(string, 0, i + 1));
 	while (string[i] && (ft_isalnum(string[i]) || (string[i] == '_') || (string[i] == '?')))
 		i++;
-	return (ft_substr(string, i - 1, i));
+	return (ft_substr(string, 0, i));
 }
 
 void	free_arr(char **s)
@@ -55,7 +59,7 @@ char	*get_value(char *id, t_env *envi)
 	tmp = envi;
 	while (tmp)
 	{
-		if (ft_strcmp(id, tmp->key) == 0)
+		if (ft_strncmp(id, tmp->key, ft_strlen(tmp->key)) == 0)
 		{
 			return (tmp->value);
 		}
