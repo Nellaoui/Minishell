@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 10:11:00 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/27 11:20:33 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/27 23:12:21 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,3 +146,36 @@ char	*ft_strtrim(char const *s1, char const *set)
 	return (dest);
 }
 
+int	ft_isalpha(int c)
+{
+	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
+}
+
+long	ft_atoi(const char *str)
+{
+	long	signe;
+	long	i;
+	long	result;
+
+	signe = 1;
+	i = 0;
+	result = 0;
+	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\v' || str[i] == '\n'
+		|| str[i] == '\r' || str[i] == '\f')
+	{
+		i++;
+	}
+	if (str[i] == '-')
+	{
+		signe = signe * (-1);
+		i++;
+	}
+	else if (str[i] == '+')
+		i++;
+	while (str[i] >= '0' && str[i] <= '9')
+	{
+		result = result * 10 + str[i] - '0';
+		i++;
+	}
+	return (result * signe);
+}

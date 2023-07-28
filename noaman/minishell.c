@@ -74,7 +74,7 @@ void	ft_signal(int sig)
 	if (sig == SIGINT)
 	{
 		rl_on_new_line();
-		rl_replace_line("", 0);
+		// rl_replace_line("", 0);
 		printf("\n");
 		rl_redisplay();
 	}
@@ -105,10 +105,10 @@ int	main(int ac, char **av, char **env)
 	char	*input;
 
 	head = NULL;
-	g_global.exit_status = 14;
+	// g_global.exit_status = 0;
 	g_global.env = ft_setup_env(env);
-	signal(SIGINT ,ft_signal);
-	signal(SIGQUIT ,SIG_IGN);
+	// signal(SIGINT ,ft_signal);
+	// signal(SIGQUIT ,SIG_IGN);
 
 	while (ac && av[0])
 	{

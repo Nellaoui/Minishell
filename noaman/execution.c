@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 18:43:16 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/27 12:09:08 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/28 10:33:36 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,14 @@
 
 void	exec_cmd(t_node *cmd, char **env)
 {
-	char *tmp = "/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin";
-	char **paths = ft_split(tmp, ':');
+	char **paths = ft_split(get_value("PATH", g_global.env), ':');
 	char **e_cmd = linked_list_to_array(cmd);
 	e_cmd[0] = get_cmd(paths, e_cmd[0]);
+	if (e_cmd[0] == NULL)
+	{
+		dprintf(2, "minishell: command not found\n");
+		exit (127);
+	}
 	execve(e_cmd[0], e_cmd, env);
 	printf("somthing went wrong\n");
 	exit (1);
@@ -82,12 +86,12 @@ int	check_cmd(char *cmd)
 {
 	if (access(cmd, F_OK) < 0)
 	{
-		dprintf(2, "No Such file: %s\n", cmd);
+		dprintf(2, "No such file or directory: %s\n", cmd);
 		exit(126);
 	}
 	if (access(cmd, X_OK) < 0)
 	{
-		dprintf(2, "Permissions: %s\n", cmd);
+		dprintf(2, "Permission denied: %s\n", cmd);
 		exit(126);
 	}
 	return (1);
@@ -103,13 +107,13 @@ void	setup_heredoc(char *del, int expand, t_env *envi)
 	while (1)
 	{
 		line = get_next_line(0);
-		if (strnstr(line, del, strlen(del)))
+		if (strnstr(line, del, strlen(del))) // need ft_
 			break ;
-		// if (expand)
-			dprintf(pfds[1], "%s", get_expanded(line, envi));
-		// else
-		// 	dprintf(pfds[1], "%s", line);
-		// free(line);
+		if (expand)
+			dprintf(pfds[1], "%s", get_expanded(line, envi)); // printf()
+		else
+			dprintf(pfds[1], "%s", line);
+		free(line);
 	}
 	free(line);
 	dup2(pfds[0], STDIN_FILENO);
@@ -117,11 +121,11 @@ void	setup_heredoc(char *del, int expand, t_env *envi)
 
 void	handle_heredoc(t_node *curr, t_env *envi)
 {
-	// while (curr)
-	// {
+	while (curr)
+	{
 		setup_heredoc(curr->data, curr->quote, envi);
-	// 	curr = curr->next;
-	// }
+		curr = curr->next;
+	}
 }
 
 void	setup_redirects(t_cmd *cmd, t_env *envi)
@@ -187,6 +191,7 @@ void	exec_compound_cmd(t_cmd *cmd, int prev_in, char **env, t_env *envi)
 {
 	pid_t	pid;
 	int		pfds[2];
+	t_node	*node;
 
 	pipe(pfds);
 	pid = fork();
@@ -218,6 +223,16 @@ void	exec_simple_cmd(t_cmd *cmd, char **env, t_env *envi)
 {
 	pid_t	pid;
 
+	if (check_builtin(cmd->args))
+	{
+		int __in = dup(0);
+		int __out = dup(1);
+		setup_redirects(cmd, envi);
+		ft_built_in(cmd);
+		dup2(0, __in);
+		dup2(1, __out);
+		return ;
+	}
 	pid = fork();
 	signal(SIGINT, SIG_IGN);
 	if (pid == 0)
@@ -225,9 +240,9 @@ void	exec_simple_cmd(t_cmd *cmd, char **env, t_env *envi)
 		signal(SIGQUIT, SIG_DFL);
 		signal(SIGINT, SIG_DFL);
 		setup_redirects(cmd, envi);
-		// if (check_builtin(cmd->args))
-		// 	ft_built_in(cmd->args);
-		// else
+		if (check_builtin(cmd->args))
+			exit(ft_built_in(cmd));
+		else
 			exec_cmd(cmd->args, env);
 	}
 	else
@@ -312,22 +327,61 @@ void	ft_command(t_node *node)
 	}
 }
 
-// void	ft_built_in(t_node *node)
-// {
-// 		if (ft_strcmp("echo", node->data, 5) == 0)
-// 			ft_echo();
-// 		if (ft_strcmp("cd", node->data, 3) == 0)
-// 			ft_cd();
-// 		if (ft_strcmp("pwd", node->data, 4) == 0)
-// 			ft_pwd();
-// 		if (ft_strcmp("export", node->data, 7) == 0)
-// 			ft_export(g_global.env, );
-// 		if (ft_strcmp("unset", node->data, 6) == 0)
-// 			ft_unset();
-// 		if (ft_strcmp("env", node->data, 4) == 0)
-// 			ft_env();
-// 		if (ft_strcmp("exit", node->data, 5) == 0)
-// 			ft_exit(g_global.exit_status);
-// }
+int	ft_count_link(t_node *node)
+{
+	t_node *tmp;
+
+	tmp = node;
+	int	i;
+	i = 0;
+	while (tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	return (i);
+}
+
+int	ft_built_in(t_cmd *cmd)
+{
+	int ac;
+
+	if (ft_strncmp("echo", cmd->args->data, 5) == 0)
+		return (ft_echo(cmd->args, ft_count_link(cmd->args)));
+	if (ft_strncmp("cd", cmd->args->data, 3) == 0)
+	{
+		ac = ft_count_link(cmd->args);
+		if (ac > 1)
+		{
+			cmd->args = cmd->args->next;
+			return (ft_cd(cmd->args->data));
+		}
+		else
+			return (ft_cd(NULL));
+	}
+	if (ft_strncmp("pwd", cmd->args->data, 4) == 0)
+		return (ft_pwd());
+	if (ft_strncmp("export", cmd->args->data, 7) == 0)
+	{
+		if (cmd->args->next)
+			cmd->args = cmd->args->next;
+		return (ft_export(&g_global.env, cmd->args->data));
+	}
+	if (ft_strncmp("unset", cmd->args->data, 6) == 0)
+	{
+		if (cmd->args->next)
+			cmd->args = cmd->args->next;
+		return (ft_unset(cmd->args->data));
+	}
+	if (ft_strncmp("env", cmd->args->data, 4) == 0)
+		return (ft_env());
+	if (ft_strncmp("exit", cmd->args->data, 5) == 0)
+	{
+		if (cmd->args->next)
+			cmd->args = cmd->args->next;
+		return(ft_exit(cmd->args->data));
+	}
+	return (0);
+}
 
 /*---------------------------------------------------------------------*/

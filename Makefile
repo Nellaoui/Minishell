@@ -6,7 +6,7 @@
 #    By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/06 12:31:19 by nelallao          #+#    #+#              #
-#    Updated: 2023/07/27 10:59:21 by nelallao         ###   ########.fr        #
+#    Updated: 2023/07/27 22:59:52 by nelallao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
 $(NAME): $(OBJ)
-	$(CC) -lreadline $(LFLAGS) $(FFLAGS) -L /Users/nelallao/.brew/opt/readline/lib/ $(OBJ)  -o $(NAME)
+	$(CC) -lreadline $(LFLAGS) $(FFLAGS) -L /Users/nelallao/.brew/opt/readline/lib/  $(OBJ)  -o $(NAME)
 
 obj/%.o: noaman/%.c
 	$(CC) -c $< -o $@ -I /Users/nelallao/.brew/opt/readline/include/

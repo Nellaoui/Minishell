@@ -87,16 +87,16 @@ typedef struct s_token
 
 
 /*-----------------builtin--------------------------*/
-int	ft_cd(char *path);
-int	ft_echo(char **echo, int number_of_arg);
-int	ft_env();
-int ft_exit(int status);
-int	ft_modify_node(char	*export, char	*key);
-int	ft_check_key(char	**key_value);
-int	ft_export(t_env **export, char *str);
-int	ft_pwd(void);
-int	ft_unset(char *str);
-void	ft_built_in(t_cmd *cmd);
+int		ft_cd(char *path);
+int		ft_echo(t_node *args, int number_of_arg);
+int		ft_env();
+int		ft_exit(char *status);
+int		ft_modify_node(char	*export, char	*key);
+int		ft_check_key(char	**key_value);
+int		ft_export(t_env **export, char *str);
+int		ft_pwd(void);
+int		ft_unset(char *str);
+int		ft_built_in(t_cmd *cmd);
 void	ft_command(t_node *node);
 /*--------------------------------------------------*/
 /*---------noaman-----------------*/
@@ -147,9 +147,9 @@ void	exec_simple_cmd(t_cmd *cmd, char **env, t_env *envi);
 void	ft_execute(t_cmd *cmd, char **env, t_env *envi);
 t_env   *create_node(char *key, char *value);
 void	add_node(t_env **list, t_env *new_node);
-char **linked_list_to_array(t_node *head);
+char 	**linked_list_to_array(t_node *head);
 char	*get_cmd(char **paths, char *cmd);
-int	check_cmd(char *cmd);
+int		check_cmd(char *cmd);
 void	exec_cmd(t_node *cmd, char **env);
 void	setup_in_redirects(t_node *in_red);
 void	setup_out_redirects(t_node *out_red);
@@ -169,8 +169,10 @@ char	**ft_split(char *s, char c);
 int		ft_isalnum(int n);
 char	*ft_itoa(int n);
 void	*ft_memmove(void *dest, const void *src, size_t n);
+int		ft_isalpha(int c);
 void	*ft_memcpy(void *dest, const void *src, size_t n);
 char	*ft_strtrim(char const *s1, char const *set);
+long	ft_atoi(const char *str);
 /*-------------------------------*/
 
 
