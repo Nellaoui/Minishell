@@ -1,32 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft_func_3.c                                     :+:      :+:    :+:   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/25 17:41:18 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/26 12:11:42 by nelallao         ###   ########.fr       */
+/*   Created: 2022/10/14 16:24:41 by nelallao          #+#    #+#             */
+/*   Updated: 2023/01/07 17:20:34 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+// #include <stdlib.h>
+// #include <string.h>
 
-void	*ft_memset(void *str, int c, size_t n)
-{
-	unsigned char	*p;
+/*
+1s thing is to do allocate words with counting them
+2nd is knwo what is eche words lengght
+3rd allocate what we did
+4th is move all to the meme
 
-	p = str;
-	while (n--)
-		*p++ = (unsigned char)c;
-	return (str);
-}
-
-void	*ft_bzero(void *str, size_t n)
-{
-	ft_memset(str, 0, n);
-	return (str);
-}
+*/
+#include "libft.h"
 
 static int	counter(const char *s, char c)
 {
@@ -49,17 +43,6 @@ static int	counter(const char *s, char c)
 	return (n);
 }
 
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*p;
-
-	p = malloc(count * size);
-	if (!p)
-		return (p);
-	ft_bzero(p, count * size);
-	return (p);
-}
-
 static int	w_len(const char *s, char c)
 {
 	int	i;
@@ -70,7 +53,7 @@ static int	w_len(const char *s, char c)
 	return (i);
 }
 
-char	**ft_split(char *s, char c)
+char	**	ft_split(char const *s, char c)
 {
 	char	**dest;
 	int		j;
@@ -99,3 +82,19 @@ char	**ft_split(char *s, char c)
 	return (dest);
 }
 
+// #include <stdio.h>
+
+// int main()
+// {
+// 	char **tab;
+// 	int i;
+
+// 	tab = ft_split("          eijrq   ewnfq n eqwr qw  ",  ' ');
+// 	i = 0;
+// 	while(i < 5)
+// 	{
+// 	printf("tab[%zu] = %s\n", i, tab[i]);
+// 	i++;
+// 	}
+// 	return (0);
+// }

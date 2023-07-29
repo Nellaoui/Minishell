@@ -1,4 +1,4 @@
-	/* ************************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/20 11:11:27 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/28 21:54:37 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define MINISHELL_H
 
 # include <stdio.h>
-#include <dirent.h>
+# include <dirent.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdlib.h>
@@ -24,6 +24,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include "get_next_line.h"
+# include "libft/libft.h"
 
 typedef enum e_type
 {
@@ -158,21 +159,24 @@ t_env	*ft_setup_env(char **env_main);
 /*-------------------------------*/
 
 /*---------libft-----------------*/
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
-int		ft_strlen(const char *str);
-char	*ft_strchr(const char *scanned, int searched);
-char	*ft_strdup(const char *s1);
-char	*ft_substr(char const *s, unsigned int start, int len);
-void	ft_putstr_fd(char *s, int fd);
-char	*ft_strjoin(char const *s1, char const *s2);
-char	**ft_split(char *s, char c);
-int		ft_isalnum(int n);
-char	*ft_itoa(int n);
-void	*ft_memmove(void *dest, const void *src, size_t n);
-int		ft_isalpha(int c);
-void	*ft_memcpy(void *dest, const void *src, size_t n);
-char	*ft_strtrim(char const *s1, char const *set);
-long	ft_atoi(const char *str);
+// int		ft_strncmp(const char *s1, const char *s2, size_t n);
+// int		ft_strlen(const char *str);
+// char	*ft_strchr(const char *scanned, int searched);
+// char	*ft_strdup(const char *s1);
+// char	*ft_substr(char const *s, unsigned int start, int len);
+// void	ft_putstr_fd(char *s, int fd);
+// char	*ft_strjoin(char const *s1, char const *s2);
+// char	**ft_split(char *s, char c);
+// int		ft_isalnum(int n);
+// char	*ft_itoa(int n);
+// void	*ft_memmove(void *dest, const void *src, size_t n);
+// int		ft_isalpha(int c);
+// void	*ft_memcpy(void *dest, const void *src, size_t n);
+// char	*ft_strtrim(char const *s1, char const *set);
+// long	ft_atoi(const char *str);
+// int	ft_isalnum(int n);
+// int	ft_isdigit(int n);
+// int	ft_isalpha(int n);
 /*-------------------------------*/
 
 

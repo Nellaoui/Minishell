@@ -63,18 +63,21 @@ void	all_display(t_cmd *cmd)
 	}
 }
 
-void	ft_free(t_cmd *cmd, char *input, t_node *head)
+void	ft_free(t_cmd *cmd, char *input, char **env, char *string)
 {
-	// ft_free_ls(head);
-	// ft_frees_cmd(cmd);
-	// free(input);
+	ft_expension(cmd, g_global.env);
+	ft_execute(cmd, env, g_global.env);
+	// ft_free_ls(cmd->args);
+	ft_frees_cmd(cmd);
+	free(input);
+	// free(string);
 }
 void	ft_signal(int sig)
 {
 	if (sig == SIGINT)
 	{
 		rl_on_new_line();
-		// rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		printf("\n");
 		rl_redisplay();
 	}
@@ -97,40 +100,47 @@ int ft_empty(char *str)
 	return (0);
 }
 
+void	ft_s_env(char **env)
+{
+	g_global.env = ft_setup_env(env);
+	signal(SIGINT, ft_signal);
+	signal(SIGQUIT, SIG_IGN);
+}
+
+char	*ft_readforfree(char *string, char *input)
+{
+	string = readline("-> Donpha❕ ");
+	input = ft_strtrim(string, " \t");
+	add_history(string);
+	free(string);
+	return (input);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_node	*head;
 	t_cmd	*cmd;
 	t_env	*envi;
 	char	*input;
+	char	*string;
 
-	head = NULL;
-	// g_global.exit_status = 0;
-	g_global.env = ft_setup_env(env);
-	// signal(SIGINT ,ft_signal);
-	// signal(SIGQUIT ,SIG_IGN);
-
+	ft_s_env(env);
 	while (ac && av[0])
 	{
-		input = readline("-> Donpha❕ ");
-		input = ft_strtrim(input, " \t");
+		input = ft_readforfree(string, input);
 		if (input == NULL)
 		{
 			free(input);
 			exit(g_global.exit_status);
 		}
 		if (!strlen(input))
-			continue;
+			continue ;
 		head = ft_token(input, head);
 		ft_type(&head);
 		if (ft_syntax_error(input, head))
 			continue ;
 		cmd = ft_insert_link(head);
-		ft_expension(cmd, g_global.env);
-		ft_execute(cmd, env, envi);
-		// all_display(cmd);
-		ft_free(cmd, input, head);
-		add_history(input);
+		ft_free(cmd, input, env, string);
 	}
 	return (0);
 }

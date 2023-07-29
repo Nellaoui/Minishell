@@ -1,53 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libft_func_2.c                                     :+:      :+:    :+:   */
+/*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/25 17:39:30 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/25 21:41:17 by nelallao         ###   ########.fr       */
+/*   Created: 2022/10/20 18:58:00 by nelallao          #+#    #+#             */
+/*   Updated: 2022/10/21 19:45:32 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-int	ft_strlen(const char *str)
-{
-	int	i;
-
-	i = 0;
-
-	if (!str)
-		return (0);
-	while (str[i] != '\0')
-	{
-		i++;
-	}
-	return (i);
-}
-
-
-
-int	ft_isalnum(int n)
-{
-	if ((n >= '0' && n <= '9') || (n >= 'a' && n <= 'z') || (n >= 'A'
-			&& n <= 'Z'))
-		return (1);
-	else
-		return (0);
-}
-
-void	ft_putstr_fd(char *s, int fd)
+void	ft_putendl_fd(char *s, int fd)
 {
 	if (s)
 	{
-		while (*s)
-		{
-			write(fd, s, 1);
-			s++;
-		}
+		write(fd, s, ft_strlen(s));
+		write(fd, "\n", 1);
 	}
 }
-
-
+// #include <fcntl.h>
+// #include <stdio.h>
+// int main()
+// {
+// int fd;
+// char *s = "Heloo noaman";
+// fd = creat("c.txt", O_RDWR);
+// ft_putendl_fd(s, fd);
+// }
