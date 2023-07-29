@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 18:48:52 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/29 12:54:51 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/07/29 14:22:33 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,13 +93,29 @@ int	ft_env()
 }
 
 // =========================================================================
+int is_alpha(char *string) {
+	int i;
 
+	i = 0;
+	while (string[i]){
+		if (!(string[i] >= '0' && string[i] <= '9'))
+			return (1);
+		i++;
+	}
+	return (0);
+}
 int ft_exit(char *status)
 {
 	int	exit_number;
+	int number_of_arguments;
 
+	if (is_alpha(status))
+	{
+		write(2,"exit: asf: numeric argument required\n", 37);
+		exit(255);
+	}
 	exit_number = ft_atoi(status);
-    exit((char) status);
+    exit(exit_number);
 }
 
 // =========================================================================

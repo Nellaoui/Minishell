@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 18:43:16 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/29 12:55:39 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/07/29 14:15:56 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -410,7 +410,9 @@ int	ft_built_in(t_cmd *cmd)
 	{
 		if (cmd->args->next)
 			cmd->args = cmd->args->next;
-		return(ft_exit(cmd->args->data));
+		if (cmd->args->next)
+			return (ft_exit("ziyani"));
+		return (ft_exit(cmd->args->data));
 	}
 	return (0);
 }
