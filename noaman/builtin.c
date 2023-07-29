@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 18:48:52 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/29 20:17:03 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/29 20:29:10 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*get_variable_env(t_env **env, char *var_name)
 
 int	ft_cd(char *path, t_env *env)
 {
-	DIR	*dir;
+	DIR		*dir;
 	char	*new_path;
 	t_env	*tmp;
 
@@ -102,47 +102,6 @@ int	ft_env(void)
 		tmp = tmp->next;
 	}
 	return (0);
-}
-
-// =========================================================================
-int is_alpha(char *string) {
-	int i;
-
-	i = 0;
-	while (string[i]){
-		if (!(string[i] >= '0' && string[i] <= '9'))
-			return (1);
-		i++;
-	}
-	return (0);
-}
-int ft_exit(t_node *status, char *data)
-{
-	int	exit_number;
-	int i;
-
-	i = 0;
-	t_node *x = status;
-	while (x)
-	{
-		i++;
-		x = x->next;
-	}
-	if (i > 2)
-	{
-		write (2, "exit: too many arguments\n", 21);
-		exit (1);
-	}
-	else
-	{
-		if (is_alpha(data))
-		{
-			write(2,"exit: asf: numeric argument required\n", 37);
-			exit(255);
-		}
-		exit_number = ft_atoi(data);
-	}
-    exit(exit_number);
 }
 
 // =========================================================================
@@ -245,46 +204,5 @@ int	ft_pwd(void)
 	}
 	return (1);
 }
+
 // =========================================================================
-
-void	ft_delet_node(t_env **env, char *key)
-{
-	if (*env == NULL)
-	{
-        return;
-    }
-
-    t_env* tmp = *env;
-	t_env *prev = NULL;
-	while (tmp && ft_strncmp(tmp->key, key, ft_strlen(key)))
-	{
-		prev = tmp;
-		tmp = tmp->next;
-	}
-	if (!tmp)
-		return ;
-	if (prev)
-		prev->next = tmp->next;
-	free(tmp->value);
-	free(tmp->key);
-	free(tmp);
-}
-
-int	ft_unset(char *str)
-{
-	t_env	*env;
-
-	env = g_global.env;
-
-	while (env)
-	{
-		if (ft_strncmp(env->key, str, ft_strlen(str) + 1 ) == 0)
-		{
-			ft_delet_node(&g_global.env, env->key);
-			// free(str);
-			return (0);
-		}
-		env = env->next;
-	}
-	return (1);
-}
