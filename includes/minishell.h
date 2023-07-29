@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/28 21:54:37 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/29 14:09:14 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,8 @@ char	*ft_backward(char *str);
 void	ft_free_ls(t_node *head);
 void	ft_help_get_len(t_token *s, char *data, t_env *envi);
 void	ft_help_get_str(char *data, t_token *s);
+char	*ft_readforfree(char *string, char *input);
+void	ft_s_env(char **env);
 
 /*-------------------------------*/
 /*---------ayoub-----------------*/
