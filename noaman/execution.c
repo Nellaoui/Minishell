@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 18:43:16 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/28 10:33:36 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/29 12:55:39 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
+// ===========================================================================
 
 void	exec_cmd(t_node *cmd, char **env)
 {
@@ -27,6 +28,8 @@ void	exec_cmd(t_node *cmd, char **env)
 	printf("somthing went wrong\n");
 	exit (1);
 }
+
+// ===========================================================================
 
 char **linked_list_to_array(t_node *head)
 {
@@ -55,6 +58,8 @@ char **linked_list_to_array(t_node *head)
 	return (doubleArray);
 }
 
+// ===========================================================================
+
 char	*get_cmd(char **paths, char *cmd)
 {
 	char	*tmp;
@@ -82,6 +87,8 @@ char	*get_cmd(char **paths, char *cmd)
 	return (NULL);
 }
 
+// ===========================================================================
+
 int	check_cmd(char *cmd)
 {
 	if (access(cmd, F_OK) < 0)
@@ -97,6 +104,7 @@ int	check_cmd(char *cmd)
 	return (1);
 }
 
+// ===========================================================================
 
 void	setup_heredoc(char *del, int expand, t_env *envi)
 {
@@ -119,6 +127,8 @@ void	setup_heredoc(char *del, int expand, t_env *envi)
 	dup2(pfds[0], STDIN_FILENO);
 }
 
+// ===========================================================================
+
 void	handle_heredoc(t_node *curr, t_env *envi)
 {
 	while (curr)
@@ -127,6 +137,8 @@ void	handle_heredoc(t_node *curr, t_env *envi)
 		curr = curr->next;
 	}
 }
+
+// ===========================================================================
 
 void	setup_redirects(t_cmd *cmd, t_env *envi)
 {
@@ -168,6 +180,8 @@ void	setup_redirects(t_cmd *cmd, t_env *envi)
 	}
 }
 
+// ===========================================================================
+
 int	check_builtin(t_node *head)
 {
 	if (ft_strncmp(head->data, "echo", 5) == 0)
@@ -186,6 +200,8 @@ int	check_builtin(t_node *head)
 		return (1);
 	return (0);
 }
+
+// ===========================================================================
 
 void	exec_compound_cmd(t_cmd *cmd, int prev_in, char **env, t_env *envi)
 {
@@ -217,7 +233,7 @@ void	exec_compound_cmd(t_cmd *cmd, int prev_in, char **env, t_env *envi)
 		exec_compound_cmd(cmd->next, prev_in, env, envi);
 }
 
-
+// ===========================================================================
 
 void	exec_simple_cmd(t_cmd *cmd, char **env, t_env *envi)
 {
@@ -242,6 +258,8 @@ void	exec_simple_cmd(t_cmd *cmd, char **env, t_env *envi)
 		setup_redirects(cmd, envi);
 		if (check_builtin(cmd->args))
 			exit(ft_built_in(cmd));
+			
+		
 		else
 			exec_cmd(cmd->args, env);
 	}
@@ -251,6 +269,8 @@ void	exec_simple_cmd(t_cmd *cmd, char **env, t_env *envi)
 		signal(SIGINT, ft_signal);
 	}
 }
+
+// ===========================================================================
 
 void	ft_execute(t_cmd *cmd, char **env, t_env *envi)
 {
@@ -269,39 +289,44 @@ void	ft_execute(t_cmd *cmd, char **env, t_env *envi)
 		exec_compound_cmd(cmd, 0, env, envi);
 }
 
-/*---------------------------------------------------------------------*/
+// ===========================================================================
+
 t_env	*ft_setup_env(char **env_main)
 {
-	t_env	*list; // list of nodes (the head of linked list)
-	// t_env	*node; // list of nodes
-	char	**key_value; // this double pointer hold the key and the value
+	t_env	*list;
+
+	char	**key_value;
 	int		j;
 
 	list = NULL;
 	j = -1;
 	while (env_main[++j])
 	{
-		key_value = ft_split(env_main[j], '='); // here we split the env_main so that the key_value[0]->hold the key and key_value[1]->hold the value
-		add_node(&list, create_node(key_value[0], key_value[1])); // in this line i create and add node in the same time
+		key_value = ft_split(env_main[j], '='); 
+		add_node(&list, create_node(key_value[0], key_value[1]));
 		free_arr(key_value);
 	}
-	return (list); // i return the list cuz it's the head of linkedlist.
+	return (list);
 }
+
+// ===========================================================================
 
 void	add_node(t_env **list, t_env *new_node)
 {
 	t_env	*tmp;
 
 	tmp = *list;
-	if (*list == NULL) // cuz in first time the list was pointing to the null so taht we give it node
+	if (*list == NULL)
 		*list = new_node;
 	else
 	{
-		while (tmp->next) // while the next of tmp not pointing to the null (mzl mafatch akhir node)
-			tmp = tmp->next; // so that we give it the next node
-		tmp->next = new_node; // ?
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new_node;
 	}
 }
+
+// ===========================================================================
 
 t_env   *create_node(char *key, char *value)
 {
@@ -312,9 +337,11 @@ t_env   *create_node(char *key, char *value)
 		return (0);
 	node->key = ft_strdup(key);
 	node->value = ft_strdup(value);
-	node->next = NULL; // every new node is pointing to the NULL at fisrt
+	node->next = NULL;
 	return (node);
 }
+
+// ===========================================================================
 
 void	ft_command(t_node *node)
 {
@@ -326,6 +353,8 @@ void	ft_command(t_node *node)
 		tmp = tmp->next;
 	}
 }
+
+// ===========================================================================
 
 int	ft_count_link(t_node *node)
 {
@@ -341,6 +370,8 @@ int	ft_count_link(t_node *node)
 	}
 	return (i);
 }
+
+// ===========================================================================
 
 int	ft_built_in(t_cmd *cmd)
 {
@@ -384,4 +415,4 @@ int	ft_built_in(t_cmd *cmd)
 	return (0);
 }
 
-/*---------------------------------------------------------------------*/
+// ===========================================================================
