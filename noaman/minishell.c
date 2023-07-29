@@ -77,7 +77,7 @@ void	ft_signal(int sig)
 	if (sig == SIGINT)
 	{
 		rl_on_new_line();
-		// rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		printf("\n");
 		rl_redisplay();
 	}
@@ -134,13 +134,21 @@ int	main(int ac, char **av, char **env)
 			exit(g_global.exit_status);
 		}
 		if (!strlen(input))
+		{
+			system("leaks minishell");
 			continue ;
+		}
 		head = ft_token(input, head);
 		ft_type(&head);
 		if (ft_syntax_error(input, head))
+		{
+			system("leaks minishell");
 			continue ;
+		}
 		cmd = ft_insert_link(head);
 		ft_free(cmd, input, env, string);
+			system("leaks minishell");
+
 	}
 	return (0);
 }
