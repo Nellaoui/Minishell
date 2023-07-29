@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:56:02 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/26 19:14:54 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/29 11:58:11 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 
 t_node	*ft_token(char *str, t_node *head)
 {
-	t_token	*s;
+	t_token	s[1];
 
 	head = NULL;
-	s = (t_token *)malloc(sizeof(t_token));
 	ft_initialize(s);
 	while (str[s->i])
 	{
@@ -25,7 +24,8 @@ t_node	*ft_token(char *str, t_node *head)
 			s->single_quote = !s->single_quote;
 		if (str[s->i] == '\"' && s->single_quote == 0)
 			s->double_quote = !s->double_quote;
-		if ((str[s->i] == ' ' || str[s->i] == '\t') && s->double_quote == 0 && s->single_quote == 0)
+		if ((str[s->i] == ' ' || str[s->i] == '\t')
+			&& s->double_quote == 0 && s->single_quote == 0)
 			ft_splited(str, s, &head);
 		if ((str[s->i] == '<' || str[s->i] == '>')
 			&& (s->double_quote == 0) && (s->single_quote == 0))
@@ -36,7 +36,7 @@ t_node	*ft_token(char *str, t_node *head)
 	}
 	if (ft_strlen(&str[s->start]) != 0)
 		ft_insert_token(&head, &(str[s->start]));
-	free(s);
+	ft_type(&head);
 	return (head);
 }
 

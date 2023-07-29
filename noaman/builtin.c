@@ -6,13 +6,11 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 18:48:52 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/29 14:22:33 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/07/29 14:53:32 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-// =========================================================================
 
 char	*get_variable_env(t_env **env, char *var_name)
 {
@@ -34,20 +32,20 @@ char	*get_variable_env(t_env **env, char *var_name)
 
 int	ft_cd(char *path)
 {
-	DIR *dir;
-	// getcwd();
+	DIR	*dir;
+
 	if (!path)
 		path = get_variable_env(&g_global.env, "HOME");
-	printf("%s\n",path);
 	dir = opendir(path);
 	if (!dir)
 	{
 		printf("cd : %s : No such file or directory\n", path);
-		return(1);
+		return (1);
 	}
 	else
-	{		if (chdir(path) < 0)
-				return (1);
+	{
+		if (chdir(path) < 0)
+			return (1);
 	}
 	return (0);
 }
@@ -62,7 +60,8 @@ int	ft_echo(t_node *args, int number_of_arg)
 	i = 0;
 	n_line = 1;
 	args = args->next;
-	while (args && args->data && number_of_arg > 1 && ft_strncmp(args->data, "-n", 3) == 0)
+	while (args && args->data && number_of_arg > 1
+		&& ft_strncmp(args->data, "-n", 3) == 0)
 	{
 		n_line = 0;
 		args = args->next;
@@ -80,9 +79,10 @@ int	ft_echo(t_node *args, int number_of_arg)
 
 // =========================================================================
 
-int	ft_env()
+int	ft_env(void)
 {
 	t_env	*tmp;
+
 	tmp = g_global.env;
 	while (tmp)
 	{
@@ -104,17 +104,32 @@ int is_alpha(char *string) {
 	}
 	return (0);
 }
-int ft_exit(char *status)
+int ft_exit(t_node *status, char *data)
 {
 	int	exit_number;
-	int number_of_arguments;
+	int i;
 
-	if (is_alpha(status))
+	i = 0;
+	t_node *x = status;
+	while (x)
 	{
-		write(2,"exit: asf: numeric argument required\n", 37);
-		exit(255);
+		i++;
+		x = x->next;
 	}
-	exit_number = ft_atoi(status);
+	if (i > 2)
+	{
+		write (2, "exit: too many arguments\n", 21);
+		exit (1);
+	}
+	else
+	{
+		if (is_alpha(data))
+		{
+			write(2,"exit: asf: numeric argument required\n", 37);
+			exit(255);
+		}
+		exit_number = ft_atoi(data);
+	}
     exit(exit_number);
 }
 
@@ -154,6 +169,10 @@ int	ft_check_key(char	**key_value)
 	return (0);
 }
 
+// =========================================================================
+//if we not put the value it will segfault so that we should create a
+// func() check the value if exist or not
+
 int	ft_export(t_env **export, char *str)
 {
 	t_env	*tmp;
@@ -161,7 +180,7 @@ int	ft_export(t_env **export, char *str)
 	char	**key_value;
 	int		i;
 	int		added;
-	
+
 	added = 0;
 	tmp = *export;
 	key_value = ft_split(str, '=');
@@ -184,7 +203,7 @@ int	ft_export(t_env **export, char *str)
 			{
 				tmp->value = ft_strdup(key_value[1]);
 				added=1;
-				break;
+				break ;
 			}
 			tmp = tmp->next;
 		}
@@ -207,7 +226,7 @@ int	ft_pwd(void)
 	tmp = g_global.env;
 	while (tmp)
 	{
-		if (!strncmp("PWD", tmp->key, 4))
+		if (ft_strncmp("PWD", tmp->key, 4) == 0)
 			printf("%s\n", tmp->value);
 		tmp = tmp->next;
 	}
@@ -217,7 +236,8 @@ int	ft_pwd(void)
 
 void	ft_delet_node(t_env **env, char *key)
 {
-	if (*env == NULL) {
+	if (*env == NULL)
+	{
         return;
     }
 
@@ -242,7 +262,7 @@ int	ft_unset(char *str)
 	t_env	*env;
 
 	env = g_global.env;
-	
+
 	while (env)
 	{
 		if (ft_strncmp(env->key, str, ft_strlen(str) + 1 ) == 0)
@@ -255,7 +275,3 @@ int	ft_unset(char *str)
 	}
 	return (1);
 }
-
-// =========================================================================
-
-

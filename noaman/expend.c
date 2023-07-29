@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:09:50 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/26 12:05:56 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/28 17:31:09 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,15 @@ void	ft_expension(t_cmd *cmd, t_env *envi)
 	t_cmd	*tmp;
 
 	tmp = cmd;
+
+	// ft_display(tmp->in_reds);
 	while (tmp)
 	{
 		ft_mini_expen(tmp->args, envi);
-		ft_mini_expen(tmp->in_reds, envi);
-		ft_mini_expen(tmp->out_reds, envi);
+		// if (tmp->in_reds)
+			ft_mini_expen(tmp->in_reds, envi);
+		if (tmp->out_reds)
+			ft_mini_expen(tmp->out_reds, envi);
 		tmp = tmp->next;
 	}
 	ft_quote(cmd);
@@ -66,7 +70,10 @@ int	get_str_len(char *data, t_env *envi)
 			}
 		}
 		else if (data[s.j] == '$' && ++s.j)
+		{
+
 			ft_help_get_len(&s, data, envi);
+		}
 		else
 		{
 			s.len++;
@@ -88,6 +95,8 @@ void	ft_help_get_len(t_token *s, char *data, t_env *envi)
 	{
 		s->identifire = get_index(&data[s->j]);
 		s->value = get_value(s->identifire, envi);
+		if (!s->value)
+			return ;
 		if (s->identifire[0] == '?' && s->identifire[1] == '\0')
 		{
 			string = ft_strdup(ft_itoa(g_global.exit_status));
@@ -95,7 +104,8 @@ void	ft_help_get_len(t_token *s, char *data, t_env *envi)
 			free(string);
 		}
 		s->j = s->j + ft_strlen(s->identifire);
-		s->len = s->len + ft_strlen(s->value);
+		printf("%s\n", s->identifire);
+			s->len = s->len + ft_strlen(s->value);
 		free(s->identifire);
 	}
 }

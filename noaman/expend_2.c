@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:11:49 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/28 10:13:30 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/28 17:31:11 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ char	*get_new_string(int str_len, char *data, t_env *envi)
 		if (data[s->j] == '\'' && ++s->j)
 			ft_skip(s, data);
 		else if (data[s->j] == '$' && ++s->j)
+		{
 			ft_help_get_str(data, s);
+		}
 		else
 		{
 			s->string[s->len] = data[s->j];
@@ -52,6 +54,8 @@ void	ft_help_get_str(char *data, t_token *s)
 	{
 		s->identifire = get_index(&data[s->j]);
 		s->value = get_value(s->identifire, g_global.env);
+		if (!s->value)
+			return ;
 		if (s->identifire[0] == '?' && s->identifire[1] == '\0')
 		{
 			string = ft_strdup(ft_itoa(g_global.exit_status));
@@ -60,7 +64,7 @@ void	ft_help_get_str(char *data, t_token *s)
 		}
 		s->j = s->j + ft_strlen(s->identifire);
 		ft_memcpy(&s->string[s->len], s->value, ft_strlen(s->value));
-		s->len = s->len + ft_strlen(s->value);
+			s->len = s->len + ft_strlen(s->value);
 		free(s->identifire);
 	}
 }
