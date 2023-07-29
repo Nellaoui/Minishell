@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 18:43:16 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/29 14:50:13 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/07/29 16:23:19 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,54 +129,60 @@ void	handle_heredoc(t_node *curr, t_env *envi)
 	}
 }
 
+void ft_help_in_red(t_cmd *cmd, int fd)
+{
+	while (cmd->in_reds)
+	{
+	if (cmd->in_reds->data)
+	{
+		if (access(cmd->in_reds->data, F_OK) == 0)
+		{
+			fd = open(cmd->in_reds->data, O_RDONLY);
+			dup2(fd, STDIN_FILENO);
+		}
+		else
+			dprintf(2, "minishell: %s: No such file or directory\n",
+				cmd->in_reds->data);
+	}
+	else
+		dprintf(2, "minishell: %s: No such file or directory\n",
+			cmd->in_reds->data);
+		cmd->in_reds = cmd->in_reds->next;
+	}
+	
+}
+
+void ft_help_out_red(t_cmd *cmd, int fd)
+{
+		while (cmd->out_reds)
+		{
+	if (cmd->out_reds->type == OUT)
+	{
+		fd = open(cmd->out_reds->data, O_RDWR
+				| O_CREAT | O_TRUNC, 0644);
+		dup2(fd, STDOUT_FILENO);
+	}
+	else if (cmd->out_reds->type == APPEND)
+	{
+		fd = open(cmd->out_reds->data, O_RDWR
+				| O_CREAT | O_APPEND, 0644);
+		dup2(fd, STDOUT_FILENO);
+	}
+			cmd->out_reds = cmd->out_reds->next;
+		}
+
+}
+
 void	setup_redirects(t_cmd *cmd, t_env *envi)
 {
 	int	fd;
 
 	if (cmd->in_reds)
-	{
-		while (cmd->in_reds)
-		{
-			if (cmd->in_reds->data)
-			{
-				if (access(cmd->in_reds->data, F_OK) == 0)
-				{
-					fd = open(cmd->in_reds->data, O_RDONLY);
-					dup2(fd, STDIN_FILENO);
-				}
-				else
-					dprintf(2, "minishell: %s: No such file or directory\n",
-						cmd->in_reds->data);
-			}
-			else
-				dprintf(2, "minishell: %s: No such file or directory\n",
-					cmd->in_reds->data);
-			cmd->in_reds = cmd->in_reds->next;
-		}
-	}
+		ft_help_in_red(cmd, fd);
 	if (cmd->out_reds)
-	{
-		while (cmd->out_reds)
-		{
-			if (cmd->out_reds->type == OUT)
-			{
-				fd = open(cmd->out_reds->data, O_RDWR
-						| O_CREAT | O_TRUNC, 0644);
-				dup2(fd, STDOUT_FILENO);
-			}
-			else if (cmd->out_reds->type == APPEND)
-			{
-				fd = open(cmd->out_reds->data, O_RDWR
-						| O_CREAT | O_APPEND, 0644);
-				dup2(fd, STDOUT_FILENO);
-			}
-			cmd->out_reds = cmd->out_reds->next;
-		}
-	}
+		ft_help_out_red(cmd, fd);
 	if (cmd->her_reds)
-	{
 		handle_heredoc(cmd->her_reds, envi);
-	}
 }
 
 int	check_builtin(t_node *head)
@@ -216,10 +222,7 @@ void	exec_compound_cmd(t_cmd *cmd, int prev_in, char **env, t_env *envi)
 			dup2(pfds[1], STDOUT_FILENO);
 		close(pfds[0]);
 		setup_redirects(cmd, envi);
-		// if (check_builtin(cmd->args))
-		// 	ft_built_in(cmd);
-		// else
-			exec_cmd(cmd->args, env);
+		exec_cmd(cmd->args, env);
 	}
 	else
 	{
@@ -242,7 +245,7 @@ void	exec_simple_cmd(t_cmd *cmd, char **env, t_env *envi)
 		__in = dup(0);
 		__out = dup(1);
 		setup_redirects(cmd, envi);
-		ft_built_in(cmd);
+		ft_built_in(cmd, envi);
 		dup2(0, __in);
 		dup2(1, __out);
 		return ;
@@ -255,7 +258,7 @@ void	exec_simple_cmd(t_cmd *cmd, char **env, t_env *envi)
 		signal(SIGINT, SIG_DFL);
 		setup_redirects(cmd, envi);
 		if (check_builtin(cmd->args))
-			exit(ft_built_in(cmd));
+			exit(ft_built_in(cmd, envi));
 		else
 			exec_cmd(cmd->args, env);
 	}
@@ -356,7 +359,7 @@ int	ft_count_link(t_node *node)
 	return (i);
 }
 
-int	ft_built_in(t_cmd *cmd)
+int	ft_built_in(t_cmd *cmd, t_env *env)
 {
 	int	ac;
 
@@ -368,10 +371,10 @@ int	ft_built_in(t_cmd *cmd)
 		if (ac > 1)
 		{
 			cmd->args = cmd->args->next;
-			return (ft_cd(cmd->args->data));
+			return (ft_cd(cmd->args->data, env));
 		}
 		else
-			return (ft_cd(NULL));
+			return (ft_cd(NULL, NULL));
 	}
 	if (ft_strncmp("pwd", cmd->args->data, 4) == 0)
 		return (ft_pwd());
@@ -393,7 +396,7 @@ int	ft_built_in(t_cmd *cmd)
 	{
 		if (cmd->args->next)
 			cmd->args = cmd->args->next;
-		return (ft_exit(cmd->args, cmd->args->data));
+		return (ft_exit(cmd->args,cmd->args->data));
 	}
 	return (0);
 }

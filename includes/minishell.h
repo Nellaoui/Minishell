@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/29 14:50:24 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/07/29 15:38:11 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ typedef struct s_token
 
 
 /*-----------------builtin--------------------------*/
-int		ft_cd(char *path);
+int		ft_cd(char *path, t_env *env);
 int		ft_echo(t_node *args, int number_of_arg);
 int		ft_env();
 int		ft_exit(t_node *status, char *data);
@@ -97,7 +97,7 @@ int		ft_check_key(char	**key_value);
 int		ft_export(t_env **export, char *str);
 int		ft_pwd(void);
 int		ft_unset(char *str);
-int		ft_built_in(t_cmd *cmd);
+int		ft_built_in(t_cmd *cmd, t_env *env);
 void	ft_command(t_node *node);
 /*--------------------------------------------------*/
 /*---------noaman-----------------*/
