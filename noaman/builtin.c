@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 18:48:52 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/29 14:53:32 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/07/29 20:17:03 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,14 @@ char	*get_variable_env(t_env **env, char *var_name)
 	return (0);
 }
 
-// =========================================================================
-
-int	ft_cd(char *path)
+int	ft_cd(char *path, t_env *env)
 {
 	DIR	*dir;
+	char	*new_path;
+	t_env	*tmp;
 
+	tmp = env;
+	new_path = malloc(PATH_MAX);
 	if (!path)
 		path = get_variable_env(&g_global.env, "HOME");
 	dir = opendir(path);
@@ -46,6 +48,16 @@ int	ft_cd(char *path)
 	{
 		if (chdir(path) < 0)
 			return (1);
+	}
+	getcwd(new_path, PATH_MAX);
+	while (tmp)
+	{
+		if (!ft_strncmp(tmp->key, "PWD", 4))
+		{
+			tmp->value = new_path;
+			break ;
+		}
+		tmp = tmp->next;
 	}
 	return (0);
 }
@@ -202,18 +214,19 @@ int	ft_export(t_env **export, char *str)
 			if (!ft_strncmp(key_value[0], tmp->key, ft_strlen(tmp->key) + 1))
 			{
 				tmp->value = ft_strdup(key_value[1]);
-				added=1;
+				added = 1;
 				break ;
 			}
 			tmp = tmp->next;
 		}
-		if(!added)
+		if (!added)
 		{
 			add_node(export, create_node(key_value[0], key_value[1]));
-			// free_arr(key_value);
+			free_arr(key_value);
 		}
 	}
-	free(str);
+	// free_arr(key_value);
+	// free(str);
 	return (0);
 }
 
@@ -268,7 +281,7 @@ int	ft_unset(char *str)
 		if (ft_strncmp(env->key, str, ft_strlen(str) + 1 ) == 0)
 		{
 			ft_delet_node(&g_global.env, env->key);
-			free(str);
+			// free(str);
 			return (0);
 		}
 		env = env->next;

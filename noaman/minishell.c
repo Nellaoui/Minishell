@@ -14,7 +14,7 @@
 
 void	ft_initialize(t_token *s)
 {
-	s->i = 0;
+	s->i = -1;
 	s->start = 0;
 	s->double_quote = 0;
 	s->single_quote = 0;
@@ -67,9 +67,8 @@ void	ft_free(t_cmd *cmd, char *input, char **env, char *string)
 {
 	ft_expension(cmd, g_global.env);
 	ft_execute(cmd, env, g_global.env);
-	// ft_free_ls(cmd->args);
 	ft_frees_cmd(cmd);
-	free(input);
+	// free(input);
 	// free(string);
 }
 void	ft_signal(int sig)
@@ -135,20 +134,20 @@ int	main(int ac, char **av, char **env)
 		}
 		if (!strlen(input))
 		{
-			system("leaks minishell");
+			free(input);
 			continue ;
 		}
 		head = ft_token(input, head);
-		ft_type(&head);
 		if (ft_syntax_error(input, head))
 		{
-			system("leaks minishell");
+			free(input);
 			continue ;
 		}
 		cmd = ft_insert_link(head);
 		ft_free(cmd, input, env, string);
-			system("leaks minishell");
-
+		ft_free_ls(head);
+		free(input);
+		system("leaks minishell");
 	}
 	return (0);
 }
