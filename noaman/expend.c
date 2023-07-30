@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:09:50 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/28 17:31:09 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/30 11:43:06 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,10 @@ void	ft_expension(t_cmd *cmd, t_env *envi)
 	t_cmd	*tmp;
 
 	tmp = cmd;
-
-	// ft_display(tmp->in_reds);
 	while (tmp)
 	{
 		ft_mini_expen(tmp->args, envi);
-		// if (tmp->in_reds)
+		if (tmp->in_reds)
 			ft_mini_expen(tmp->in_reds, envi);
 		if (tmp->out_reds)
 			ft_mini_expen(tmp->out_reds, envi);
@@ -70,10 +68,7 @@ int	get_str_len(char *data, t_env *envi)
 			}
 		}
 		else if (data[s.j] == '$' && ++s.j)
-		{
-
 			ft_help_get_len(&s, data, envi);
-		}
 		else
 		{
 			s.len++;
@@ -82,8 +77,6 @@ int	get_str_len(char *data, t_env *envi)
 	}
 	return (s.len);
 }
-
-// #include <stdlib.h>
 
 void	ft_help_get_len(t_token *s, char *data, t_env *envi)
 {

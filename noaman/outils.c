@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:08:01 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/28 13:21:47 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/30 11:44:12 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ char	*get_index(char *string)
 		return (ft_substr(string, i, j));
 	}
 	i = 0;
-	while (string[i] && (ft_isalnum(string[i]) || (string[i] == '_') || (string[i] == '?')))
+	while (string[i] && (ft_isalnum(string[i])
+			|| (string[i] == '_') || (string[i] == '?')))
 		i++;
 	return (ft_substr(string, 0, i));
 }

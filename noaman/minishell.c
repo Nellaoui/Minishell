@@ -39,38 +39,15 @@ void	ft_display(t_node *head)
 	printf("\n");
 }
 
-void	all_display(t_cmd *cmd)
-{
-	t_cmd	*tmp;
-
-	int		pipe;
-
-	pipe = 1;
-	tmp = cmd;
-	while (tmp)
-	{
-		printf("--------[command %d]-------\n", pipe);
-		ft_display(tmp->args);
-		printf("------>>[out_reds]>>-----\n");
-		ft_display(tmp->out_reds);
-		printf("------<<[in_reds]<<-----\n");
-		ft_display(tmp->in_reds);
-		printf("------<<[herdoc]<<-----\n");
-		ft_display(tmp->her_reds);
-		printf("--------------------------\n");
-		pipe++;
-		tmp = tmp->next;
-	}
-}
-
-void	ft_free(t_cmd *cmd, char *input, char **env, char *string)
+void	ft_free(t_cmd *cmd, char *input, char **env, t_node *head)
 {
 	ft_expension(cmd, g_global.env);
 	ft_execute(cmd, env, g_global.env);
 	ft_frees_cmd(cmd);
-	// free(input);
-	// free(string);
+	ft_free_ls(head);
+	free(input);
 }
+
 void	ft_signal(int sig)
 {
 	if (sig == SIGINT)
@@ -80,39 +57,6 @@ void	ft_signal(int sig)
 		printf("\n");
 		rl_redisplay();
 	}
-	// if (sig == SIGQUIT)
-	// {
-	// 	i
-	// }
-}
-int ft_empty(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] != ' ' || str[i] != '\t')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-void	ft_s_env(char **env)
-{
-	g_global.env = ft_setup_env(env);
-	signal(SIGINT, ft_signal);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-char	*ft_readforfree(char *string, char *input)
-{
-	string = readline("-> Donpha❕ ");
-	input = ft_strtrim(string, " \t");
-	add_history(string);
-	free(string);
-	return (input);
 }
 
 int	main(int ac, char **av, char **env)
@@ -121,17 +65,11 @@ int	main(int ac, char **av, char **env)
 	t_cmd	*cmd;
 	t_env	*envi;
 	char	*input;
-	char	*string;
 
 	ft_s_env(env);
 	while (ac && av[0])
 	{
-		input = ft_readforfree(string, input);
-		if (input == NULL)
-		{
-			free(input);
-			exit(g_global.exit_status);
-		}
+		input = ft_readforfree(input);
 		if (!strlen(input))
 		{
 			free(input);
@@ -141,13 +79,34 @@ int	main(int ac, char **av, char **env)
 		if (ft_syntax_error(input, head))
 		{
 			free(input);
+			ft_free_ls(head);
 			continue ;
 		}
 		cmd = ft_insert_link(head);
-		ft_free(cmd, input, env, string);
-		ft_free_ls(head);
-		free(input);
-		system("leaks minishell");
+		ft_free(cmd, input, env, head);
 	}
 	return (0);
 }
+
+// void	all_display(t_cmd *cmd)
+// {
+// 	t_cmd	*tmp;
+// 	int		pipe;
+
+// 	pipe = 1;
+// 	tmp = cmd;
+// 	while (tmp)
+// 	{
+// 		printf("--------[command %d]-------\n", pipe);
+// 		ft_display(tmp->args);
+// 		printf("------>>[out_reds]>>-----\n");
+// 		ft_display(tmp->out_reds);
+// 		printf("------<<[in_reds]<<-----\n");
+// 		ft_display(tmp->in_reds);
+// 		printf("------<<[herdoc]<<-----\n");
+// 		ft_display(tmp->her_reds);
+// 		printf("--------------------------\n");
+// 		pipe++;
+// 		tmp = tmp->next;
+// 	}
+// }

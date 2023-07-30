@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:59:38 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/29 19:33:18 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/30 09:19:56 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ void	ft_insert_token(t_node **head, char *data)
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = new_node;
-	// free(new_node->data);
 }
 
 void	ft_insert_token_2(t_node **head, char *data, int type)

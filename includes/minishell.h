@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/29 18:04:03 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/30 11:49:26 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,12 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+t_global	g_global;
 typedef struct s_global
 {
 	t_env	*env;
 	int		exit_status;
 }	t_global;
-
-t_global	g_global;
-
 
 typedef struct s_node
 {
@@ -62,7 +60,6 @@ typedef struct s_node
 	struct s_node	*next;
 	struct s_node	*previous;
 }	t_node;
-
 typedef struct s_cmd
 {
 	t_node			*args;
@@ -85,7 +82,6 @@ typedef struct s_token
 	char	*identifire;
 	char	*value;
 }	t_token;
-
 
 /*-----------------builtin--------------------------*/
 int		ft_cd(char *path, t_env *env);
@@ -136,8 +132,9 @@ char	*ft_backward(char *str);
 void	ft_free_ls(t_node *head);
 void	ft_help_get_len(t_token *s, char *data, t_env *envi);
 void	ft_help_get_str(char *data, t_token *s);
-char	*ft_readforfree(char *string, char *input);
+char	*ft_readforfree(char *input);
 void	ft_s_env(char **env);
+int		ft_empty(char *str);
 
 /*-------------------------------*/
 /*---------ayoub-----------------*/
@@ -148,39 +145,16 @@ void	setup_redirects(t_cmd *cmd, t_env *envi);
 void	exec_compound_cmd(t_cmd *cmd, int prev_in, char **env, t_env *envi);
 void	exec_simple_cmd(t_cmd *cmd, char **env, t_env *envi);
 void	ft_execute(t_cmd *cmd, char **env, t_env *envi);
-t_env   *create_node(char *key, char *value);
+t_env	*create_node(char *key, char *value);
 void	add_node(t_env **list, t_env *new_node);
-char 	**linked_list_to_array(t_node *head);
+char	**linked_list_to_array(t_node *head);
 char	*get_cmd(char **paths, char *cmd);
 int		check_cmd(char *cmd);
 void	exec_cmd(t_node *cmd, char **env);
 void	setup_in_redirects(t_node *in_red);
 void	setup_out_redirects(t_node *out_red);
 t_env	*ft_setup_env(char **env_main);
-
-/*-------------------------------*/
-
-/*---------libft-----------------*/
-// int		ft_strncmp(const char *s1, const char *s2, size_t n);
-// int		ft_strlen(const char *str);
-// char	*ft_strchr(const char *scanned, int searched);
-// char	*ft_strdup(const char *s1);
-// char	*ft_substr(char const *s, unsigned int start, int len);
-// void	ft_putstr_fd(char *s, int fd);
-// char	*ft_strjoin(char const *s1, char const *s2);
-// char	**ft_split(char *s, char c);
-// int		ft_isalnum(int n);
-// char	*ft_itoa(int n);
-// void	*ft_memmove(void *dest, const void *src, size_t n);
-// int		ft_isalpha(int c);
-// void	*ft_memcpy(void *dest, const void *src, size_t n);
-// char	*ft_strtrim(char const *s1, char const *set);
-// long	ft_atoi(const char *str);
-// int	ft_isalnum(int n);
-// int	ft_isdigit(int n);
-// int	ft_isalpha(int n);
-/*-------------------------------*/
-
-
 void	ft_signal(int sig);
+
+/*-------------------------------*/
 #endif

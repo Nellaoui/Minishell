@@ -6,61 +6,11 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/26 18:48:52 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/29 20:29:10 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/30 09:19:16 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-char	*get_variable_env(t_env **env, char *var_name)
-{
-	t_env	*tmp;
-	int		i;
-
-	tmp = *env;
-	i = 0;
-	while (tmp)
-	{
-		if (!ft_strncmp(var_name, tmp->key, ft_strlen(tmp->key) + 1))
-			return (tmp->value);
-		tmp = tmp->next;
-	}
-	return (0);
-}
-
-int	ft_cd(char *path, t_env *env)
-{
-	DIR		*dir;
-	char	*new_path;
-	t_env	*tmp;
-
-	tmp = env;
-	new_path = malloc(PATH_MAX);
-	if (!path)
-		path = get_variable_env(&g_global.env, "HOME");
-	dir = opendir(path);
-	if (!dir)
-	{
-		printf("cd : %s : No such file or directory\n", path);
-		return (1);
-	}
-	else
-	{
-		if (chdir(path) < 0)
-			return (1);
-	}
-	getcwd(new_path, PATH_MAX);
-	while (tmp)
-	{
-		if (!ft_strncmp(tmp->key, "PWD", 4))
-		{
-			tmp->value = new_path;
-			break ;
-		}
-		tmp = tmp->next;
-	}
-	return (0);
-}
 
 // =========================================================================
 
@@ -89,7 +39,7 @@ int	ft_echo(t_node *args, int number_of_arg)
 	return (0);
 }
 
-// =========================================================================
+// ==========================================================================
 
 int	ft_env(void)
 {
@@ -113,84 +63,6 @@ int	ft_modify_node(char	*export, char	*key)
 	return (0);
 }
 
-// =========================================================================
-
-int	ft_check_key(char	**key_value)
-{
-	int	i;
-
-	if (key_value[0][0] != '_' && !ft_isalpha(key_value[0][0]))
-	{
-		ft_putstr_fd("not a valid identifier\n", 2);
-		return (1);
-	}
-	i = 1;
-	while (key_value[0][i])
-	{
-		if (!(ft_isalnum(key_value[0][i])))
-		{
-			if (key_value[0][i] != '_')
-			{
-				ft_putstr_fd("not a valid identifier\n", 2);
-				return (1);
-			}
-		}
-		i++;
-	}
-	return (0);
-}
-
-// =========================================================================
-//if we not put the value it will segfault so that we should create a
-// func() check the value if exist or not
-
-int	ft_export(t_env **export, char *str)
-{
-	t_env	*tmp;
-	t_env	*tmp2;
-	char	**key_value;
-	int		i;
-	int		added;
-
-	added = 0;
-	tmp = *export;
-	key_value = ft_split(str, '=');
-	if (!key_value[1])
-	{
-		tmp2 = g_global.env;
-		while (tmp2)
-		{
-			printf("declare -x %s=\"%s\"\n", tmp2->key, tmp2->value);
-			tmp2 = tmp2->next;
-		}
-		return (1);
-	}
-	if (!ft_check_key(key_value))
-	{
-		i = 0;
-		while (tmp)
-		{
-			if (!ft_strncmp(key_value[0], tmp->key, ft_strlen(tmp->key) + 1))
-			{
-				tmp->value = ft_strdup(key_value[1]);
-				added = 1;
-				break ;
-			}
-			tmp = tmp->next;
-		}
-		if (!added)
-		{
-			add_node(export, create_node(key_value[0], key_value[1]));
-			free_arr(key_value);
-		}
-	}
-	// free_arr(key_value);
-	// free(str);
-	return (0);
-}
-
-// =========================================================================
-
 int	ft_pwd(void)
 {
 	t_env	*tmp;
@@ -206,3 +78,84 @@ int	ft_pwd(void)
 }
 
 // =========================================================================
+//if we not put the value it will segfault so that we should create a
+// func() check the value if exist or not
+
+// int	ft_export(t_env **export, char *str)
+// {
+// 	t_env	*tmp;
+// 	t_env	*tmp2;
+// 	char	**key_value;
+// 	int		i;
+// 	int		added;
+
+// 	added = 0;
+// 	tmp = *export;
+// 	key_value = ft_split(str, '=');
+// 	if (!key_value[1])
+// 	{
+// 		tmp2 = g_global.env;
+// 		while (tmp2)
+// 		{
+// 			printf("declare -x %s=\"%s\"\n", tmp2->key, tmp2->value);
+// 			tmp2 = tmp2->next;
+// 		}
+// 		return (1);
+// 	}
+// 	if (!ft_check_key(key_value))
+// 	{
+// 		i = 0;
+// 		while (tmp)
+// 		{
+// 			if (!ft_strncmp(key_value[0], tmp->key, ft_strlen(tmp->key) + 1))
+// 			{
+// 				tmp->value = ft_strdup(key_value[1]);
+// 				added = 1;
+// 				break ;
+// 			}
+// 			tmp = tmp->next;
+// 		}
+// 		if (!added)
+// 		{
+// 			add_node(export, create_node(key_value[0], key_value[1]));
+// 			free_arr(key_value);
+// 		}
+// 	}
+// 	// free_arr(key_value);
+// 	// free(str);
+// 	return (0);
+// }
+
+// int	ft_cd(char *path, t_env *env)
+// {
+// 	DIR		*dir;
+// 	char	*new_path;
+// 	t_env	*tmp;
+
+// 	tmp = env;
+// 	new_path = malloc(PATH_MAX);
+// 	if (!path)
+// 		path = get_variable_env(&g_global.env, "HOME");
+// 	dir = opendir(path);
+// 	if (!dir)
+// 	{
+// 		printf("cd : %s : No such file or directory\n", path);
+// 		return (1);
+// 	}
+// 	else
+// 	{
+// 		if (chdir(path) < 0)
+// 			return (1);
+// 	}
+// 	getcwd(new_path, PATH_MAX);
+// 	while (tmp)
+// 	{
+// 		if (!ft_strncmp(tmp->key, "PWD", 4))
+// 		{
+// 			tmp->value = new_path;
+// 			break ;
+// 		}
+// 		tmp = tmp->next;
+// 	}
+// 	return (0);
+// }

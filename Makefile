@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+         #
+#    By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/06 12:31:19 by nelallao          #+#    #+#              #
-#    Updated: 2023/07/29 20:08:29 by aziyani          ###   ########.fr        #
+#    Updated: 2023/07/30 11:40:34 by nelallao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ LIBFT = includes/libft/libft.a
 # SRC = noaman/minishell.c ./includes/libft_func.c ./ayoub/execution.c
 SRC= minishell.c check.c expend.c expend_2.c inserting.c outils.c token.c outils_2.c \
 	execution.c get_next_line.c get_next_line_utils.c builtin.c builtin_2.c builtin_3.c \
-	execution_2.c execution_3.c execution_4.c execution_5.c
+	execution_2.c execution_3.c execution_4.c execution_5.c help_minishell.c
 OBJ := $(SRC:.c=.o)
 OBJ := $(addprefix obj/, $(OBJ))
 OBJ_DIR=obj/
