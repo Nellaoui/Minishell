@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/29 15:38:11 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/07/30 14:29:15 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_env
 {
 	char			*key;
 	char			*value;
+	int				is_equal;
 	struct s_env	*next;
 }	t_env;
 
@@ -148,7 +149,7 @@ void	setup_redirects(t_cmd *cmd, t_env *envi);
 void	exec_compound_cmd(t_cmd *cmd, int prev_in, char **env, t_env *envi);
 void	exec_simple_cmd(t_cmd *cmd, char **env, t_env *envi);
 void	ft_execute(t_cmd *cmd, char **env, t_env *envi);
-t_env   *create_node(char *key, char *value);
+t_env   *create_node(char *key, char *value, int is_qual);
 void	add_node(t_env **list, t_env *new_node);
 char 	**linked_list_to_array(t_node *head);
 char	*get_cmd(char **paths, char *cmd);
