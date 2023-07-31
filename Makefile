@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+         #
+#    By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/06 12:31:19 by nelallao          #+#    #+#              #
-#    Updated: 2023/07/29 11:53:40 by nelallao         ###   ########.fr        #
+#    Updated: 2023/07/30 13:33:06 by aziyani          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,8 @@ LIBFT = includes/libft/libft.a
 # FFLAGS = -fsanitize=address -g
 # SRC = noaman/minishell.c ./includes/libft_func.c ./ayoub/execution.c
 SRC= minishell.c check.c expend.c expend_2.c inserting.c outils.c token.c outils_2.c \
-	execution.c get_next_line.c get_next_line_utils.c builtin.c
+	execution.c get_next_line.c get_next_line_utils.c builtin.c builtin_2.c builtin_3.c \
+	execution_2.c execution_3.c execution_4.c execution_5.c
 OBJ := $(SRC:.c=.o)
 OBJ := $(addprefix obj/, $(OBJ))
 OBJ_DIR=obj/
