@@ -41,11 +41,13 @@ void	ft_display(t_node *head)
 
 void	ft_free(t_cmd *cmd, char *input, char **env, t_node *head)
 {
+
 	ft_expension(cmd, g_global.env);
 	ft_execute(cmd, env, g_global.env);
 	ft_frees_cmd(cmd);
 	ft_free_ls(head);
 	free(input);
+	// system("ps && leaks minishell");
 }
 
 void	ft_signal(int sig)

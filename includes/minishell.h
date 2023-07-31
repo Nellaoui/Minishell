@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/30 11:49:26 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/30 21:04:46 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,13 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-t_global	g_global;
 typedef struct s_global
 {
 	t_env	*env;
 	int		exit_status;
 }	t_global;
+
+t_global	g_global;
 
 typedef struct s_node
 {

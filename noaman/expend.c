@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:09:50 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/30 11:43:06 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/30 23:10:16 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_expension(t_cmd *cmd, t_env *envi)
 			ft_mini_expen(tmp->out_reds, envi);
 		tmp = tmp->next;
 	}
-	ft_quote(cmd);
+	// ft_quote(cmd);
 }
 
 void	ft_mini_expen(t_node *node, t_env *envi)
@@ -101,4 +101,5 @@ void	ft_help_get_len(t_token *s, char *data, t_env *envi)
 			s->len = s->len + ft_strlen(s->value);
 		free(s->identifire);
 	}
+	// printf("%s")
 }
