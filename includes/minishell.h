@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/30 21:04:46 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/01 16:40:33 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_global
 
 t_global	g_global;
 
+
 typedef struct s_node
 {
 	char			*data;
@@ -81,7 +82,10 @@ typedef struct s_token
 	int		j;
 	char	*string;
 	char	*identifire;
+	char	*id;
 	char	*value;
+	int		check;
+	int		to_free;
 }	t_token;
 
 /*-----------------builtin--------------------------*/

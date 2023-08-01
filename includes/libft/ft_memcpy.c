@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/01 15:38:03 by nelallao          #+#    #+#             */
-/*   Updated: 2022/10/05 19:15:03 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/01 19:13:38 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ the source object src to the destination object dest.
 this function returns a pointer to destination, which is str1
 
 // const void for dont maniplaute data
- 
+
 */
 #include "libft.h"
 

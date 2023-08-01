@@ -6,11 +6,18 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:02:42 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/29 18:00:08 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/01 11:02:22 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	ft_impair(int s, int d)
+{
+	if ((s % 2 != 0) || (d % 2 != 0))
+		return (1);
+	return (0);
+}
 
 int	ft_check_quotes(char *str)
 {
@@ -35,7 +42,7 @@ int	ft_check_quotes(char *str)
 			s[1]++;
 		i++;
 	}
-	if (s[0] == 1 || s[1] == 1)
+	if (s[0] == 1 || s[1] == 1 || ft_impair(s[0], s[1]))
 		return (1);
 	return (EXIT_SUCCESS);
 }
@@ -68,13 +75,15 @@ int	ft_syntax_error(char *str, t_node *head)
 char	*ft_backward(char *str)
 {
 	int		i;
+	int		j;
 	int		len;
 	char	*string;
 
 	i = 0;
-	len = ft_strlen(str);
-	if (str[i] == '\'' || str[i] == '"')
-		str = ft_substr(str, i + 1, len - 2);
+	j = 1;
+	while (str[j] && (str[j] != '\'' || str[j] != '\''))
+		j++;
+		str = ft_substr(str, i + 1, j - 2);
 	return (str);
 }
 
