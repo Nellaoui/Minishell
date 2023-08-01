@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:30:37 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/01 21:31:56 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/01 21:57:45 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*ft_free_new_str(t_token *s, char *data)
 	if (s->check)
 	{
 		free(s->string);
-		s->string = ft_strdup("$");
+		s->string = ft_strdup("");
 	}
 	string = ft_strdup(s->string);
 	free(data);
