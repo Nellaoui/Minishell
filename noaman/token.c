@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:56:02 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/01 10:11:07 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/01 19:31:08 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ t_node	*ft_token(char *str, t_node *head)
 	t_token	*s;
 
 	head = NULL;
-	s = (t_token *)malloc(sizeof(t_token));
-	ft_initialize(s);
+	s = ft_initialize(s);
 	while (str[s->i])
 	{
 		if (str[s->i] == '\'' && s->double_quote == 0)

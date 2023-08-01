@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:02:42 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/01 11:02:22 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/01 21:31:43 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,22 +98,4 @@ t_cmd	*ft_new_node(void)
 	cmd->out_reds = NULL;
 	cmd->her_reds = NULL;
 	return (cmd);
-}
-
-void	ft_frees_cmd(t_cmd *head)
-{
-	t_cmd	*current;
-	t_cmd	*next;
-
-	current = head;
-	while (current)
-	{
-		next = current->next;
-		ft_free_ls(current->args);
-		ft_free_ls(current->her_reds);
-		ft_free_ls(current->in_reds);
-		ft_free_ls(current->out_reds);
-		free(current);
-		current = next;
-	}
 }
