@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:08:01 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/30 11:44:12 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/01 21:16:39 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ char	*get_index(char *string)
 
 	i = 0;
 	j = 0;
-	if (string[i] && string[i] == '?')
-		return (ft_substr(string, 0, i + 1));
 	if (string[i] >= '0' && string[i] <= '9')
 	{
 		while (string[i] && (string[i] >= '0' && string[i] <= '9'))
@@ -47,8 +45,9 @@ char	*get_index(char *string)
 		return (ft_substr(string, i, j));
 	}
 	i = 0;
-	while (string[i] && (ft_isalnum(string[i])
-			|| (string[i] == '_') || (string[i] == '?')))
+	if (string[i] && string[i] == '?')
+		return (ft_substr(string, 0, i + 1));
+	while (string[i] && (ft_isalnum(string[i]) || (string[i] == '?')))
 		i++;
 	return (ft_substr(string, 0, i));
 }
@@ -70,7 +69,8 @@ char	*get_value(char *id, t_env *envi)
 	tmp = envi;
 	while (tmp)
 	{
-		if (ft_strncmp(id, tmp->key, ft_strlen(tmp->key)) == 0)
+		if ((ft_strlen(id) == ft_strlen(tmp->key))
+			&& (ft_strncmp(id, tmp->key, ft_strlen(tmp->key)) == 0))
 		{
 			return (tmp->value);
 		}

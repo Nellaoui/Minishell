@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:09:50 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/30 23:10:16 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/01 21:31:27 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_expension(t_cmd *cmd, t_env *envi)
 			ft_mini_expen(tmp->out_reds, envi);
 		tmp = tmp->next;
 	}
-	// ft_quote(cmd);
+	ft_quote(cmd);
 }
 
 void	ft_mini_expen(t_node *node, t_env *envi)
@@ -86,20 +86,15 @@ void	ft_help_get_len(t_token *s, char *data, t_env *envi)
 		s->len++;
 	else
 	{
-		s->identifire = get_index(&data[s->j]);
-		s->value = get_value(s->identifire, envi);
+		s->id = get_index(&data[s->j]);
+		s->value = get_value(s->id, envi);
 		if (!s->value)
-			return ;
-		if (s->identifire[0] == '?' && s->identifire[1] == '\0')
 		{
-			string = ft_strdup(ft_itoa(g_global.exit_status));
-			s->value = string;
-			free(string);
+			free(s->id);
+			return ;
 		}
-		s->j = s->j + ft_strlen(s->identifire);
-		printf("%s\n", s->identifire);
-			s->len = s->len + ft_strlen(s->value);
-		free(s->identifire);
+		s->j = s->j + ft_strlen(s->id);
+		s->len = s->len + ft_strlen(s->value);
+		free(s->id);
 	}
-	// printf("%s")
 }

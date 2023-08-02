@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:56:02 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/31 22:02:26 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/08/02 22:35:31 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ t_node	*ft_token(char *str, t_node *head)
 	t_token	*s;
 
 	head = NULL;
-	s = (t_token *)malloc(sizeof(t_token));
-	ft_initialize(s);
+	s = ft_initialize(s);
 	while (str[s->i])
 	{
 		if (str[s->i] == '\'' && s->double_quote == 0)
@@ -60,7 +59,7 @@ void	ft_redrection(char *str, t_token *s, t_node **head)
 			ft_insert_token(head, s->res);
 		s->res = ft_subfree(str, s->i, 2, s);
 		ft_insert_token(head, s->res);
-		s->start = s->i + 3;
+		s->start = s->i + 2;
 		s->i = s->i + 2;
 	}
 	if ((str[s->i] == '<' || str[s->i] == '>'))

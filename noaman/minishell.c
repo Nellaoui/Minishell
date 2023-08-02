@@ -12,12 +12,14 @@
 
 #include "../includes/minishell.h"
 
-void	ft_initialize(t_token *s)
+t_token	*ft_initialize(t_token *s)
 {
+	s = (t_token *)malloc(sizeof(t_token));
 	s->i = 0;
 	s->start = 0;
 	s->double_quote = 0;
 	s->single_quote = 0;
+	return (s);
 }
 
 void	ft_display(t_node *head)
@@ -41,14 +43,12 @@ void	ft_display(t_node *head)
 
 void	ft_free(t_cmd *cmd, char *input, char **env, t_node *head)
 {
-
 	ft_expension(cmd, g_global.env);
 	ft_execute(cmd, env, g_global.env);
 	ft_display(cmd->args);
 	ft_frees_cmd(cmd);
 	ft_free_ls(head);
 	free(input);
-	// ("ps && leaks minishell");
 }
 
 void	ft_signal(int sig)
@@ -91,26 +91,3 @@ int	main(int ac, char **av, char **env)
 	}
 	return (0);
 }
-
-// void	all_display(t_cmd *cmd)
-// {
-// 	t_cmd	*tmp;
-// 	int		pipe;
-
-// 	pipe = 1;
-// 	tmp = cmd;
-// 	while (tmp)
-// 	{
-// 		printf("--------[command %d]-------\n", pipe);
-// 		ft_display(tmp->args);
-// 		printf("------>>[out_reds]>>-----\n");
-// 		ft_display(tmp->out_reds);
-// 		printf("------<<[in_reds]<<-----\n");
-// 		ft_display(tmp->in_reds);
-// 		printf("------<<[herdoc]<<-----\n");
-// 		ft_display(tmp->her_reds);
-// 		printf("--------------------------\n");
-// 		pipe++;
-// 		tmp = tmp->next;
-// 	}
-// }

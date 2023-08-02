@@ -6,11 +6,18 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:02:42 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/29 18:00:08 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/02 21:57:19 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	ft_impair(int s, int d)
+{
+	if ((s % 2 != 0) || (d % 2 != 0))
+		return (1);
+	return (0);
+}
 
 int	ft_check_quotes(char *str)
 {
@@ -35,7 +42,7 @@ int	ft_check_quotes(char *str)
 			s[1]++;
 		i++;
 	}
-	if (s[0] == 1 || s[1] == 1)
+	if (s[0] == 1 || s[1] == 1 || ft_impair(s[0], s[1]))
 		return (1);
 	return (EXIT_SUCCESS);
 }
@@ -65,16 +72,31 @@ int	ft_syntax_error(char *str, t_node *head)
 	return (0);
 }
 
-char	*ft_backward(char *str)
+char	*ft_if_remove(char *data, char *str)
 {
 	int		i;
-	int		len;
-	char	*string;
+	int		j;
 
 	i = 0;
-	len = ft_strlen(str);
-	if (str[i] == '\'' || str[i] == '"')
-		str = ft_substr(str, i + 1, len - 2);
+	j = 0;
+	while (data[i])
+	{
+		if (data[i] && data[i] == '\'' && ++i)
+		{
+			while (data[i] && data[i] != '\'')
+				str[j++] = data[i++];
+			i++;
+		}
+		else if (data[i] && data[i] == '\"' && ++i)
+		{
+			while (data[i] && data[i] != '\"')
+				str[j++] = data[i++];
+			i++;
+		}
+		else
+			str[j++] = data[i++];
+	}
+	str[j] = '\0';
 	return (str);
 }
 
@@ -89,22 +111,4 @@ t_cmd	*ft_new_node(void)
 	cmd->out_reds = NULL;
 	cmd->her_reds = NULL;
 	return (cmd);
-}
-
-void	ft_frees_cmd(t_cmd *head)
-{
-	t_cmd	*current;
-	t_cmd	*next;
-
-	current = head;
-	while (current)
-	{
-		next = current->next;
-		ft_free_ls(current->args);
-		ft_free_ls(current->her_reds);
-		ft_free_ls(current->in_reds);
-		ft_free_ls(current->out_reds);
-		free(current);
-		current = next;
-	}
 }
