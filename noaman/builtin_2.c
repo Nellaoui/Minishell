@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 17:43:24 by aziyani           #+#    #+#             */
-/*   Updated: 2023/07/29 17:46:06 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/07/31 23:13:23 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,38 +30,31 @@ char	*get_variable_env(t_env **env, char *var_name)
 	return (0);
 }
 
-int	ft_cd_error(char *path, DIR	*dir)
+int	ft_cd_error(char *path)
 {
-	if (!dir)
+	if (chdir(path) < 0)
 	{
 		printf("cd : %s : No such file or directory\n", path);
 		return (1);
-	}
-	else
-	{
-		if (chdir(path) < 0)
-			return (1);
 	}
 	return (0);
 }
 
 int	ft_cd(char *path, t_env *env)
 {
-	DIR		*dir;
 	char	*new_path;
 	t_env	*tmp;
 
 	tmp = env;
-	new_path = malloc(PATH_MAX);
 	if (!path)
 		path = get_variable_env(&g_global.env, "HOME");
-	dir = opendir(path);
-	ft_cd_error(path, dir);
-	getcwd(new_path, PATH_MAX);
+	ft_cd_error(path);
+	new_path = getcwd(NULL, 0);
 	while (tmp)
 	{
 		if (!ft_strncmp(tmp->key, "PWD", 4))
 		{
+			free(tmp->value);
 			tmp->value = new_path;
 			break ;
 		}

@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 18:43:16 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/30 13:30:47 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/08/02 22:16:25 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ void	exec_cmd(t_node *cmd, char **env)
 	e_cmd[0] = get_cmd(paths, e_cmd[0]);
 	if (e_cmd[0] == NULL)
 	{
-		dprintf(2, "minishell: command not found\n");
+		ft_putstr_fd("minishell: command not found\n", 2);
 		exit (127);
 	}
 	execve(e_cmd[0], e_cmd, env);
-	printf("somthing went wrong\n");
+	ft_putstr_fd("somthing went wrong\n", 2);
 	exit (1);
 }
 
@@ -94,14 +94,21 @@ char	*get_cmd(char **paths, char *cmd)
 
 int	check_cmd(char *cmd)
 {
+	char	*s;
+
 	if (access(cmd, F_OK) < 0)
 	{
-		dprintf(2, "No such file or directory: %s\n", cmd);
+		s = cmd;
+		ft_putstr_fd("No such file or directory: ", 2);
+		ft_putstr_fd(s, 2);
+		ft_putstr_fd("\n", 2);
 		exit(126);
 	}
 	if (access(cmd, X_OK) < 0)
 	{
-		dprintf(2, "Permission denied: %s\n", cmd);
+		ft_putstr_fd("Permission denied: ", 2);
+		ft_putstr_fd(s, 2);
+		ft_putstr_fd("\n", 2);
 		exit(126);
 	}
 	return (1);

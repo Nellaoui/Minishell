@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 17:46:34 by aziyani           #+#    #+#             */
-/*   Updated: 2023/07/30 14:45:53 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/08/02 22:21:06 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@ void	add_env_variable(t_env **export, char *key, char *value, int is_qual)
 	added = 0;
 	while (tmp)
 	{
-		if (!ft_strncmp(key, tmp->key, ft_strlen(tmp->key) + 1) )
+		if (!ft_strncmp(key, tmp->key, ft_strlen(tmp->key) + 1))
 		{
-			if (is_qual == 0) // if is_qu
+			if (is_qual == 0)
 			{
-				added = 1; // i
-				break;
+				added = 1;
+				break ;
 			}
 			tmp->value = ft_strdup(value);
 			tmp->is_equal = is_qual;
@@ -73,7 +73,6 @@ int	ft_export(t_env **export, char *str)
 	t_env	*tmp;
 	t_env	*tmp2;
 	char	**key_value;
-	int		i;
 	int		is_qual;
 
 	is_qual = 0;
@@ -94,6 +93,7 @@ int	ft_export(t_env **export, char *str)
 	str = str + (ft_strlen(key_value[0]) + 1);
 	if (!ft_check_key(key_value))
 		add_env_variable(export, key_value[0], str, is_qual);
+	free_arr(key_value);
 	return (0);
 }
 
@@ -136,6 +136,7 @@ int	ft_exit(t_node *status, char *data)
 	{
 		is_alpha(data);
 		exit_number = ft_atoi(data);
+		g_global.exit_status = exit_number;
 		exit (exit_number);
 	}
 	return (0);

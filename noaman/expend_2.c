@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expend_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:11:49 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/28 17:31:11 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/31 22:23:53 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ void	ft_help_get_str(char *data, t_token *s)
 		if (s->identifire[0] == '?' && s->identifire[1] == '\0')
 		{
 			string = ft_strdup(ft_itoa(g_global.exit_status));
+			puts("string");
 			s->value = string;
 			free(string);
 		}

@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:40:12 by aziyani           #+#    #+#             */
-/*   Updated: 2023/07/29 20:19:24 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/08/02 22:27:29 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,25 @@
 void	setup_heredoc(char *del, int expand, t_env *envi)
 {
 	char	*line;
-	int		pfds[2];
+	int		fd;
+	char	*i;
 
-	pipe(pfds);
+	fd = open(".tmp", O_RDWR | O_CREAT | O_TRUNC, 0644);
 	while (1)
 	{
+		ft_putstr_fd(">", 0);
 		line = get_next_line(0);
 		if (ft_strnstr(line, del, ft_strlen(del)))
 			break ;
 		if (expand)
-			dprintf(pfds[1], "%s", get_expanded(line, envi));
+		{
+			i = get_expanded(line, envi);
+			ft_putstr_fd(i, fd);
+		}
 		else
-			dprintf(pfds[1], "%s", line);
-		free(line);
+			ft_putstr_fd(line, fd);
 	}
-	free(line);
-	dup2(pfds[0], STDIN_FILENO);
+	dup2(fd, STDIN_FILENO);
 }
 
 // =========================================================================
@@ -48,10 +51,11 @@ void	handle_heredoc(t_node *curr, t_env *envi)
 
 // =========================================================================
 
-void	ft_help_in_red(t_cmd *cmd, int fd)
+void	ft_help_in_red(t_cmd *cmd, int fd, char *s)
 {
 	while (cmd->in_reds)
 	{
+		s = cmd->in_reds->data;
 		if (cmd->in_reds->data)
 		{
 			if (access(cmd->in_reds->data, F_OK) == 0)
@@ -60,12 +64,18 @@ void	ft_help_in_red(t_cmd *cmd, int fd)
 				dup2(fd, STDIN_FILENO);
 			}
 			else
-				dprintf(2, "minishell: %s: No such file or directory\n",
-					cmd->in_reds->data);
+			{
+				ft_putstr_fd("minishell: ", 2);
+				ft_putstr_fd(s, 2);
+				ft_putstr_fd(" : No such file or directory\n", 2);
+			}
 		}
 		else
-			dprintf(2, "minishell: %s: No such file or directory\n",
-				cmd->in_reds->data);
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(s, 2);
+			ft_putstr_fd(" : No such file or directory\n", 2);
+		}
 		cmd->in_reds = cmd->in_reds->next;
 	}
 }
@@ -96,14 +106,18 @@ void	ft_help_out_red(t_cmd *cmd, int fd)
 
 void	setup_redirects(t_cmd *cmd, t_env *envi)
 {
-	int	fd;
+	int		fd;
+	char	*s;
 
 	if (cmd->in_reds)
-		ft_help_in_red(cmd, fd);
+		ft_help_in_red(cmd, fd, s);
 	if (cmd->out_reds)
 		ft_help_out_red(cmd, fd);
 	if (cmd->her_reds)
+	{
 		handle_heredoc(cmd->her_reds, envi);
+		unlink(".tmp");
+	}
 }
 
 // =========================================================================

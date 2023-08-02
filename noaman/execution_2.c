@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:39:31 by aziyani           #+#    #+#             */
-/*   Updated: 2023/07/30 13:28:46 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/07/31 23:25:07 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,55 +31,55 @@ int	ft_count_link(t_node *node)
 
 // =========================================================================
 
-int	ft_built_in_2(t_cmd *cmd, t_env *env)
+int	ft_built_in_2(t_node *args, t_env *env)
 {
-	if (ft_strncmp("unset", cmd->args->data, 6) == 0)
+	if (ft_strncmp("unset", args->data, 6) == 0)
 	{
-		if (cmd->args->next)
-			cmd->args = cmd->args->next;
-		return (ft_unset(cmd->args->data));
+		if (args->next)
+			args = args->next;
+		return (ft_unset(args->data));
 	}
-	if (ft_strncmp("env", cmd->args->data, 4) == 0)
+	if (ft_strncmp("env", args->data, 4) == 0)
 		return (ft_env());
-	if (ft_strncmp("exit", cmd->args->data, 5) == 0)
+	if (ft_strncmp("exit", args->data, 5) == 0)
 	{
-		if (cmd->args->next)
-			cmd->args = cmd->args->next;
+		if (args->next)
+			args = args->next;
 		else
-			cmd->args->data = NULL;
-		return (ft_exit(cmd->args, cmd->args->data));
+			args->data = NULL;
+		return (ft_exit(args, args->data));
 	}
 	return (0);
 }
 
 // =========================================================================
 
-int	ft_built_in(t_cmd *cmd, t_env *env)
+int	ft_built_in(t_node *args, t_env *env)
 {
 	int	ac;
 
-	if (ft_strncmp("echo", cmd->args->data, 5) == 0)
-		return (ft_echo(cmd->args, ft_count_link(cmd->args)));
-	if (ft_strncmp("cd", cmd->args->data, 3) == 0)
+	if (ft_strncmp("echo", args->data, 5) == 0)
+		return (ft_echo(args, ft_count_link(args)));
+	if (ft_strncmp("cd", args->data, 3) == 0)
 	{
-		ac = ft_count_link(cmd->args);
+		ac = ft_count_link(args);
 		if (ac > 1)
 		{
-			cmd->args = cmd->args->next;
-			return (ft_cd(cmd->args->data, env));
+			args = args->next;
+			return (ft_cd(args->data, env));
 		}
 		else
 			return (ft_cd(NULL, env));
 	}
-	if (ft_strncmp("pwd", cmd->args->data, 4) == 0)
+	if (ft_strncmp("pwd", args->data, 4) == 0)
 		return (ft_pwd());
-	if (ft_strncmp("export", cmd->args->data, 7) == 0)
+	if (ft_strncmp("export", args->data, 7) == 0)
 	{
-		if (cmd->args->next)
-			cmd->args = cmd->args->next;
-		return (ft_export(&g_global.env, cmd->args->data));
+		if (args->next)
+			args = args->next;
+		return (ft_export(&g_global.env, args->data));
 	}
-	ft_built_in_2(cmd, env);
+	ft_built_in_2(args, env);
 	return (0);
 }
 

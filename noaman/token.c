@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:56:02 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/29 11:58:11 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/07/31 22:02:26 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 t_node	*ft_token(char *str, t_node *head)
 {
-	t_token	s[1];
+	t_token	*s;
 
 	head = NULL;
+	s = (t_token *)malloc(sizeof(t_token));
 	ft_initialize(s);
 	while (str[s->i])
 	{
@@ -37,6 +38,7 @@ t_node	*ft_token(char *str, t_node *head)
 	if (ft_strlen(&str[s->start]) != 0)
 		ft_insert_token(&head, &(str[s->start]));
 	ft_type(&head);
+	free(s);
 	return (head);
 }
 
@@ -83,9 +85,6 @@ void	ft_pipe(char *str, t_token *s, t_node **head)
 	s->res = ft_subfree(str, s->start, s->i - s->start, s);
 	if (ft_strlen(s->res) != 0 && str[s->i - 1] != ' ')
 		ft_insert_token(head, s->res);
-	string = ft_strdup("|");
-	pipe = string;
-	free(string);
-	ft_insert_token(head, pipe);
+	ft_insert_token(head, "|");
 	s->start = s->i + 1;
 }

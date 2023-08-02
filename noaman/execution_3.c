@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:39:46 by aziyani           #+#    #+#             */
-/*   Updated: 2023/07/29 20:05:24 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/07/31 23:23:51 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	exec_signal(t_cmd *cmd, char **env, t_env *envi, pid_t	pid)
 		signal(SIGINT, SIG_DFL);
 		setup_redirects(cmd, envi);
 		if (check_builtin(cmd->args))
-			exit(ft_built_in(cmd, envi));
+			exit(ft_built_in(cmd->args, envi));
 		else
 			exec_cmd(cmd->args, env);
 	}
@@ -99,7 +99,7 @@ void	exec_simple_cmd(t_cmd *cmd, char **env, t_env *envi)
 		__in = dup(0);
 		__out = dup(1);
 		setup_redirects(cmd, envi);
-		ft_built_in(cmd, envi);
+		ft_built_in(cmd->args, envi);
 		dup2(0, __in);
 		dup2(1, __out);
 		return ;
