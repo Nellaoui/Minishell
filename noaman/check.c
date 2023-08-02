@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:02:42 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/01 21:31:43 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/02 21:57:19 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,18 +72,31 @@ int	ft_syntax_error(char *str, t_node *head)
 	return (0);
 }
 
-char	*ft_backward(char *str)
+char	*ft_if_remove(char *data, char *str)
 {
 	int		i;
 	int		j;
-	int		len;
-	char	*string;
 
 	i = 0;
-	j = 1;
-	while (str[j] && (str[j] != '\'' || str[j] != '\''))
-		j++;
-		str = ft_substr(str, i + 1, j - 2);
+	j = 0;
+	while (data[i])
+	{
+		if (data[i] && data[i] == '\'' && ++i)
+		{
+			while (data[i] && data[i] != '\'')
+				str[j++] = data[i++];
+			i++;
+		}
+		else if (data[i] && data[i] == '\"' && ++i)
+		{
+			while (data[i] && data[i] != '\"')
+				str[j++] = data[i++];
+			i++;
+		}
+		else
+			str[j++] = data[i++];
+	}
+	str[j] = '\0';
 	return (str);
 }
 

@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:56:02 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/01 19:31:08 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/02 17:27:40 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	ft_redrection(char *str, t_token *s, t_node **head)
 			ft_insert_token(head, s->res);
 		s->res = ft_subfree(str, s->i, 2, s);
 		ft_insert_token(head, s->res);
-		s->start = s->i + 3;
+		s->start = s->i + 2;
 		s->i = s->i + 2;
 	}
 	if ((str[s->i] == '<' || str[s->i] == '>'))

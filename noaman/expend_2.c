@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:11:49 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/01 21:31:19 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/02 21:58:04 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void	ft_help_get_str(char *data, t_token *s)
 
 void	ft_skip(t_token *s, char *data)
 {
+	s->string[s->len] = '\'';
+	s->len++;
 	while (data[s->j] && data[s->j] != '\'')
 	{
 		s->string[s->len] = data[s->j];
@@ -68,20 +70,16 @@ void	ft_skip(t_token *s, char *data)
 void	ft_remove_quote(t_node *head)
 {
 	t_node	*node;
-	int		i;
 	char	*string;
 
-	i = 0;
 	node = head;
 	while (node)
 	{
-		if (node->data[i] == '\'' || node->data[i] == '"')
-		{
-			string = ft_backward(node->data);
-			free(node->data);
-			node->data = string;
-			node->quote = 1;
-		}
+		string = malloc(sizeof(char *) * ft_strlen(node->data) + 1);
+		string = ft_if_remove(node->data, string);
+		free(node->data);
+		node->data = string;
+		node->quote = 1;
 		node = node->next;
 	}
 }
