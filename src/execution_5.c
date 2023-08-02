@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_5.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:40:12 by aziyani           #+#    #+#             */
-/*   Updated: 2023/08/02 22:27:29 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/08/02 23:52:45 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,18 +64,10 @@ void	ft_help_in_red(t_cmd *cmd, int fd, char *s)
 				dup2(fd, STDIN_FILENO);
 			}
 			else
-			{
-				ft_putstr_fd("minishell: ", 2);
-				ft_putstr_fd(s, 2);
-				ft_putstr_fd(" : No such file or directory\n", 2);
-			}
+				ft_perror(s);
 		}
 		else
-		{
-			ft_putstr_fd("minishell: ", 2);
-			ft_putstr_fd(s, 2);
-			ft_putstr_fd(" : No such file or directory\n", 2);
-		}
+			ft_perror(s);
 		cmd->in_reds = cmd->in_reds->next;
 	}
 }
@@ -109,6 +101,8 @@ void	setup_redirects(t_cmd *cmd, t_env *envi)
 	int		fd;
 	char	*s;
 
+	fd = 0;
+	s = NULL;
 	if (cmd->in_reds)
 		ft_help_in_red(cmd, fd, s);
 	if (cmd->out_reds)

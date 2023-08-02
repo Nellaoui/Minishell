@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/02 22:36:02 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/08/02 23:55:51 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,17 +112,16 @@ void	ft_redrection(char *str, t_token *s, t_node **head);
 void	ft_pipe(char *str, t_token *s, t_node **head);
 t_node	*ft_token(char *str, t_node *head);
 int		ft_check_quotes(char *str);
-int		ft_syntax_error(char *str, t_node *head);
-void	ft_type(t_node **head);
+int		ft_syntax_error(t_node *head);
+void	ft_type(t_node **head, t_token *s);
 t_cmd	*ft_new_node(void);
 t_cmd	*ft_insert_link(t_node *head);
-// void	all_display(t_cmd *cmd);
-char	*ft_subfree(char *str, int start, int len, t_token *s);
+char	*ft_subfree(char *str, int start, int len);
 char	*get_index(char *string);
 int		ft_is_valid(char c);
 char	*get_value(char *id, t_env *envi);
 int		get_str_len(char *data, t_env *envi);
-char	*get_new_string(int str_len, char *data, t_env *envi);
+char	*get_new_string(int str_len, char *data);
 char	*get_expanded(char *data, t_env *envi);
 void	ft_mini_expen(t_node *node, t_env *envi);
 void	ft_expension(t_cmd *cmd, t_env *envi);
@@ -152,12 +151,13 @@ void	setup_redirects(t_cmd *cmd, t_env *envi);
 void	exec_compound_cmd(t_cmd *cmd, int prev_in, char **env, t_env *envi);
 void	exec_simple_cmd(t_cmd *cmd, char **env, t_env *envi);
 void	ft_execute(t_cmd *cmd, char **env, t_env *envi);
-t_env   *create_node(char *key, char *value, int is_qual);
+t_env	*create_node(char *key, char *value, int is_qual);
 void	add_node(t_env **list, t_env *new_node);
 char	**linked_list_to_array(t_node *head);
 char	*get_cmd(char **paths, char *cmd);
 int		check_cmd(char *cmd);
 void	exec_cmd(t_node *cmd, char **env);
+void	ft_perror(char *s);
 // void	setup_in_redirects(t_node *in_red);
 // void	setup_out_redirects(t_node *out_red);
 t_env	*ft_setup_env(char **env_main);

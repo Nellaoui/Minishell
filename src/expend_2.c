@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expend_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:11:49 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/02 22:35:12 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/08/02 23:43:06 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*get_new_string(int str_len, char *data, t_env *envi)
+char	*get_new_string(int str_len, char *data)
 {
 	t_token	*s;
 	char	*string;
@@ -43,6 +43,7 @@ void	ft_help_get_str(char *data, t_token *s)
 {
 	char	*string;
 
+	string = NULL;
 	if (ft_is_valid(data[s->j]) == 0)
 	{
 		s->string[s->len] = data[s->j];

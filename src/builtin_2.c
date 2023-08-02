@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 17:43:24 by aziyani           #+#    #+#             */
-/*   Updated: 2023/07/31 23:13:23 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/08/02 23:24:52 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	ft_cd_error(char *path)
 	if (chdir(path) < 0)
 	{
 		printf("cd : %s : No such file or directory\n", path);
+		g_global.exit_status = 126;
 		return (1);
 	}
 	return (0);

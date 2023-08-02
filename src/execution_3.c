@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:39:46 by aziyani           #+#    #+#             */
-/*   Updated: 2023/07/31 23:23:51 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/08/02 23:54:23 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,9 @@ void	exec_compound_cmd(t_cmd *cmd, int prev_in, char **env, t_env *envi)
 {
 	pid_t	pid;
 	int		pfds[2];
-	t_node	*node;
+	int		status;
 
+	status = 0;
 	pipe(pfds);
 	pid = fork();
 	if (pid == 0)
@@ -59,8 +60,9 @@ void	exec_compound_cmd(t_cmd *cmd, int prev_in, char **env, t_env *envi)
 	{
 		close(pfds[1]);
 		prev_in = dup(pfds[0]);
-		waitpid(pid, NULL, 0);
+		waitpid(pid, &status, 0);
 	}
+	g_global.exit_status = status >> 8;
 	if (cmd->next)
 		exec_compound_cmd(cmd->next, prev_in, env, envi);
 }
@@ -69,6 +71,8 @@ void	exec_compound_cmd(t_cmd *cmd, int prev_in, char **env, t_env *envi)
 
 void	exec_signal(t_cmd *cmd, char **env, t_env *envi, pid_t	pid)
 {
+	int	status;
+
 	if (pid == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
@@ -81,7 +85,8 @@ void	exec_signal(t_cmd *cmd, char **env, t_env *envi, pid_t	pid)
 	}
 	else
 	{
-		wait(NULL);
+		waitpid(pid, &status, 0);
+		g_global.exit_status = status >> 8;
 		signal(SIGINT, ft_signal);
 	}
 }

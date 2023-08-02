@@ -45,7 +45,6 @@ void	ft_free(t_cmd *cmd, char *input, char **env, t_node *head)
 {
 	ft_expension(cmd, g_global.env);
 	ft_execute(cmd, env, g_global.env);
-	ft_display(cmd->args);
 	ft_frees_cmd(cmd);
 	ft_free_ls(head);
 	free(input);
@@ -56,7 +55,7 @@ void	ft_signal(int sig)
 	if (sig == SIGINT)
 	{
 		rl_on_new_line();
-		// rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		printf("\n");
 		rl_redisplay();
 	}
@@ -66,7 +65,6 @@ int	main(int ac, char **av, char **env)
 {
 	t_node	*head;
 	t_cmd	*cmd;
-	t_env	*envi;
 	char	*input;
 
 	ft_s_env(env);
@@ -79,7 +77,7 @@ int	main(int ac, char **av, char **env)
 			continue ;
 		}
 		head = ft_token(input, head);
-		if (ft_syntax_error(input, head))
+		if (ft_syntax_error(head))
 		{
 			free(input);
 			ft_free_ls(head);
@@ -87,7 +85,6 @@ int	main(int ac, char **av, char **env)
 		}
 		cmd = ft_insert_link(head);
 		ft_free(cmd, input, env, head);
-		// system("leaks -q minishell");
 	}
 	return (0);
 }

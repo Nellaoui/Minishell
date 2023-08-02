@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:02:42 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/02 21:57:19 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/02 23:41:26 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	ft_check_quotes(char *str)
 	return (EXIT_SUCCESS);
 }
 
-int	ft_syntax_error(char *str, t_node *head)
+int	ft_syntax_error(t_node *head)
 {
 	if (head->type == PIPE && head->next == NULL)
 	{

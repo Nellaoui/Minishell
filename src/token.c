@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:56:02 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/02 22:35:31 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/08/02 23:48:38 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ t_node	*ft_token(char *str, t_node *head)
 {
 	t_token	*s;
 
+	s = NULL;
 	head = NULL;
 	s = ft_initialize(s);
 	while (str[s->i])
@@ -36,14 +37,13 @@ t_node	*ft_token(char *str, t_node *head)
 	}
 	if (ft_strlen(&str[s->start]) != 0)
 		ft_insert_token(&head, &(str[s->start]));
-	ft_type(&head);
-	free(s);
+	ft_type(&head, s);
 	return (head);
 }
 
 void	ft_splited(char *str, t_token *s, t_node **head)
 {
-	s->res = ft_subfree(str, s->start, s->i - s->start, s);
+	s->res = ft_subfree(str, s->start, s->i - s->start);
 	if (ft_strlen(s->res) != 0)
 		ft_insert_token(head, s->res);
 	s->start = s->i + 1;
@@ -54,10 +54,10 @@ void	ft_redrection(char *str, t_token *s, t_node **head)
 	if (((str[s->i] == '<' && str[s->i + 1] == '<')
 			|| (str[s->i] == '>' && str[s->i + 1] == '>')))
 	{
-		s->res = ft_subfree(str, s->start, s->i - s->start, s);
+		s->res = ft_subfree(str, s->start, s->i - s->start);
 		if (ft_strlen(s->res) != 0 && str[s->i - 1] != ' ')
 			ft_insert_token(head, s->res);
-		s->res = ft_subfree(str, s->i, 2, s);
+		s->res = ft_subfree(str, s->i, 2);
 		ft_insert_token(head, s->res);
 		s->start = s->i + 2;
 		s->i = s->i + 2;
@@ -68,20 +68,17 @@ void	ft_redrection(char *str, t_token *s, t_node **head)
 
 void	ft_rederct(char *str, t_token *s, t_node **head)
 {
-	s->res = ft_subfree(str, s->start, s->i - s->start, s);
+	s->res = ft_subfree(str, s->start, s->i - s->start);
 	if (ft_strlen(s->res) != 0 && str[s->i - 1] != ' ')
 		ft_insert_token(head, s->res);
-	s->res = ft_subfree(str, s->i, 1, s);
+	s->res = ft_subfree(str, s->i, 1);
 	ft_insert_token(head, s->res);
 	s->start = s->i + 1;
 }
 
 void	ft_pipe(char *str, t_token *s, t_node **head)
 {
-	char	*pipe;
-	char	*string;
-
-	s->res = ft_subfree(str, s->start, s->i - s->start, s);
+	s->res = ft_subfree(str, s->start, s->i - s->start);
 	if (ft_strlen(s->res) != 0 && str[s->i - 1] != ' ')
 		ft_insert_token(head, s->res);
 	ft_insert_token(head, "|");

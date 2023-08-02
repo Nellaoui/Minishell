@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 17:46:34 by aziyani           #+#    #+#             */
-/*   Updated: 2023/08/02 22:21:06 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/08/02 22:53:48 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ int	ft_exit(t_node *status, char *data)
 		is_alpha(data);
 		exit_number = ft_atoi(data);
 		g_global.exit_status = exit_number;
+		printf("stat%d\n", exit_number);
 		exit (exit_number);
 	}
 	return (0);

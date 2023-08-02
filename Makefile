@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+         #
+#    By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/06 12:31:19 by nelallao          #+#    #+#              #
-#    Updated: 2023/08/02 22:35:52 by aziyani          ###   ########.fr        #
+#    Updated: 2023/08/03 00:09:02 by nelallao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,6 @@ RM = rm -f
 FLAGS = -Wall -Wextra -Werror
 LFLAGS = -lreadline
 LIBFT = includes/libft/libft.a
-# FFLAGS = -fsanitize=address -g
-# SRC = noaman/minishell.c ./includes/libft_func.c ./ayoub/execution.c
 SRC= minishell.c check.c expend.c expend_2.c inserting.c outils.c token.c outils_2.c \
 	execution.c get_next_line.c get_next_line_utils.c builtin.c builtin_2.c builtin_3.c \
 	execution_2.c execution_3.c execution_4.c execution_5.c help_minishell.c
@@ -36,8 +34,8 @@ $(NAME): $(OBJ) $(LIBFT)
 $(LIBFT) :
 	@make -C includes/libft
 
-obj/%.o: noaman/%.c
-	$(CC) -c $< -o $@ -I /Users/nelallao/.brew/opt/readline/include/
+obj/%.o: src/%.c
+	$(CC) $(FLAGS) -c $< -o $@ -I /Users/nelallao/.brew/opt/readline/include/
 
 clean:
 	@make clean -C includes/libft

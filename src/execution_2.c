@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:39:31 by aziyani           #+#    #+#             */
-/*   Updated: 2023/07/31 23:25:07 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/08/02 23:45:37 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	ft_count_link(t_node *node)
 
 // =========================================================================
 
-int	ft_built_in_2(t_node *args, t_env *env)
+int	ft_built_in_2(t_node *args)
 {
 	if (ft_strncmp("unset", args->data, 6) == 0)
 	{
@@ -79,7 +79,7 @@ int	ft_built_in(t_node *args, t_env *env)
 			args = args->next;
 		return (ft_export(&g_global.env, args->data));
 	}
-	ft_built_in_2(args, env);
+	ft_built_in_2(args);
 	return (0);
 }
 

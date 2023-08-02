@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/20 18:58:00 by nelallao          #+#    #+#             */
-/*   Updated: 2022/10/21 19:45:32 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/03 00:08:48 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,3 @@ void	ft_putendl_fd(char *s, int fd)
 		write(fd, "\n", 1);
 	}
 }
-// #include <fcntl.h>
-// #include <stdio.h>
-// int main()
-// {
-// int fd;
-// char *s = "Heloo noaman";
-// fd = creat("c.txt", O_RDWR);
-// ft_putendl_fd(s, fd);
-// }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 18:43:16 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/02 22:16:25 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/08/03 00:04:23 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,13 @@ void	exec_cmd(t_node *cmd, char **env)
 	if (e_cmd[0] == NULL)
 	{
 		ft_putstr_fd("minishell: command not found\n", 2);
-		exit (127);
+		g_global.exit_status = 127;
+		exit(127);
 	}
 	execve(e_cmd[0], e_cmd, env);
-	ft_putstr_fd("somthing went wrong\n", 2);
-	exit (1);
+	ft_putstr_fd("minishell: command not found\n", 2);
+	g_global.exit_status = 127;
+	exit(g_global.exit_status);
 }
 
 // =========================================================================
@@ -96,22 +98,34 @@ int	check_cmd(char *cmd)
 {
 	char	*s;
 
+	s = NULL;
 	if (access(cmd, F_OK) < 0)
 	{
 		s = cmd;
 		ft_putstr_fd("No such file or directory: ", 2);
 		ft_putstr_fd(s, 2);
 		ft_putstr_fd("\n", 2);
-		exit(126);
+		g_global.exit_status = 1;
+		exit(g_global.exit_status);
 	}
 	if (access(cmd, X_OK) < 0)
 	{
 		ft_putstr_fd("Permission denied: ", 2);
 		ft_putstr_fd(s, 2);
 		ft_putstr_fd("\n", 2);
-		exit(126);
+		g_global.exit_status = 1;
+		exit(g_global.exit_status);
 	}
 	return (1);
 }
 
 // =========================================================================
+
+void	ft_perror(char *s)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(s, 2);
+	ft_putstr_fd(" : No such file or directory\n", 2);
+	g_global.exit_status = 1;
+	exit(g_global.exit_status);
+}

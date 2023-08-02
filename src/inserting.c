@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:59:38 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/30 09:19:56 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/02 23:48:48 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ t_cmd	*ft_insert_link(t_node *head)
 	return (head_command);
 }
 
-void	ft_type(t_node **head)
+void	ft_type(t_node **head, t_token *s)
 {
 	t_node	*node;
 
@@ -128,4 +128,5 @@ void	ft_type(t_node **head)
 			node->type = APPEND;
 		node = node->next;
 	}
+	free(s);
 }

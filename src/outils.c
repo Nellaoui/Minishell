@@ -6,13 +6,13 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:08:01 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/01 21:16:39 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/02 23:43:16 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*ft_subfree(char *str, int start, int len, t_token *s)
+char	*ft_subfree(char *str, int start, int len)
 {
 	char	*string;
 	char	*res;

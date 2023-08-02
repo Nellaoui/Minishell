@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:09:50 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/01 21:31:27 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/02 23:42:47 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*get_expanded(char *data, t_env *envi)
 	int		str_len;
 
 	str_len = get_str_len(data, envi);
-	string = get_new_string(str_len, data, envi);
+	string = get_new_string(str_len, data);
 	return (string);
 }
 
@@ -80,8 +80,6 @@ int	get_str_len(char *data, t_env *envi)
 
 void	ft_help_get_len(t_token *s, char *data, t_env *envi)
 {
-	char	*string;
-
 	if (ft_is_valid(data[s->j]) == 0)
 		s->len++;
 	else
