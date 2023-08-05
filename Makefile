@@ -6,14 +6,14 @@
 #    By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/06 12:31:19 by nelallao          #+#    #+#              #
-#    Updated: 2023/08/03 00:09:02 by nelallao         ###   ########.fr        #
+#    Updated: 2023/08/04 15:30:10 by nelallao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
 RM = rm -f
-FLAGS = -Wall -Wextra -Werror
+# FLAGS = -Wall -Wextra -Werror
 LFLAGS = -lreadline
 LIBFT = includes/libft/libft.a
 SRC= minishell.c check.c expend.c expend_2.c inserting.c outils.c token.c outils_2.c \

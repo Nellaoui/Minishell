@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:30:37 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/01 21:57:45 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/03 20:18:39 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ char	*ft_free_new_str(t_token *s, char *data)
 	}
 	string = ft_strdup(s->string);
 	free(data);
-	free(s->string);
-	free(s);
+	// free(s->string);
+	// free(s);
 	return (string);
 }
 
@@ -86,25 +86,25 @@ void	ft_frees_cmd(t_cmd *head)
 		current = next;
 	}
 }
-// void	all_display(t_cmd	*cmd)
-// {
-// 	t_cmd	*tmp;
-// 	int		pipe;
+void	all_display(t_cmd	*cmd)
+{
+	t_cmd	*tmp;
+	int		pipe;
 
-// 	pipe = 1;
-// 	tmp = cmd;
-// 	while (tmp)
-// 	{
-// 		printf("--------[command %d]-------\n", pipe);
-// 		ft_display(tmp->args);
-// 		printf("------>>[out_reds]>>-----\n");
-// 		ft_display(tmp->out_reds);
-// 		printf("------<<[in_reds]<<-----\n");
-// 		ft_display(tmp->in_reds);
-// 		printf("------<<[herdoc]<<-----\n");
-// 		ft_display(tmp->her_reds);
-// 		printf("--------------------------\n");
-// 		pipe++;
-// 		tmp = tmp->next;
-// 	}
-// }
+	pipe = 1;
+	tmp = cmd;
+	while (tmp)
+	{
+		printf("--------[command %d]-------\n", pipe);
+		ft_display(tmp->args);
+		printf("------>>[out_reds]>>-----\n");
+		ft_display(tmp->out_reds);
+		printf("------<<[in_reds]<<-----\n");
+		ft_display(tmp->in_reds);
+		printf("------<<[herdoc]<<-----\n");
+		ft_display(tmp->her_reds);
+		printf("--------------------------\n");
+		pipe++;
+		tmp = tmp->next;
+	}
+}

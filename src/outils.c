@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:08:01 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/02 23:43:16 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/04 18:42:48 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	free_arr(char **s)
 	free(s);
 }
 
-char	*get_value(char *id, t_env *envi)
+char	*get_value(char *id, t_env *envi, char *s)
 {
 	t_env	*tmp;
 
@@ -71,10 +71,10 @@ char	*get_value(char *id, t_env *envi)
 	{
 		if ((ft_strlen(id) == ft_strlen(tmp->key))
 			&& (ft_strncmp(id, tmp->key, ft_strlen(tmp->key)) == 0))
-		{
 			return (tmp->value);
-		}
 		tmp = tmp->next;
 	}
+	ft_perror(s);
+	exit(1);
 	return (0);
 }

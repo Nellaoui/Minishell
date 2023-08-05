@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 18:43:16 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/03 00:04:23 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/04 18:40:38 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	exec_cmd(t_node *cmd, char **env)
 	char	**paths;
 	char	**e_cmd ;
 
-	paths = ft_split(get_value("PATH", g_global.env), ':');
 	e_cmd = linked_list_to_array(cmd);
+	paths = ft_split(get_value("PATH", g_global.env, e_cmd[0]), ':');
 	e_cmd[0] = get_cmd(paths, e_cmd[0]);
 	if (e_cmd[0] == NULL)
 	{
@@ -76,7 +76,7 @@ char	*get_cmd(char **paths, char *cmd)
 	if (cmd[0] == '/')
 	{
 		cmd = ft_strchr(cmd, '/');
-		if (strrchr(cmd, '/') == NULL)
+		if (ft_strrchr(cmd, '/') == NULL)
 			return (0);
 	}
 	while (paths && *paths)

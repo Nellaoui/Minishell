@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 17:46:34 by aziyani           #+#    #+#             */
-/*   Updated: 2023/08/02 22:53:48 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/04 15:20:20 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,8 @@ void	is_alpha(char *string)
 		if (!(string[i] >= '0' && string[i] <= '9'))
 		{
 			write (2, "exit: asf: numeric argument required\n", 37);
-			exit (255);
+			g_global.exit_status = 255;
+			exit (g_global.exit_status);
 		}
 		i++;
 	}
