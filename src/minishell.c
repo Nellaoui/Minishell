@@ -43,11 +43,7 @@ void	ft_display(t_node *head)
 
 void	ft_free(t_cmd *cmd, char *input, char **env, t_node *head)
 {
-	// all_display(cmd);
-	// printf("***************************\n");
-	// printf("***************************\n");
 	ft_expension(cmd, g_global.env);
-	// all_display(cmd);
 	ft_execute(cmd, env, g_global.env);
 	ft_frees_cmd(cmd);
 	ft_free_ls(head);
@@ -72,6 +68,8 @@ int	main(int ac, char **av, char **env)
 	char	*input;
 
 	ft_s_env(env);
+	int stdin = dup(STDIN_FILENO);
+	int stdout = dup(STDOUT_FILENO);
 	while (ac && av[0])
 	{
 		input = ft_readforfree(input);
@@ -88,7 +86,10 @@ int	main(int ac, char **av, char **env)
 			continue ;
 		}
 		cmd = ft_insert_link(head);
+		env = linked_list_to_array();
 		ft_free(cmd, input, env, head);
+		dup2(stdin, 0);
+		dup2(stdout, 1);
 	}
 	return (0);
 }

@@ -36,7 +36,11 @@ t_node	*ft_token(char *str, t_node *head)
 		s->i++;
 	}
 	if (ft_strlen(&str[s->start]) != 0)
+	{
+		if (str[s->start] == ' ' || str[s->start] == '\t')
+			s->start++;
 		ft_insert_token(&head, &(str[s->start]));
+	}
 	ft_type(&head, s);
 	return (head);
 }

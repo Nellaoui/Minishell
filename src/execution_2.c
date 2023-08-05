@@ -74,11 +74,7 @@ int	ft_built_in(t_node *args, t_env *env)
 	if (ft_strncmp("pwd", args->data, 4) == 0)
 		return (ft_pwd());
 	if (ft_strncmp("export", args->data, 7) == 0)
-	{
-		if (args->next)
-			args = args->next;
-		return (ft_export(&g_global.env, args->data));
-	}
+		return (ft_export(&g_global.env, args));
 	ft_built_in_2(args);
 	return (0);
 }

@@ -20,19 +20,20 @@ int	ft_check_key(char	**key_value)
 
 	if (key_value[0][0] != '_' && !ft_isalpha(key_value[0][0]))
 	{
-		ft_putstr_fd("not a valid identifier\n", 2);
+		ft_putstr_fd("minishell: export: ", 2);
+		ft_putstr_fd(key_value[0], 2);
+		ft_putstr_fd(" not a valid identifier\n", 2);
 		return (1);
 	}
 	i = 1;
 	while (key_value[0][i])
 	{
-		if (!(ft_isalnum(key_value[0][i])))
+		if (!(ft_isalnum(key_value[0][i])) && key_value[0][i] != '_')
 		{
-			if (key_value[0][i] != '_')
-			{
-				ft_putstr_fd("not a valid identifier\n", 2);
-				return (1);
-			}
+			ft_putstr_fd("minishell: export: ", 2);
+			ft_putstr_fd(key_value[0], 2);
+			ft_putstr_fd("not a valid identifier\n", 2);
+			return (1);
 		}
 		i++;
 	}
@@ -41,12 +42,10 @@ int	ft_check_key(char	**key_value)
 
 void	add_env_variable(t_env **export, char *key, char *value, int is_qual)
 {
-	int		i;
 	int		added;
 	t_env	*tmp;
 
 	tmp = *export;
-	i = 0;
 	added = 0;
 	while (tmp)
 	{
@@ -57,6 +56,8 @@ void	add_env_variable(t_env **export, char *key, char *value, int is_qual)
 				added = 1;
 				break ;
 			}
+			free(tmp->value);
+
 			tmp->value = ft_strdup(value);
 			tmp->is_equal = is_qual;
 			added = 1;
@@ -68,16 +69,39 @@ void	add_env_variable(t_env **export, char *key, char *value, int is_qual)
 		add_node(export, create_node(key, value, is_qual));
 }
 
-int	ft_export(t_env **export, char *str)
+void	check_and_set_vr(t_env **export, char **e_cmd)
+{
+	char	**key_value;
+	int		is_qual;
+	int		k;
+
+	k = 1;
+	is_qual = 0;
+	while (e_cmd[k])
+	{
+		if (e_cmd[k][0])
+		{
+			if (ft_strchr(e_cmd[k], '=') != NULL)
+				is_qual = 1;
+			key_value = ft_split(e_cmd[k], '=');
+			e_cmd[k] = e_cmd[k] + (ft_strlen(key_value[0]) + 1);
+			if (!ft_check_key(key_value))
+				add_env_variable(export, key_value[0], e_cmd[k], is_qual);
+			free_arr(key_value);
+		}
+		k++;
+	}
+}
+
+int	ft_export(t_env **export, t_node *arg)
 {
 	t_env	*tmp;
 	t_env	*tmp2;
-	char	**key_value;
-	int		is_qual;
+	char	**e_cmd;
 
-	is_qual = 0;
 	tmp = *export;
-	if (!ft_strncmp(str, "export", ft_strlen("export")))
+	e_cmd = linked_list_to_array(arg);
+	if (ft_count_link(arg) == 1)
 	{
 		tmp2 = g_global.env;
 		while (tmp2)
@@ -87,13 +111,8 @@ int	ft_export(t_env **export, char *str)
 		}
 		return (1);
 	}
-	if (ft_strchr(str, '=') != NULL)
-		is_qual = 1;
-	key_value = ft_split(str, '=');
-	str = str + (ft_strlen(key_value[0]) + 1);
-	if (!ft_check_key(key_value))
-		add_env_variable(export, key_value[0], str, is_qual);
-	free_arr(key_value);
+	check_and_set_vr(export, e_cmd);
+	free(e_cmd);
 	return (0);
 }
 
@@ -131,14 +150,13 @@ int	ft_exit(t_node *status, char *data)
 		i++;
 		x = x->next;
 	}
-	if (i > 2)
-		exit(write(2, "exit: too many arguments\n", 21) != 0);
+	if (i >= 2)
+		write(2, "minishell: exit: too many arguments\n", 25);
 	else
 	{
 		is_alpha(data);
 		exit_number = ft_atoi(data);
 		g_global.exit_status = exit_number;
-		printf("stat%d\n", exit_number);
 		exit (exit_number);
 	}
 	return (0);

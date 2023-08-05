@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/04 18:41:48 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/03 18:14:21 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ typedef struct s_env
 typedef struct s_global
 {
 	t_env	*env;
-	int		first;
 	int		exit_status;
 }	t_global;
 
@@ -96,7 +95,7 @@ int		ft_env(void);
 int		ft_exit(t_node *status, char *data);
 int		ft_modify_node(char	*export, char	*key);
 int		ft_check_key(char	**key_value);
-int		ft_export(t_env **export, char *str);
+int		ft_export(t_env **export, t_node *arg);
 int		ft_pwd(void);
 int		ft_unset(char *str);
 int		ft_built_in(t_node *args, t_env *env);
@@ -104,11 +103,11 @@ void	ft_command(t_node *node);
 /*--------------------------------------------------*/
 /*---------noaman-----------------*/
 
-void	all_display(t_cmd	*cmd);
 t_token	*ft_initialize(t_token *s);
 void	ft_insert_token(t_node **head, char *data);
 void	ft_insert_token_2(t_node **head, char *data, int type);
 void	ft_display(t_node *head);
+void	all_display(t_cmd	*cmd);
 void	ft_splited(char *str, t_token *s, t_node **head);
 void	ft_redrection(char *str, t_token *s, t_node **head);
 void	ft_pipe(char *str, t_token *s, t_node **head);
@@ -121,7 +120,7 @@ t_cmd	*ft_insert_link(t_node *head);
 char	*ft_subfree(char *str, int start, int len);
 char	*get_index(char *string);
 int		ft_is_valid(char c);
-char	*get_value(char *id, t_env *envi, char *s);
+char	*get_value(char *id, t_env *envi);
 int		get_str_len(char *data, t_env *envi);
 char	*get_new_string(int str_len, char *data);
 char	*get_expanded(char *data, t_env *envi);
@@ -143,6 +142,7 @@ void	ft_s_env(char **env);
 char	*ft_free_new_str(t_token *s, char *data);
 int		ft_empty(char *str);
 int		ft_hundling(t_token *s, char *data, char *string);
+int		ft_count_link(t_node *node);
 
 /*-------------------------------*/
 /*---------ayoub-----------------*/

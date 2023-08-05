@@ -63,6 +63,7 @@ void	free_arr(char **s)
 }
 
 char	*get_value(char *id, t_env *envi, char *s)
+
 {
 	t_env	*tmp;
 
@@ -76,5 +77,6 @@ char	*get_value(char *id, t_env *envi, char *s)
 	}
 	ft_perror(s);
 	exit(1);
+
 	return (0);
 }

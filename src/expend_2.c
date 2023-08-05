@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:11:49 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/03 20:17:56 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/02 23:43:06 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ char	*get_new_string(int str_len, char *data)
 		}
 	}
 	s->string[s->len] = '\0';
-	// printf("((((%s))))\n", s->string);
 	string = ft_free_new_str(s, data);
 	return (string);
 }

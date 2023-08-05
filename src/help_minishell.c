@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   help_minishell.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/30 11:37:49 by nelallao          #+#    #+#             */
-/*   Updated: 2023/07/30 11:43:41 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/03 16:03:38 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	*ft_readforfree(char *input)
 {
 	char	*string;
 
-	string = readline("-> Donpha❕ ");
+	string = readline("-> minishell❕ ");
 	input = ft_strtrim(string, " \t");
 	add_history(string);
 	free(string);

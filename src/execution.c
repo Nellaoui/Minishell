@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 18:43:16 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/04 18:40:38 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/03 17:00:36 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,14 @@ void	exec_cmd(t_node *cmd, char **env)
 	char	**paths;
 	char	**e_cmd ;
 
-	e_cmd = linked_list_to_array(cmd);
-	paths = ft_split(get_value("PATH", g_global.env, e_cmd[0]), ':');
-	e_cmd[0] = get_cmd(paths, e_cmd[0]);
+	if (get_value("PATH", g_global.env))
+	{
+		paths = ft_split(get_value("PATH", g_global.env), ':');
+		e_cmd = linked_list_to_array(cmd);
+		e_cmd[0] = get_cmd(paths, e_cmd[0]);
+	}
+	else
+		e_cmd = linked_list_to_array(cmd);
 	if (e_cmd[0] == NULL)
 	{
 		ft_putstr_fd("minishell: command not found\n", 2);
@@ -70,13 +75,15 @@ char	*get_cmd(char **paths, char *cmd)
 	char	*tmp;
 	char	*command;
 
+	if (access(cmd, F_OK) == 0)
+		return (cmd);
 	if (cmd[0] == '.')
 		if (check_cmd(cmd) == 1)
 			return (cmd);
 	if (cmd[0] == '/')
 	{
 		cmd = ft_strchr(cmd, '/');
-		if (ft_strrchr(cmd, '/') == NULL)
+		if (strrchr(cmd, '/') == NULL)
 			return (0);
 	}
 	while (paths && *paths)

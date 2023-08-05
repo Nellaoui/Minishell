@@ -40,6 +40,7 @@ char	*ft_free_new_str(t_token *s, char *data)
 	free(data);
 	// free(s->string);
 	// free(s);
+
 	return (string);
 }
 
