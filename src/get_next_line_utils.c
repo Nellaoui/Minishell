@@ -3,26 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/19 19:46:13 by aziyani           #+#    #+#             */
-/*   Updated: 2023/07/24 16:58:14 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/07/28 16:49:14 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../includes/get_next_line.h"
 
-// size_t	ft_strlen2(char *s)
-// {
-// 	size_t	i;
+size_t	ft_strlen2(char *s)
+{
+	size_t	i;
 
-// 	if (!(s))
-// 		return (0);
-// 	i = 0;
-// 	while (s[i])
-// 		i++;
-// 	return (i);
-// }
+	if (!(s))
+		return (0);
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
 
 char	*cline(char *s)
 {
@@ -64,7 +64,7 @@ char	*bowl(char *s)
 	if (s[i] == '\n')
 		i++;
 	j = 0;
-	rest = (char *)malloc((ft_strlen(s) - i + 1));
+	rest = (char *)malloc((ft_strlen2(s) - i + 1));
 	if (!rest)
 		return (0);
 	while (s[i])
@@ -102,7 +102,7 @@ char	*ft_strjoin2(char *s1, char *s2)
 		s1 = malloc(1);
 		*s1 = '\0';
 	}
-	s = malloc((ft_strlen(s1) + ft_strlen(s2)) + 1);
+	s = malloc((ft_strlen2(s1) + ft_strlen2(s2)) + 1);
 	if (!s)
 		return (0);
 	i = 0;

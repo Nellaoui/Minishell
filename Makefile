@@ -6,36 +6,44 @@
 #    By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/06 12:31:19 by nelallao          #+#    #+#              #
-#    Updated: 2023/07/24 18:55:29 by aziyani          ###   ########.fr        #
+#    Updated: 2023/08/05 23:24:01 by aziyani          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
 RM = rm -f
-# FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror 
 LFLAGS = -lreadline
-# FFLAGS = -fsanitize=address -g
-# SRC = noaman/minishell.c ./includes/libft_func.c ./ayoub/execution.c
-SRC= minishell.c execution.c libft_func.c get_next_line.c get_next_line_utils.c
+LIBFT = includes/libft/libft.a
+SRC= minishell.c check.c expend.c expend_2.c inserting.c outils.c token.c outils_2.c \
+	execution.c get_next_line.c get_next_line_utils.c builtin.c builtin_2.c builtin_3.c \
+	execution_2.c execution_3.c execution_4.c execution_5.c help_minishell.c astd_dup.c
 OBJ := $(SRC:.c=.o)
 OBJ := $(addprefix obj/, $(OBJ))
 OBJ_DIR=obj/
 
-all : $(NAME)
+all: $(OBJ_DIR) $(NAME) $(LIBFT)
 
-$(NAME) :$(SRC)
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
+
+$(NAME): $(OBJ) $(LIBFT)
+	$(CC) -lreadline $(LFLAGS) $(FFLAGS) $(FLAGS) -L /Users/nelallao/.brew/opt/readline/lib/  $(OBJ) $(LIBFT) -o $(NAME)
+
+$(LIBFT) :
 	@make -C includes/libft
-	@$(CC) $(FLAGS) $(LFLAGS) $(SRC) includes/libft/libft.a -o $(NAME)
 
-clean :
-	@$(RM)
+obj/%.o: src/%.c
+	$(CC) $(FLAGS) -c $< -o $@ -I /Users/nelallao/.brew/opt/readline/include/
+
+clean:
 	@make clean -C includes/libft
-$(NAME): $(OBJ)
-	$(CC) $(LFLAGS) $(FFLAGS) $(OBJ) -o $(NAME)
+	@$(RM) $(OBJ)
 
-fclean : clean
-	@$(RM) $(NAME)
+fclean: clean
 	@make fclean -C includes/libft
+	@$(RM) $(NAME)
 
-re : fclean all
+re: fclean all
+	@make re -C includes/libft
