@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 17:43:24 by aziyani           #+#    #+#             */
-/*   Updated: 2023/08/02 23:24:52 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/05 23:29:56 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@ char	*get_variable_env(t_env **env, char *var_name)
 
 int	ft_cd_error(char *path, t_env	*tmp)
 {
-	char *old = getcwd(NULL, 0);
+	char	*old;
+
+	old = getcwd(NULL, 0);
 	while (tmp)
 	{
 		if (!ft_strncmp(tmp->key, "OLDPWD", ft_strlen("OLDPWD")))
@@ -46,7 +48,7 @@ int	ft_cd_error(char *path, t_env	*tmp)
 	if (chdir(path) < 0)
 	{
 		printf("cd : %s : No such file or directory\n", path);
-		g_global.exit_status = 126;
+		g_global.exit_status = 1;
 		return (1);
 	}
 	return (0);
@@ -61,7 +63,6 @@ int	ft_cd(char *path, t_env *env)
 	if (!path)
 		path = get_variable_env(&g_global.env, "HOME");
 	ft_cd_error(path, tmp);
-	
 	new_path = getcwd(NULL, 0);
 	while (tmp)
 	{
@@ -106,6 +107,11 @@ int	ft_unset(char *str)
 	t_env	*env;
 
 	env = g_global.env;
+	if (ft_check_key(str))
+	{
+		g_global.exit_status = 1;
+		return (1);
+	}
 	while (env)
 	{
 		if (ft_strncmp(env->key, str, ft_strlen(str) + 1) == 0)

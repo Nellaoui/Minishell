@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/03 18:14:21 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/08/05 23:33:05 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ typedef struct s_global
 {
 	t_env	*env;
 	int		exit_status;
+	int		s_in;
+	int		s_out;
 }	t_global;
 
 t_global				g_global;
@@ -94,7 +96,7 @@ int		ft_echo(t_node *args, int number_of_arg);
 int		ft_env(void);
 int		ft_exit(t_node *status, char *data);
 int		ft_modify_node(char	*export, char	*key);
-int		ft_check_key(char	**key_value);
+int		ft_check_key(char	*key_value);
 int		ft_export(t_env **export, t_node *arg);
 int		ft_pwd(void);
 int		ft_unset(char *str);
@@ -127,11 +129,9 @@ char	*get_expanded(char *data, t_env *envi);
 void	ft_mini_expen(t_node *node, t_env *envi);
 void	ft_expension(t_cmd *cmd, t_env *envi);
 void	free_arr(char **s);
-// void	ft_give_list(t_node *node, t_cmd *command);
-// void	ft_display_env(t_env *env);
 void	ft_rederct(char *str, t_token *s, t_node **head);
 void	ft_quote(t_cmd *cmd);
-void	ft_skip(t_token *s, char *data, int a);
+void	ft_skip(t_token *s, char *data);
 void	ft_frees_cmd(t_cmd *head);
 char	*ft_if_remove(char *data, char *str);
 void	ft_free_ls(t_node *head);
@@ -149,7 +149,7 @@ int		ft_count_link(t_node *node);
 void	exec_cmd(t_node *cmd, char **env);
 void	setup_heredoc(char *del, int expand, t_env *envi);
 void	handle_heredoc(t_node *curr, t_env *envi);
-void	setup_redirects(t_cmd *cmd, t_env *envi);
+int		setup_redirects(t_cmd *cmd, t_env *envi);
 void	exec_compound_cmd(t_cmd *cmd, int prev_in, char **env, t_env *envi);
 void	exec_simple_cmd(t_cmd *cmd, char **env, t_env *envi);
 void	ft_execute(t_cmd *cmd, char **env, t_env *envi);
@@ -159,11 +159,13 @@ char	**linked_list_to_array(t_node *head);
 char	*get_cmd(char **paths, char *cmd);
 int		check_cmd(char *cmd);
 void	exec_cmd(t_node *cmd, char **env);
-void	ft_perror(char *s);
-// void	setup_in_redirects(t_node *in_red);
-// void	setup_out_redirects(t_node *out_red);
+int		ft_perror(char *s);
 t_env	*ft_setup_env(char **env_main);
 void	ft_signal(int sig);
+void	ft_help_std_dup(char **env);
+void	ft_help_std();
+void	add_env_variable(t_env **export, char *key, char *value, int is_qual);
+void	check_and_set_vr(t_env **export, char **e_cmd);
 
 /*-------------------------------*/
 #endif

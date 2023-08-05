@@ -6,7 +6,7 @@
 #    By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/06 12:31:19 by nelallao          #+#    #+#              #
-#    Updated: 2023/08/04 15:30:10 by nelallao         ###   ########.fr        #
+#    Updated: 2023/08/05 23:24:01 by aziyani          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ LFLAGS = -lreadline
 LIBFT = includes/libft/libft.a
 SRC= minishell.c check.c expend.c expend_2.c inserting.c outils.c token.c outils_2.c \
 	execution.c get_next_line.c get_next_line_utils.c builtin.c builtin_2.c builtin_3.c \
-	execution_2.c execution_3.c execution_4.c execution_5.c help_minishell.c
+	execution_2.c execution_3.c execution_4.c execution_5.c help_minishell.c astd_dup.c
 OBJ := $(SRC:.c=.o)
 OBJ := $(addprefix obj/, $(OBJ))
 OBJ_DIR=obj/

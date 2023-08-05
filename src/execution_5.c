@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:40:12 by aziyani           #+#    #+#             */
-/*   Updated: 2023/08/03 18:20:53 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/08/05 23:07:44 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	handle_heredoc(t_node *curr, t_env *envi)
 
 // =========================================================================
 
-void	ft_help_in_red(t_cmd *cmd, int fd, char *s)
+int	ft_help_in_red(t_cmd *cmd, int fd, char *s)
 {
 	while (cmd->in_reds)
 	{
@@ -64,12 +64,13 @@ void	ft_help_in_red(t_cmd *cmd, int fd, char *s)
 				dup2(fd, STDIN_FILENO);
 			}
 			else
-				ft_perror(s);
+				return (ft_perror(s));
 		}
 		else
-			ft_perror(s);
+			return (ft_perror(s));
 		cmd->in_reds = cmd->in_reds->next;
 	}
+	return (0);
 }
 
 // =========================================================================
@@ -96,15 +97,17 @@ void	ft_help_out_red(t_cmd *cmd, int fd)
 
 // =========================================================================
 
-void	setup_redirects(t_cmd *cmd, t_env *envi)
+int	setup_redirects(t_cmd *cmd, t_env *envi)
 {
 	int		fd;
 	char	*s;
+	int		exit;
 
 	fd = 0;
 	s = NULL;
+	exit = 0;
 	if (cmd->in_reds)
-		ft_help_in_red(cmd, fd, s);
+		exit = ft_help_in_red(cmd, fd, s);
 	if (cmd->out_reds)
 		ft_help_out_red(cmd, fd);
 	if (cmd->her_reds)
@@ -112,6 +115,7 @@ void	setup_redirects(t_cmd *cmd, t_env *envi)
 		handle_heredoc(cmd->her_reds, envi);
 		unlink(".tmp");
 	}
+	return (exit);
 }
 
 // =========================================================================

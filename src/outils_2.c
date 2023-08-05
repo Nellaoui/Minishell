@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   outils_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:30:37 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/03 20:18:39 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/03 17:26:29 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,8 @@ char	*ft_free_new_str(t_token *s, char *data)
 	}
 	string = ft_strdup(s->string);
 	free(data);
-	// free(s->string);
-	// free(s);
-
+	free(s->string);
+	free(s);
 	return (string);
 }
 

@@ -6,7 +6,7 @@
 /*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/19 18:43:16 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/03 17:00:36 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/08/05 23:04:39 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,11 +128,11 @@ int	check_cmd(char *cmd)
 
 // =========================================================================
 
-void	ft_perror(char *s)
+int	ft_perror(char *s)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(s, 2);
 	ft_putstr_fd(" : No such file or directory\n", 2);
 	g_global.exit_status = 1;
-	exit(g_global.exit_status);
+	return (1);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:39:46 by aziyani           #+#    #+#             */
-/*   Updated: 2023/08/04 18:24:42 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/05 23:29:45 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,19 @@ int	check_builtin(t_node *head)
 {
 	if (head)
 	{
-		if (ft_strncmp(head->data, "echo", ft_strlen(head->data)) == 0)
+		if (ft_strncmp(head->data, "echo", 5) == 0)
 			return (1);
-		if (ft_strncmp(head->data, "cd", ft_strlen(head->data)) == 0)
+		if (ft_strncmp(head->data, "cd", 3) == 0)
 			return (1);
-		if (ft_strncmp(head->data, "pwd", ft_strlen(head->data)) == 0)
+		if (ft_strncmp(head->data, "pwd", 4) == 0)
 			return (1);
-		if (ft_strncmp(head->data, "export", ft_strlen(head->data)) == 0)
+		if (ft_strncmp(head->data, "export", 7) == 0)
 			return (1);
-		if (ft_strncmp(head->data, "unset", ft_strlen(head->data)) == 0)
+		if (ft_strncmp(head->data, "unset", 6) == 0)
 			return (1);
-		if (ft_strncmp(head->data, "env", ft_strlen(head->data)) == 0)
+		if (ft_strncmp(head->data, "env", 4) == 0)
 			return (1);
-		if (ft_strncmp(head->data, "exit", ft_strlen(head->data)) == 0)
+		if (ft_strncmp(head->data, "exit", 5) == 0)
 			return (1);
 	}
 	return (0);
@@ -77,7 +77,8 @@ void	exec_signal(t_cmd *cmd, char **env, t_env *envi, pid_t	pid)
 	{
 		signal(SIGQUIT, SIG_DFL);
 		signal(SIGINT, SIG_DFL);
-		setup_redirects(cmd, envi);
+		if (setup_redirects(cmd, envi))
+			exit(1);
 		if (check_builtin(cmd->args))
 			exit(ft_built_in(cmd->args, envi));
 		else
@@ -103,7 +104,8 @@ void	exec_simple_cmd(t_cmd *cmd, char **env, t_env *envi)
 	{
 		__in = dup(0);
 		__out = dup(1);
-		setup_redirects(cmd, envi);
+		if (setup_redirects(cmd, envi))
+			return ;
 		ft_built_in(cmd->args, envi);
 		dup2(0, __in);
 		dup2(1, __out);
@@ -128,6 +130,7 @@ void	ft_execute(t_cmd *cmd, char **env, t_env *envi)
 		++size;
 		curr = curr->next;
 	}
+	g_global.exit_status = 0;
 	if (size == 1)
 		exec_simple_cmd(cmd, env, envi);
 	else

@@ -44,7 +44,7 @@ void	ft_display(t_node *head)
 void	ft_free(t_cmd *cmd, char *input, char **env, t_node *head)
 {
 	ft_expension(cmd, g_global.env);
-	ft_execute(cmd, env, g_global.env);
+	ft_execute(cmd, env, g_global.env);;
 	ft_frees_cmd(cmd);
 	ft_free_ls(head);
 	free(input);
@@ -55,7 +55,7 @@ void	ft_signal(int sig)
 	if (sig == SIGINT)
 	{
 		rl_on_new_line();
-		rl_replace_line("", 0);
+		// rl_replace_line("", 0);
 		printf("\n");
 		rl_redisplay();
 	}
@@ -67,9 +67,7 @@ int	main(int ac, char **av, char **env)
 	t_cmd	*cmd;
 	char	*input;
 
-	ft_s_env(env);
-	int stdin = dup(STDIN_FILENO);
-	int stdout = dup(STDOUT_FILENO);
+	ft_help_std_dup(env);
 	while (ac && av[0])
 	{
 		input = ft_readforfree(input);
@@ -86,10 +84,8 @@ int	main(int ac, char **av, char **env)
 			continue ;
 		}
 		cmd = ft_insert_link(head);
-		env = linked_list_to_array();
 		ft_free(cmd, input, env, head);
-		dup2(stdin, 0);
-		dup2(stdout, 1);
+		ft_help_std();
 	}
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 17:46:34 by aziyani           #+#    #+#             */
-/*   Updated: 2023/08/04 15:20:20 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/05 23:33:09 by aziyani          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,24 @@
 
 // =========================================================================
 
-int	ft_check_key(char	**key_value)
+int	ft_check_key(char	*key_value)
 {
 	int	i;
 
-	if (key_value[0][0] != '_' && !ft_isalpha(key_value[0][0]))
+	if (key_value[0] != '_' && !ft_isalpha(key_value[0]))
 	{
 		ft_putstr_fd("minishell: export: ", 2);
-		ft_putstr_fd(key_value[0], 2);
+		ft_putstr_fd(key_value, 2);
 		ft_putstr_fd(" not a valid identifier\n", 2);
 		return (1);
 	}
 	i = 1;
-	while (key_value[0][i])
+	while (key_value[i])
 	{
-		if (!(ft_isalnum(key_value[0][i])) && key_value[0][i] != '_')
+		if (!(ft_isalnum(key_value[i])) && key_value[i] != '_')
 		{
 			ft_putstr_fd("minishell: export: ", 2);
-			ft_putstr_fd(key_value[0], 2);
+			ft_putstr_fd(key_value, 2);
 			ft_putstr_fd("not a valid identifier\n", 2);
 			return (1);
 		}
@@ -57,7 +57,6 @@ void	add_env_variable(t_env **export, char *key, char *value, int is_qual)
 				break ;
 			}
 			free(tmp->value);
-
 			tmp->value = ft_strdup(value);
 			tmp->is_equal = is_qual;
 			added = 1;
@@ -67,30 +66,6 @@ void	add_env_variable(t_env **export, char *key, char *value, int is_qual)
 	}
 	if (!added)
 		add_node(export, create_node(key, value, is_qual));
-}
-
-void	check_and_set_vr(t_env **export, char **e_cmd)
-{
-	char	**key_value;
-	int		is_qual;
-	int		k;
-
-	k = 1;
-	is_qual = 0;
-	while (e_cmd[k])
-	{
-		if (e_cmd[k][0])
-		{
-			if (ft_strchr(e_cmd[k], '=') != NULL)
-				is_qual = 1;
-			key_value = ft_split(e_cmd[k], '=');
-			e_cmd[k] = e_cmd[k] + (ft_strlen(key_value[0]) + 1);
-			if (!ft_check_key(key_value))
-				add_env_variable(export, key_value[0], e_cmd[k], is_qual);
-			free_arr(key_value);
-		}
-		k++;
-	}
 }
 
 int	ft_export(t_env **export, t_node *arg)
@@ -127,9 +102,8 @@ void	is_alpha(char *string)
 	{
 		if (!(string[i] >= '0' && string[i] <= '9'))
 		{
-			write (2, "exit: asf: numeric argument required\n", 37);
-			g_global.exit_status = 255;
-			exit (g_global.exit_status);
+			write (2, "minishell: exit: asf: numeric argument required\n", 37);
+			exit (255);
 		}
 		i++;
 	}
