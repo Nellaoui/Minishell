@@ -131,7 +131,7 @@ void	free_arr(char **s);
 // void	ft_display_env(t_env *env);
 void	ft_rederct(char *str, t_token *s, t_node **head);
 void	ft_quote(t_cmd *cmd);
-void	ft_skip(t_token *s, char *data);
+void	ft_skip(t_token *s, char *data, int a);
 void	ft_frees_cmd(t_cmd *head);
 char	*ft_if_remove(char *data, char *str);
 void	ft_free_ls(t_node *head);

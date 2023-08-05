@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 17:46:34 by aziyani           #+#    #+#             */
-/*   Updated: 2023/08/03 18:14:15 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/08/04 15:20:20 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	add_env_variable(t_env **export, char *key, char *value, int is_qual)
 				break ;
 			}
 			free(tmp->value);
+
 			tmp->value = ft_strdup(value);
 			tmp->is_equal = is_qual;
 			added = 1;
@@ -126,8 +127,9 @@ void	is_alpha(char *string)
 	{
 		if (!(string[i] >= '0' && string[i] <= '9'))
 		{
-			write (2, "minishell: exit: asf: numeric argument required\n", 37);
-			exit (255);
+			write (2, "exit: asf: numeric argument required\n", 37);
+			g_global.exit_status = 255;
+			exit (g_global.exit_status);
 		}
 		i++;
 	}

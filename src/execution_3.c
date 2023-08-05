@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/29 19:39:46 by aziyani           #+#    #+#             */
-/*   Updated: 2023/08/04 20:42:38 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/08/04 18:24:42 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,19 @@ int	check_builtin(t_node *head)
 {
 	if (head)
 	{
-		if (ft_strncmp(head->data, "echo", 5) == 0)
+		if (ft_strncmp(head->data, "echo", ft_strlen(head->data)) == 0)
 			return (1);
-		if (ft_strncmp(head->data, "cd", 3) == 0)
+		if (ft_strncmp(head->data, "cd", ft_strlen(head->data)) == 0)
 			return (1);
-		if (ft_strncmp(head->data, "pwd", 4) == 0)
+		if (ft_strncmp(head->data, "pwd", ft_strlen(head->data)) == 0)
 			return (1);
-		if (ft_strncmp(head->data, "export", 7) == 0)
+		if (ft_strncmp(head->data, "export", ft_strlen(head->data)) == 0)
 			return (1);
-		if (ft_strncmp(head->data, "unset", 6) == 0)
+		if (ft_strncmp(head->data, "unset", ft_strlen(head->data)) == 0)
 			return (1);
-		if (ft_strncmp(head->data, "env", 4) == 0)
+		if (ft_strncmp(head->data, "env", ft_strlen(head->data)) == 0)
 			return (1);
-		if (ft_strncmp(head->data, "exit", 5) == 0)
+		if (ft_strncmp(head->data, "exit", ft_strlen(head->data)) == 0)
 			return (1);
 	}
 	return (0);

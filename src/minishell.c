@@ -44,10 +44,7 @@ void	ft_display(t_node *head)
 void	ft_free(t_cmd *cmd, char *input, char **env, t_node *head)
 {
 	ft_expension(cmd, g_global.env);
-	// all_display(cmd);
 	ft_execute(cmd, env, g_global.env);
-	// printf("*******************************\n");
-	// all_display(cmd);
 	ft_frees_cmd(cmd);
 	ft_free_ls(head);
 	free(input);
@@ -58,7 +55,7 @@ void	ft_signal(int sig)
 	if (sig == SIGINT)
 	{
 		rl_on_new_line();
-		// rl_replace_line("", 0);
+		rl_replace_line("", 0);
 		printf("\n");
 		rl_redisplay();
 	}

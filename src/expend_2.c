@@ -16,16 +16,21 @@ char	*get_new_string(int str_len, char *data)
 {
 	t_token	*s;
 	char	*string;
+	int		a;
 
 	s = (t_token *)malloc(sizeof(t_token));
 	s->string = calloc(str_len + 1, sizeof(char));
 	s->j = 0;
 	s->check = 0;
 	s->len = 0;
+	a = 0;
 	while (data[s->j])
 	{
-		if (data[s->j] == '\'' && ++s->j)
-			ft_skip(s, data);
+		if (data[s->j] == '\'' && ++s->j && a == 0)
+		{
+			ft_skip(s, data, a);
+			a++;
+		}
 		else if (data[s->j] == '$' && ++s->j)
 			ft_help_get_str(data, s);
 		else
@@ -35,6 +40,7 @@ char	*get_new_string(int str_len, char *data)
 			s->j++;
 		}
 	}
+	s->string[s->len] = '\0';
 	string = ft_free_new_str(s, data);
 	return (string);
 }
@@ -56,8 +62,10 @@ void	ft_help_get_str(char *data, t_token *s)
 	}
 }
 
-void	ft_skip(t_token *s, char *data)
+void	ft_skip(t_token *s, char *data, int a)
 {
+	if (a == 0)
+	{
 	s->string[s->len] = '\'';
 	s->len++;
 	while (data[s->j] && data[s->j] != '\'')
@@ -66,6 +74,9 @@ void	ft_skip(t_token *s, char *data)
 		s->len++;
 		s->j++;
 	}
+	s->string[s->len] = '\'';
+	}
+
 }
 
 void	ft_remove_quote(t_node *head)

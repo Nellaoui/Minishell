@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:56:02 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/03 18:32:32 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/08/03 20:13:17 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	ft_redrection(char *str, t_token *s, t_node **head)
 		ft_insert_token(head, s->res);
 		s->start = s->i + 2;
 		s->i = s->i + 2;
-		
 	}
 	if ((str[s->i] == '<' || str[s->i] == '>'))
 		ft_rederct(str, s, head);
