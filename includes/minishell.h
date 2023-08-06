@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 12:34:58 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/05 23:33:05 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/08/06 01:32:01 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ t_cmd	*ft_new_node(void);
 t_cmd	*ft_insert_link(t_node *head);
 char	*ft_subfree(char *str, int start, int len);
 char	*get_index(char *string);
+void	ft_inside_quote(t_token *s, char *str);
 int		ft_is_valid(char c);
 char	*get_value(char *id, t_env *envi);
 int		get_str_len(char *data, t_env *envi);
@@ -139,11 +140,10 @@ void	ft_help_get_len(t_token *s, char *data, t_env *envi);
 void	ft_help_get_str(char *data, t_token *s);
 char	*ft_readforfree(char *input);
 void	ft_s_env(char **env);
-char	*ft_free_new_str(t_token *s, char *data);
+char	*ft_free_new_str(t_token *s);
 int		ft_empty(char *str);
 int		ft_hundling(t_token *s, char *data, char *string);
 int		ft_count_link(t_node *node);
-
 /*-------------------------------*/
 /*---------ayoub-----------------*/
 void	exec_cmd(t_node *cmd, char **env);
@@ -163,7 +163,7 @@ int		ft_perror(char *s);
 t_env	*ft_setup_env(char **env_main);
 void	ft_signal(int sig);
 void	ft_help_std_dup(char **env);
-void	ft_help_std();
+void	ft_help_std(void);
 void	add_env_variable(t_env **export, char *key, char *value, int is_qual);
 void	check_and_set_vr(t_env **export, char **e_cmd);
 

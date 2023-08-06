@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:11:49 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/02 23:43:06 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/05 23:59:30 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ char	*get_new_string(int str_len, char *data)
 			s->j++;
 		}
 	}
-	string = ft_free_new_str(s, data);
+	s->string[s->len] = '\0';
+	string = ft_free_new_str(s);
 	return (string);
 }
 
@@ -66,6 +67,7 @@ void	ft_skip(t_token *s, char *data)
 		s->len++;
 		s->j++;
 	}
+	s->string[s->len] = '\'';
 }
 
 void	ft_remove_quote(t_node *head)

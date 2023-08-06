@@ -3,17 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+         #
+#    By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/06 12:31:19 by nelallao          #+#    #+#              #
-#    Updated: 2023/08/05 23:24:01 by aziyani          ###   ########.fr        #
+#    Updated: 2023/08/06 01:14:21 by nelallao         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 CC = cc
 RM = rm -f
-FLAGS = -Wall -Wextra -Werror 
+FLAGS = -Wall -Wextra -Werror
 LFLAGS = -lreadline
 LIBFT = includes/libft/libft.a
 SRC= minishell.c check.c expend.c expend_2.c inserting.c outils.c token.c outils_2.c \
@@ -40,6 +40,7 @@ obj/%.o: src/%.c
 clean:
 	@make clean -C includes/libft
 	@$(RM) $(OBJ)
+	@rm -fr obj
 
 fclean: clean
 	@make fclean -C includes/libft

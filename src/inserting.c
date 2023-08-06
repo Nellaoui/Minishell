@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:59:38 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/02 23:48:48 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/06 00:47:15 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ void	ft_insert_token(t_node **head, char *data)
 	if ((ft_strlen(data) == 1) && data[0] == ' ' )
 		return ;
 	new_node = (t_node *)malloc(sizeof(t_node));
-	new_node->next = NULL;
 	new_node->data = ft_strdup(data);
 	new_node->type = 0;
 	new_node->quote = 0;
+	new_node->next = NULL;
 	if (*head == NULL)
 	{
 		*head = new_node;
@@ -116,15 +116,15 @@ void	ft_type(t_node **head, t_token *s)
 	while (node != NULL)
 	{
 		node->type = ARRGUMENT;
-		if (ft_strncmp(node->data, "|", 2) == 0)
+		if (ft_strncmp(node->data, "|", ft_strlen(node->data)) == 0)
 			node->type = PIPE;
-		if (ft_strncmp(node->data, ">", 2) == 0)
+		if (ft_strncmp(node->data, ">", ft_strlen(node->data)) == 0)
 			node->type = OUT;
-		if (ft_strncmp(node->data, "<", 2) == 0)
+		if (ft_strncmp(node->data, "<", ft_strlen(node->data)) == 0)
 			node->type = IN;
-		if (ft_strncmp(node->data, "<<", 3) == 0)
+		if (ft_strncmp(node->data, "<<", ft_strlen(node->data)) == 0)
 			node->type = HERDOC;
-		if (ft_strncmp(node->data, ">>", 3) == 0)
+		if (ft_strncmp(node->data, ">>", ft_strlen(node->data)) == 0)
 			node->type = APPEND;
 		node = node->next;
 	}

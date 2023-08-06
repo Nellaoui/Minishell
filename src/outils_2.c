@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   outils_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:30:37 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/03 17:26:29 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/08/06 01:30:59 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ft_free_ls(t_node *head)
 	}
 }
 
-char	*ft_free_new_str(t_token *s, char *data)
+char	*ft_free_new_str(t_token *s)
 {
 	char	*string;
 
@@ -37,7 +37,6 @@ char	*ft_free_new_str(t_token *s, char *data)
 		s->string = ft_strdup("");
 	}
 	string = ft_strdup(s->string);
-	free(data);
 	free(s->string);
 	free(s);
 	return (string);
@@ -86,25 +85,34 @@ void	ft_frees_cmd(t_cmd *head)
 		current = next;
 	}
 }
-void	all_display(t_cmd	*cmd)
-{
-	t_cmd	*tmp;
-	int		pipe;
 
-	pipe = 1;
-	tmp = cmd;
-	while (tmp)
-	{
-		printf("--------[command %d]-------\n", pipe);
-		ft_display(tmp->args);
-		printf("------>>[out_reds]>>-----\n");
-		ft_display(tmp->out_reds);
-		printf("------<<[in_reds]<<-----\n");
-		ft_display(tmp->in_reds);
-		printf("------<<[herdoc]<<-----\n");
-		ft_display(tmp->her_reds);
-		printf("--------------------------\n");
-		pipe++;
-		tmp = tmp->next;
-	}
+void	ft_inside_quote(t_token *s, char *str)
+{
+	if (str[s->i] == '\'' && s->double_quote == 0)
+		s->single_quote = !s->single_quote;
+	if (str[s->i] == '\"' && s->single_quote == 0)
+		s->double_quote = !s->double_quote;
 }
+
+// void	all_display(t_cmd	*cmd)
+// {
+// 	t_cmd	*tmp;
+// 	int		pipe;
+
+// 	pipe = 1;
+// 	tmp = cmd;
+// 	while (tmp)
+// 	{
+// 		printf("--------[command %d]-------\n", pipe);
+// 		ft_display(tmp->args);
+// 		printf("------>>[out_reds]>>-----\n");
+// 		ft_display(tmp->out_reds);
+// 		printf("------<<[in_reds]<<-----\n");
+// 		ft_display(tmp->in_reds);
+// 		printf("------<<[herdoc]<<-----\n");
+// 		ft_display(tmp->her_reds);
+// 		printf("--------------------------\n");
+// 		pipe++;
+// 		tmp = tmp->next;
+// 	}
+// }

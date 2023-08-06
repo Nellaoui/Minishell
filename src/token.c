@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aziyani <aziyani@student.1337.ma>          +#+  +:+       +#+        */
+/*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 16:56:02 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/03 18:32:32 by aziyani          ###   ########.fr       */
+/*   Updated: 2023/08/06 01:31:15 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,12 @@ t_node	*ft_token(char *str, t_node *head)
 {
 	t_token	*s;
 
-	s = NULL;
 	head = NULL;
+	s = NULL;
 	s = ft_initialize(s);
 	while (str[s->i])
 	{
-		if (str[s->i] == '\'' && s->double_quote == 0)
-			s->single_quote = !s->single_quote;
-		if (str[s->i] == '\"' && s->single_quote == 0)
-			s->double_quote = !s->double_quote;
+		ft_inside_quote(s, str);
 		if ((str[s->i] == ' ' || str[s->i] == '\t')
 			&& s->double_quote == 0 && s->single_quote == 0)
 			ft_splited(str, s, &head);
@@ -35,13 +32,12 @@ t_node	*ft_token(char *str, t_node *head)
 			ft_pipe(str, s, &head);
 		s->i++;
 	}
-	if (ft_strlen(&str[s->start]) != 0)
-	{
-		if (str[s->start] == ' ' || str[s->start] == '\t')
+	if (ft_strlen(&str[s->start]) != 0
+		&& (str[s->start] == ' ' || str[s->start] == '\t'))
 			s->start++;
-		ft_insert_token(&head, &(str[s->start]));
-	}
+	ft_insert_token(&head, &(str[s->start]));
 	ft_type(&head, s);
+	ft_display(head);
 	return (head);
 }
 
@@ -65,7 +61,6 @@ void	ft_redrection(char *str, t_token *s, t_node **head)
 		ft_insert_token(head, s->res);
 		s->start = s->i + 2;
 		s->i = s->i + 2;
-		
 	}
 	if ((str[s->i] == '<' || str[s->i] == '>'))
 		ft_rederct(str, s, head);

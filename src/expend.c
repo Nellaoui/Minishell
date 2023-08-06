@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:09:50 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/02 23:42:47 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/05 23:57:30 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char	*get_expanded(char *data, t_env *envi)
 
 	str_len = get_str_len(data, envi);
 	string = get_new_string(str_len, data);
+	free(data);
 	return (string);
 }
 

@@ -1,0 +1,6 @@
+.DStore
+.obj
+*.o
+.vscode
+minishell
+libft.a

@@ -6,7 +6,7 @@
 /*   By: nelallao <nelallao@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/25 17:08:01 by nelallao          #+#    #+#             */
-/*   Updated: 2023/08/02 23:43:16 by nelallao         ###   ########.fr       */
+/*   Updated: 2023/08/06 00:45:46 by nelallao         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_subfree(char *str, int start, int len)
 	string = ft_substr(str, start, len);
 	res = string;
 	free(string);
-	return (string);
+	return (res);
 }
 
 int	ft_is_valid(char c)
